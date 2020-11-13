@@ -1,0 +1,275 @@
+'use strict';
+
+const minimist = require('minimist');
+const printer = require('./printer');
+const fs = require('fs');
+const path = require('path');
+const debug = require('./debug');
+
+class App {
+  constructor(commandList = []) {
+    this.commands = {};
+    commandList.forEach(command => {
+      this.register(command);
+    });
+    this.options = {
+      name: 'node-cli',
+      version: '0.0.1',
+      commands_dir: '',
+      commands_sort: []
+    };
+  }
+
+  register(Command) {
+    const command = new Command();
+    const name = command.config.name;
+    if (this.commands[name]) {
+      printer.error(`${name} command already exist!`);
+      process.exit(-1);
+    }
+    this.commands[name] = command;
+    return this;
+  }
+
+  start(options = {}) {
+    Object.assign(this.options, options);
+    const dir = this.options.commands_dir;
+    const commands = fs.readdirSync(dir);
+    commands.forEach(file => {
+      this.register(require(path.join(dir, file)));
+    });
+    this.run();
+  }
+
+  run() {
+    const args = process.argv.slice(2);
+    if (args.length === 0) {
+      this.showHelp();
+      return;
+    }
+
+    const commandName = args[0];
+    if (commandName === '-h') {
+      this.showHelp();
+      return;
+    }
+    if (this.commands[commandName]) {
+      this.exec(commandName, 3);
+      return;
+    }
+
+    const matched = [];
+    Object.keys(this.commands).forEach((key) => {
+      if (key.indexOf(commandName) !== -1) {
+        matched.push(this.commands[key]);
+      }
+    });
+
+    if (matched.length === 0) {
+      this.showHelp();
+      if (commandName !== 'help') {
+        printer.error(`'${commandName}' command dose not exist.`);
+      }
+    } else {
+      this.showAmbiguous(commandName, matched);
+    }
+  }
+
+  exec(commandName, argvSlice = 2) {
+    const command = this.commands[commandName];
+    const args = process.argv.slice(argvSlice);
+
+    var commandArgs = command.config.args;
+    var commandOpts = command.config.options;
+
+    // set option alias
+    var aliasOption = {
+      help: 'h'
+    };
+    var checkSet = [];
+    commandOpts.forEach(opt => {
+      if (checkSet.indexOf(opt.name) > -1) {
+        printer.error(`  Duplication option : ${opt.name}   `);
+        command.usage();
+        process.exit(-1);
+      }
+      checkSet.push(opt.name);
+      if (opt.short) {
+        if (checkSet.indexOf(opt.short) > -1) {
+          printer.error(`  Duplication option short : ${opt.name}(${opt.short})   `);
+          command.usage();
+          process.exit(-1);
+        }
+        aliasOption[opt.name] = opt.short;
+        checkSet.push(opt.short);
+      }
+    });
+
+    let argv = minimist(args, {
+      alias: aliasOption,
+      boolean: true
+    });
+
+    if (argv.help === true) {
+      command.usage();
+      process.exit(0);
+    }
+
+    // set command args value
+    checkSet = [];
+    commandArgs.forEach((arg, key) => {
+      if (checkSet.indexOf(arg.name) > -1) {
+        printer.error(`  Duplication argument : ${arg.name}   `);
+        command.usage();
+        process.exit(-1);
+      }
+      arg['value'] = argv._[key] ? argv._[key] : '';
+      if (arg.mode === 'required' && arg['value'] === '') {
+        printer.error(`  Required augument : ${arg.name}   `);
+        command.usage();
+        process.exit(-1);
+      }
+      checkSet.push(arg.name);
+    });
+
+    commandOpts.forEach(opt => {
+      opt['value'] = argv[opt.name] ? argv[opt.name] : '';
+      if (opt.mode === 'required' && opt['value'] === '') {
+        printer.error(`  Required option : ${opt.name}   `);
+        command.usage();
+        process.exit(-1);
+      }
+    });
+
+    var cArgs = {};
+    var cOpts = {};
+    commandArgs.forEach(arg => {
+      if (arg.value === '' && arg.default !== null) {
+        arg.value = arg.default;
+      }
+      cArgs[arg.name] = arg.value;
+    });
+
+    commandOpts.forEach(opt => {
+      if (opt.value === '' && opt.default !== null) {
+        opt.value = opt.default;
+      }
+      cOpts[opt.name] = opt.value;
+      if (opt.short) {
+        cOpts[opt.short] = opt.value;
+      }
+    });
+
+    command.args = cArgs;
+    command.options = cOpts;
+    command.argv = argv._;
+
+    command.exec(cArgs, cOpts, argv._, this).catch((err) => {
+      printer.println()
+        .error('exec error :').println()
+        .println(err.stack).println();
+      process.exit(-1);
+    });
+  }
+
+  showAmbiguous(commandName, matched) {
+    printer.println();
+
+    const maxNameLength = Math.max(...matched.map((item) => item.config.name.length));
+    const maxDescLength = Math.max(...matched.map((item) => item.config.desc.length));
+
+    const maxLength = Math.max(maxNameLength + maxDescLength + 14, 34);
+    printer.print(printer.bgRed);
+    printer.print(printer.fgWhite);
+    printer.fixed('', maxLength).println();
+    printer.fixed(`    Command "${commandName}" is ambiguous.`, maxLength).println();
+    printer.fixed('    Did you mean one of these?    ', maxLength).println();
+
+    matched.forEach((item) => {
+      const { key, desc } = item.config;
+      printer.fixed('', 8).print();
+      printer.fixed(key, maxNameLength).print();
+      printer.print('  ');
+      printer.fixed(desc, maxDescLength).print();
+      printer.println('    ');
+    });
+
+    printer.fixed('', maxLength).println();
+    printer.print(printer.reset);
+    printer.println();
+  }
+
+  showHelp() {
+    if (this.commands['help']) {
+      this.exec('help');
+    } else {
+      printer.println();
+      printer.print(printer.fgWhite);
+      printer.print(this.options.name);
+      printer.print(printer.fgGreen);
+      printer.println(' ' + this.options.version);
+      printer.println(printer.reset);
+      printer.warning('Usage:');
+      printer.println('    tea <command> [options] [<args>]\n');
+      printer.warning('Available commands:');
+
+      const commands = this.commands;
+      var maxCommandNameLength = 0;
+      var maxCommandDescLength = 0;
+
+      const sort = this.options.commands_sort;
+
+      Object.keys(commands).forEach((key) => {
+        const cmd = commands[key];
+        if (!cmd) {
+          debug.halt(key, cmd);
+        }
+        const { name, desc } = cmd.config;
+        if (name.length > maxCommandNameLength) {
+          maxCommandNameLength = name.length;
+        }
+        if (desc.length > maxCommandDescLength) {
+          maxCommandDescLength = desc.length;
+        }
+        if (sort.indexOf(name) < 0) {
+          sort.push(name);
+        }
+      });
+
+      let not_exist = [];
+      sort.forEach(key => {
+        const cmd = this.commands[key];
+        if (cmd) {
+          const { name, desc } = cmd.config;
+          printer.print(printer.fgGreen);
+          printer.fixed('    ' + name, maxCommandNameLength + 4).print();
+          printer.print(printer.reset);
+          printer.println('    ' + desc);
+        } else if (key === 'help') {
+          printer.print(printer.fgGreen);
+          printer.fixed('    help', maxCommandNameLength + 4).print();
+          printer.print(printer.reset);
+          printer.println('    Print help information');
+        } else {
+          not_exist.push(key);
+        }
+      });
+      if (sort.indexOf('help') < 0) {
+        printer.print(printer.fgGreen);
+        printer.fixed('    help', maxCommandNameLength + 4).print();
+        printer.print(printer.reset);
+        printer.println('    Print help information');
+      }
+      not_exist.forEach(key => {
+        debug.warning(`${key} command file dose not exist, but is defined in options.commands_sort`);
+      });
+      if (not_exist.length) {
+        printer.error(`commands_sort : [${sort.map(item => `'${item}'`).join(', ')}]`);
+      } else {
+        printer.println();
+      }
+    }
+  }
+}
+
+module.exports = App;

@@ -1,0 +1,21 @@
+{
+  "name": "@axiosleo/cli-tool",
+  "version": "0.1.0",
+  "description": "Design for quickly developing CLI applications with Node.js.",
+  "main": "./main.js",
+  "author": "AxiosLeo",
+  "directories": {
+    "lib": "src"
+  },
+  "scripts": {
+    "lint": "eslint --fix lib/"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "minimist": "^1.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AxiosCros/node-cli"
+  }
+}
