@@ -13,28 +13,28 @@ const { App } = require('@axiosleo/cli-tool');
 const app = new App();
 ```
 
-## Register Command
-
-```js
-app.register(require('path/to/your/command'))
-   .register(require('path/to/your/other/command'));
-```
-
-## Run Command Line App
+## Start command line app
 
 ```js
 app.start({
   name: 'cli-app-name',
   version: '1.0.0',
-  commands_dir: '/path/to/commands/dir/',
+  commands_dir: '/path/to/commands/dir/', // will auto load command files
   commands_sort: ['help', ... ]
 });
+
+// or
+app.register(require('/path/to/your/command/file'))
+   // ... ...
+   .register(require('/path/to/your/other-command/file'));
+app.run();
 ```
 
 ## Run Single Command
 
 ```js
-app.exec(CommandName);
+app.register(require('path/to/your/command/file'));
+app.exec("<command-name>");
 ```
 
 ## Command Example
