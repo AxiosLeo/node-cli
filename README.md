@@ -1,4 +1,6 @@
-# Design for quickly developing CLI applications with Node.js
+# @axiosleo/cli-tool
+
+> Design for quickly developing CLI applications with Node.js
 
 ## Install
 
