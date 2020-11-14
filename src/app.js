@@ -31,26 +31,26 @@ class App {
     return this;
   }
 
-  start(options = {}) {
+  async start(options = {}) {
     Object.assign(this.options, options);
     const dir = this.options.commands_dir;
     const commands = fs.readdirSync(dir);
     commands.forEach(file => {
       this.register(require(path.join(dir, file)));
     });
-    this.run();
+    await this.run();
   }
 
-  run() {
+  async run() {
     const args = process.argv.slice(2);
     if (args.length === 0) {
-      this.showHelp();
+      await this.showHelp();
       return;
     }
 
     const commandName = args[0];
     if (commandName === '-h') {
-      this.showHelp();
+      await this.showHelp();
       return;
     }
     if (this.commands[commandName]) {
@@ -66,16 +66,16 @@ class App {
     });
 
     if (matched.length === 0) {
-      this.showHelp();
+      await this.showHelp();
       if (commandName !== 'help') {
         printer.error(`'${commandName}' command dose not exist.`);
       }
     } else {
-      this.showAmbiguous(commandName, matched);
+      await this.showAmbiguous(commandName, matched);
     }
   }
 
-  exec(commandName, argvSlice = 2) {
+  async exec(commandName, argvSlice = 2) {
     const command = this.commands[commandName];
     const args = process.argv.slice(argvSlice);
 
@@ -172,7 +172,7 @@ class App {
     });
   }
 
-  showAmbiguous(commandName, matched) {
+  async showAmbiguous(commandName, matched) {
     printer.println();
 
     const maxNameLength = Math.max(...matched.map((item) => item.config.name.length));
@@ -199,7 +199,7 @@ class App {
     printer.println();
   }
 
-  showHelp() {
+  async showHelp() {
     if (this.commands['help']) {
       this.exec('help');
     } else {
