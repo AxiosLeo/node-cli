@@ -1,10 +1,25 @@
 {
   "rules": {
-    "indent": [2, 2],
-    "quotes": [2, "single"],
-    "linebreak-style": [2, "unix"],
-    "semi": [2, "always"],
-    "strict": [2, "global"],
+    "indent": [
+      2,
+      2
+    ],
+    "quotes": [
+      2,
+      "single"
+    ],
+    "linebreak-style": [
+      2,
+      "unix"
+    ],
+    "semi": [
+      2,
+      "always"
+    ],
+    "strict": [
+      2,
+      "global"
+    ],
     "curly": 2,
     "eqeqeq": 2,
     "no-eval": 2,
@@ -20,12 +35,22 @@
     "no-with": 2,
     "no-loop-func": 1,
     "no-native-reassign": 2,
-    "no-redeclare": [2, {"builtinGlobals": true}],
+    "no-redeclare": [
+      2,
+      {
+        "builtinGlobals": true
+      }
+    ],
     "no-delete-var": 2,
     "no-shadow-restricted-names": 2,
     "no-undef-init": 2,
     "no-use-before-define": 2,
-    "no-unused-vars": [2, {"args": "none"}],
+    "no-unused-vars": [
+      2,
+      {
+        "args": "none"
+      }
+    ],
     "no-undefined": 1,
     "no-undef": 2,
     "global-require": 0,
@@ -40,13 +65,13 @@
     "describe": true,
     "it": true,
     "before": true,
-    "after": true
+    "after": true,
+    "beforeEach": true
   },
   "parserOptions": {
     "ecmaVersion": 2018,
     "sourceType": "script",
-    "ecmaFeatures": {
-    }
+    "ecmaFeatures": {}
   },
   "extends": "eslint:recommended"
 }
