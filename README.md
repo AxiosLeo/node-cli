@@ -1,5 +1,8 @@
 # @axiosleo/cli-tool
 
+[![NPM version](https://img.shields.io/npm/v/@axiosleo/cli-tool.svg?style=flat-square)](https://npmjs.org/package/@axiosleo/cli-tool)
+[![npm download](https://img.shields.io/npm/dm/@axiosleo/cli-tool.svg?style=flat-square)](https://npmjs.org/package/@axiosleo/cli-tool)
+
 > Design for quickly developing CLI applications with Node.js
 
 ## Install
@@ -53,7 +56,7 @@ class CommandExample extends Command {
       desc: 'command desc',
       args: [
           {
-            name: 'arg name',
+            name: 'name',     // argument name
             mode: 'optional', // required | optional
             desc: 'arg desc',
             default: null     // only supported optional mode
@@ -61,11 +64,11 @@ class CommandExample extends Command {
       ],
       options: [
           {
-            name: 'option name',
-            short: 'option short name', // like 'o'
-            mode: 'optional',           // required | optional
+            name: 'name',     // option name
+            short: 'n',       // like 'n'
+            mode: 'optional', // required | optional
             desc: 'option desc',
-            default: null               // only supported optional mode
+            default: null     // only supported optional mode
           }
       ],
     });
@@ -75,7 +78,7 @@ class CommandExample extends Command {
       // do something in here
 
       // get arg&option by name
-      const arg1 = arg.argName;
+      const arg1 = args.argName;
       const option1 = options.optionName;
 
       // get arg by index
@@ -89,9 +92,7 @@ module.exports = CommandExample;
 ## Used On Command Line
 
 ```bash
-# <bin> <command> <...args> [options]
-<@axiosleo/cli-tool-bin> CommandName arg1 arg2 -a A -b B
-
-# option can be placed anywhere, like this
-<@axiosleo/cli-tool-bin> CommandName -a A arg1 -b B arg2
+# <bin> <command> -h
+# like
+cli test -h
 ```
