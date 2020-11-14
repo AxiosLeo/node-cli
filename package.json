@@ -8,14 +8,18 @@
     "lib": "src"
   },
   "scripts": {
-    "lint": "eslint --fix lib/"
+    "lint": "eslint --fix src/"
   },
   "license": "MIT",
   "dependencies": {
+    "eslint": "^7.13.0",
     "minimist": "^1.2"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/AxiosCros/node-cli"
+  },
+  "devDependencies": {
+    "eslint": "*"
   }
 }
