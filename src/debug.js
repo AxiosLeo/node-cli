@@ -47,10 +47,24 @@ function warning(...data) {
   }
 }
 
+function error(...data) {
+  let msg = '';
+  if (data[0] && typeof data[0] === 'string') {
+    msg = data[0];
+    data = data.slice(1);
+  }
+  this.dump(...data);
+  if (msg.length) {
+    process.stdout.write(`\x1b[31m${os.EOL}[ERROR] ${msg}\x1b[0m${os.EOL}`);
+  }
+  this.halt();
+}
+
 module.exports = {
   dump,
   halt,
   stack,
   jump,
-  warning
+  warning,
+  error
 };
