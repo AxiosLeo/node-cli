@@ -56,7 +56,9 @@ class Command {
       printer.print(' [options]');
     }
     if (this.config.args.length) {
-      printer.print(' [--]');
+      if (!this.config.args.some(arg => arg.mode === 'required')) {
+        printer.print(' [--]');
+      }
       this.config.args.forEach((arg) => {
         if (arg.mode === 'optional') {
           printer.print(` [${arg.name}]`);
@@ -82,7 +84,7 @@ class Command {
         printer.print('  ' + printer.fgGreen).fixed(str, 20).print(printer.reset);
         printer.print(option.desc ? option.desc : '');
         if (option.mode === 'required') {
-          printer.red('(required)').println();
+          printer.red(' (required)').println();
         } else {
           printer.println();
         }
