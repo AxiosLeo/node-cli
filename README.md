@@ -93,6 +93,7 @@ module.exports = CommandExample;
 
 ```bash
 # <bin> <command> -h
-# like
+
+# example
 cli test -h
 ```
