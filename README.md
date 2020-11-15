@@ -35,14 +35,14 @@ app.register(require('/path/to/your/command/file'))
 app.run();
 ```
 
-## Run Single Command
+## Run single command
 
 ```js
 app.register(require('path/to/your/command/file'));
 app.exec("<command-name>");
 ```
 
-## Command Example
+## Command example
 
 ```js
 'use strict';
@@ -89,11 +89,6 @@ class CommandExample extends Command {
 module.exports = CommandExample;
 ```
 
-## Used On Command Line
+## License
 
-```bash
-# <bin> <command> -h
-
-# example
-cli test -h
-```
+This project is open-sourced software licensed under the [MIT](LICENSE).
