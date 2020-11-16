@@ -22,7 +22,8 @@ const app = new App();
 
 ```js
 app.start({
-  name: 'cli-app-name',
+  name: 'cli',                  // cli app command name
+  desc: 'cli app description',
   version: '1.0.0',
   commands_dir: '/path/to/commands/dir/', // will auto load command files
   commands_sort: ['help', ... ]
