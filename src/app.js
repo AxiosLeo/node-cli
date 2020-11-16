@@ -15,6 +15,7 @@ class App {
     this.options = {
       name: 'node-cli',
       version: '0.0.1',
+      desc: '',
       commands_dir: '',
       commands_sort: []
     };
@@ -204,13 +205,11 @@ class App {
       this.exec('help');
     } else {
       printer.println();
-      printer.print(printer.fgWhite);
-      printer.print(this.options.name);
-      printer.print(printer.fgGreen);
-      printer.println(' ' + this.options.version);
-      printer.println(printer.reset);
+      printer.yellow(this.options.name);
+      printer.green(` ${this.options.version} `);
+      printer.println(this.options.desc).println();
       printer.warning('Usage:');
-      printer.println('    tea <command> [options] [<args>]\n');
+      printer.println(`    ${this.options.name} <command> [options] [<args>]\n`);
       printer.warning('Available commands:');
 
       const commands = this.commands;
