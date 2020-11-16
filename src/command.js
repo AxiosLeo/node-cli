@@ -44,7 +44,7 @@ class Command {
   }
 
   usage() {
-    const printer = this.printer;
+    printer.println();
     if (this.config.desc) {
       printer.yellow('Description:').println();
       printer.print(`  ${this.config.desc}`).println().println();
@@ -71,9 +71,13 @@ class Command {
       this.config.args.forEach((arg) => {
         printer.print('  ' + printer.fgGreen).fixed(arg.name, 20).print(printer.reset).println(arg.desc ? arg.desc : '');
       });
+    } else {
       printer.println();
     }
-    if (this.config.options) {
+    if (this.config.options.length) {
+      printer.println();
+    }
+    if (this.config.options.length) {
       printer.yellow('Options:').println();
       this.config.options.forEach((option) => {
         let str = '';
@@ -89,7 +93,6 @@ class Command {
           printer.println();
         }
       });
-      printer.println();
     }
   }
 
