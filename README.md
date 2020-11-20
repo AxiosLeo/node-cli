@@ -90,6 +90,27 @@ class CommandExample extends Command {
 module.exports = CommandExample;
 ```
 
+## Util
+
+```js
+const { debug, printer } = require('@axiosleo/cli-tool');
+
+// debug methods
+debug.dump(...anything); // Print anything on the console without exiting the process.
+debug.halt(...anything); // Print anything on the console and exiting the process.
+debug.jump(trigger_times, ...anything);  // Print anything on the console after the number of triggers is reached.
+debug.warning('<message>', ...anything); // Print warning message and not exiting the process.
+debug.error('<message>', ...anything);   // Print error message and exiting the process.
+debug.stack('<message>', ...anything);   // Print anything on the console and throw an error.
+
+
+// printer methods
+printer.print('<some-string>');   // Print some string on the console without EOL.
+printer.println('<some-string>'); // Print some string on the console with EOL.
+// Print fixed-length strings
+printer.fixed(content, length = 10, fillPosition = 'l', fill = ' ');
+```
+
 ## License
 
 This project is open-sourced software licensed under the [MIT](LICENSE).
