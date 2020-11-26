@@ -85,7 +85,8 @@ class App {
 
     // set option alias
     var aliasOption = {
-      help: 'h'
+      help: 'h',
+      quiet: 'q'
     };
     var checkSet = [];
     commandOpts.forEach(opt => {
@@ -114,6 +115,9 @@ class App {
     if (argv.help === true) {
       command.usage();
       process.exit(0);
+    }
+    if (argv.quiet === true) {
+      printer.quiet(true);
     }
 
     // set command args value
@@ -209,7 +213,10 @@ class App {
       printer.green(` ${this.options.version} `);
       printer.println(this.options.desc).println();
       printer.warning('Usage:');
-      printer.println(`    ${this.options.name} <command> [options] [<args>]\n`);
+      printer.println(`    ${this.options.name} <command> [options] [<args>]`).println();
+      printer.warning('Options:');
+      printer.green('    -h, --help').println('         Display this help message');
+      printer.green('    -q, --quiet').println('        Do not output any message').println();
       printer.warning('Available commands:');
 
       const commands = this.commands;
