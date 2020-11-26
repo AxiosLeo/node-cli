@@ -1,6 +1,13 @@
 'use strict';
 
+let quiet = false;
+
+const os = require('os');
+
 module.exports = {
+  quiet(quiet_flag) {
+    quiet = quiet_flag;
+  },
   yellow(content) {
     this.print(this.fgYellow).print(content).print(this.reset);
     return this;
@@ -68,7 +75,9 @@ module.exports = {
       content = this.tmp + content;
       this.tmp = '';
     }
-    process.stdout.write(content);
+    if (!quiet) {
+      process.stdout.write(content);
+    }
     return this;
   },
   println(content) {
@@ -79,7 +88,9 @@ module.exports = {
       content = this.tmp + content;
       this.tmp = '';
     }
-    process.stdout.write(content + '\n');
+    if (!quiet) {
+      process.stdout.write(content + os.EOL);
+    }
     return this;
   },
   fixed(content, length = 10, fillPosition = 'l', fill = ' ') {
