@@ -92,8 +92,10 @@ module.exports = CommandExample;
 
 ## Util
 
+- debug
+
 ```js
-const { debug, printer } = require('@axiosleo/cli-tool');
+const { debug } = require('@axiosleo/cli-tool');
 
 // debug methods
 debug.dump(...anything); // Print anything on the console without exiting the process.
@@ -102,11 +104,19 @@ debug.jump(trigger_times, ...anything);  // Print anything on the console after 
 debug.warning('<message>', ...anything); // Print warning message and not exiting the process.
 debug.error('<message>', ...anything);   // Print error message and exiting the process.
 debug.stack('<message>', ...anything);   // Print anything on the console and throw an error.
+```
 
+- printer
 
-// printer methods
-printer.print('<some-string>');   // Print some string on the console without EOL.
-printer.println('<some-string>'); // Print some string on the console with EOL.
+```js
+const { printer } = require('@axiosleo/cli-tool');
+
+// Print some string on the console without EOL.
+printer.print('<some-string>');
+
+// Print some string on the console with EOL.
+printer.println('<some-string>');
+
 // Print fixed-length strings
 printer.fixed(content, length = 10, fillPosition = 'l', fill = ' ');
 ```
