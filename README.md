@@ -26,7 +26,10 @@ app.start({
   desc: 'cli app description',
   version: '1.0.0',
   commands_dir: '/path/to/commands/dir/', // will auto load command files
-  commands_sort: ['help', ... ]
+  commands_sort: ['help', ... ],
+  commands_group: {
+    'group description': ['command_name', ...], // will print by group, need @1.0.0 version
+  }
 });
 
 // or
