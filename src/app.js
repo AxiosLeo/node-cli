@@ -208,73 +208,108 @@ class App {
     if (this.commands['help']) {
       this.exec('help');
     } else {
+      // print header
       printer.println();
       printer.yellow(this.options.name);
       printer.green(` ${this.options.version} `);
       printer.println(this.options.desc).println();
+
+      // print Usage
       printer.warning('Usage:');
       printer.println(`    ${this.options.name} <command> [options] [<args>]`).println();
+
+      // print options
       printer.warning('Options:');
       printer.green('    -h, --help').println('         Display this help message');
       printer.green('    -q, --quiet').println('        Do not output any message').println();
+
+      // print available commands
+      const {
+        name_max_len,
+        command_list,
+        group
+      } = await this.resolve(this.options.commands_sort, this.options.commands_group);
       printer.warning('Available commands:');
-
-      const commands = this.commands;
-      var maxCommandNameLength = 0;
-      var maxCommandDescLength = 0;
-
-      const sort = this.options.commands_sort;
-
-      Object.keys(commands).forEach((key) => {
-        const cmd = commands[key];
-        if (!cmd) {
-          debug.halt(key, cmd);
-        }
-        const { name, desc } = cmd.config;
-        if (name.length > maxCommandNameLength) {
-          maxCommandNameLength = name.length;
-        }
-        if (desc.length > maxCommandDescLength) {
-          maxCommandDescLength = desc.length;
-        }
-        if (sort.indexOf(name) < 0) {
-          sort.push(name);
-        }
-      });
-
-      let not_exist = [];
-      sort.forEach(key => {
-        const cmd = this.commands[key];
-        if (cmd) {
-          const { name, desc } = cmd.config;
-          printer.print(printer.fgGreen);
-          printer.fixed('    ' + name, maxCommandNameLength + 4).print();
-          printer.print(printer.reset);
-          printer.println('    ' + desc);
-        } else if (key === 'help') {
-          printer.print(printer.fgGreen);
-          printer.fixed('    help', maxCommandNameLength + 4).print();
-          printer.print(printer.reset);
-          printer.println('    Print help information');
-        } else {
-          not_exist.push(key);
-        }
-      });
-      if (sort.indexOf('help') < 0) {
-        printer.print(printer.fgGreen);
-        printer.fixed('    help', maxCommandNameLength + 4).print();
-        printer.print(printer.reset);
-        printer.println('    Print help information');
-      }
-      not_exist.forEach(key => {
-        debug.warning(`${key} command file dose not exist, but is defined in options.commands_sort`);
-      });
-      if (not_exist.length) {
-        printer.error(`commands_sort : [${sort.map(item => `'${item}'`).join(', ')}]`);
-      } else {
+      if (command_list) {
+        await Promise.all(command_list.map(async cmd => await this.printCommand(cmd, name_max_len)));
         printer.println();
       }
+      const group_list = Object.keys(group);
+      for (let i = 0; i < group_list.length; i++) {
+        const desc = group_list[i];
+        if (group[desc]) {
+          printer.println(desc);
+          await Promise.all(group[desc].map(async cmd => {
+            return await this.printCommand(cmd, name_max_len);
+          }));
+          printer.println();
+        }
+      }
     }
+  }
+
+  async resolve(sort, group) {
+    if (!group) {
+      group = {};
+    }
+    if (!sort || !Array.isArray(sort)) {
+      sort = [];
+    }
+    const group_commands = [];
+    Object.keys(group).forEach((key) => {
+      group[key].forEach(cmd => {
+        if (group_commands.indexOf(cmd) < 0) {
+          group_commands.push(cmd);
+        }
+      });
+    });
+    const commands = this.commands;
+    let name_max_len = 0;
+    let desc_max_len = 0;
+
+    // count max length
+    Object.keys(commands).forEach((key) => {
+      const cmd = commands[key];
+      if (!cmd) {
+        debug.stack(`load ${key} command error`, cmd);
+      }
+      const { name, desc } = cmd.config;
+      if (name.length > name_max_len) {
+        name_max_len = name.length;
+      }
+      if (desc.length > desc_max_len) {
+        desc_max_len = desc.length;
+      }
+      if (sort.indexOf(name) < 0 && group_commands.indexOf(name) < 0) {
+        sort.push(name);
+      }
+    });
+
+    let command_list = sort.filter(cmd => group_commands.indexOf(cmd) < 0);
+    if (command_list.indexOf('help') < 0 && group_commands.indexOf('help') < 0) {
+      command_list.push('help');
+    }
+    return { name_max_len, desc_max_len, command_list, group };
+  }
+
+  // print a line for single command
+  async printCommand(command_name, max_len) {
+    const cmd = this.commands[command_name];
+    if (cmd) {
+      const { name, desc } = cmd.config;
+      printer.print(printer.fgGreen);
+      printer.fixed('    ' + name, max_len + 4).print();
+      printer.print(printer.reset);
+      printer.println('    ' + desc);
+      return true;
+    } else if (command_name === 'help') {
+      printer.print(printer.fgGreen);
+      printer.fixed('    help', max_len + 4).print();
+      printer.print(printer.reset);
+      printer.println('    Print help information');
+      return true;
+    }
+    return false
   }
 }
 
