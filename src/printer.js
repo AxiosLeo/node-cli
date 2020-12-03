@@ -45,7 +45,7 @@ module.exports = {
   output(color, data) {
     var content = '';
     data.forEach(str => {
-      content += str + '\n';
+      content += str + os.EOL;
     });
     this.print(color + content + this.reset);
     return this;
@@ -67,7 +67,7 @@ module.exports = {
     this.print(this.reset);
     return this;
   },
-  print(content) {
+  print(content, color = null) {
     if (!content) {
       content = this.tmp;
       this.tmp = '';
@@ -76,7 +76,13 @@ module.exports = {
       this.tmp = '';
     }
     if (!quiet) {
-      process.stdout.write(content);
+      if (color) {
+        process.stdout.write(color);
+        process.stdout.write(content);
+        process.stdout.write(this.reset);
+      } else {
+        process.stdout.write(content);
+      }
     }
     return this;
   },

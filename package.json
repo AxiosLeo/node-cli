@@ -7,13 +7,18 @@
   "directories": {
     "lib": "src"
   },
+  "bin": {
+    "cli-tool": "./bin/cli-tool.js"
+  },
   "scripts": {
     "lint": "eslint --fix src/"
   },
   "license": "MIT",
   "dependencies": {
+    "enquirer": "^2.3.6",
     "eslint": "^7.13.0",
-    "minimist": "^1.2"
+    "minimist": "^1.2",
+    "prompt-confirm": "^2.0.4"
   },
   "repository": {
     "type": "git",
