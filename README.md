@@ -11,16 +11,22 @@
 npm install @axiosleo/cli-tool
 ```
 
-## Quickly create app
+## Quickly initialize application
+
+```bash
+npm install @axiosleo/cli-tool -g
+
+cli-tool init <app-name>
+```
+
+## Usage
+
+### Start application
 
 ```js
 const { App } = require('@axiosleo/cli-tool');
 const app = new App();
-```
 
-## Start command line app
-
-```js
 app.start({
   name: 'cli',                  // cli app command name
   desc: 'cli app description',
@@ -39,14 +45,14 @@ app.register(require('/path/to/your/command/file'))
 app.run();
 ```
 
-## Run single command
+### Run single command
 
 ```js
 app.register(require('path/to/your/command/file'));
 app.exec("<command-name>");
 ```
 
-## Command example
+### Command example
 
 ```js
 'use strict';
@@ -87,13 +93,19 @@ class CommandExample extends Command {
 
       // get arg by index
       const arg2 = argList[index];
+
+      // ask for answer
+      const answer = await this.ask('Please input your answer');
+
+      // ask for confirm, default value is 'false'
+      const confirm = await this.confirm('Confirm do this now?', false);
   }
 }
 
 module.exports = CommandExample;
 ```
 
-## Util
+### Util
 
 - debug
 
