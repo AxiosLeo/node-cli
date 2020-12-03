@@ -2,6 +2,7 @@
 
 const printer = require('./printer');
 const debug = require('./debug');
+const { prompt } = require('enquirer');
 
 class Command {
   constructor(config) {
@@ -96,8 +97,31 @@ class Command {
     }
   }
 
-  exec() {
+  async exec() {
     throw new Error(`Please override exec : ${this.config.name} command`);
+  }
+
+  async ask(message = '') {
+    const response = await prompt([
+      {
+        type: 'input',
+        name: 'name',
+        message: message
+      }
+    ]);
+    return response.name;
+  }
+
+  async confirm(message = '', default_value = false) {
+    const response = await prompt([
+      {
+        type: 'confirm',
+        name: 'name',
+        message: message,
+        initial: default_value
+      }
+    ]);
+    return response.name;
   }
 }
 
