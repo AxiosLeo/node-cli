@@ -87,13 +87,13 @@ const { App } = require('@axiosleo/cli-tool');
 const app = new App();
 
 app.start({
-  name: 'app',
+  name: ${name},
   version: '1.0.0',
   desc: '',
   commands_dir: path.join(__dirname, '../commands'),
   commands_sort:['help']
 });
-    `;
+`;
     _write(path.join(output, `bin/${name}.js`), content);
 
     await this.addCommand(output);
