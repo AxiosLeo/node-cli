@@ -17,8 +17,7 @@
   "dependencies": {
     "enquirer": "^2.3.6",
     "eslint": "^7.13.0",
-    "minimist": "^1.2",
-    "prompt-confirm": "^2.0.4"
+    "minimist": "^1.2"
   },
   "repository": {
     "type": "git",
