@@ -5,6 +5,9 @@ const printer = require('./printer');
 const fs = require('fs');
 const path = require('path');
 const debug = require('./debug');
+const promisify = require('util').promisify;
+const exists = promisify(fs.exists);
+const readdir = promisify(fs.readdir);
 
 class App {
   constructor(commandList = []) {
@@ -35,10 +38,13 @@ class App {
   async start(options = {}) {
     Object.assign(this.options, options);
     const dir = this.options.commands_dir;
-    const commands = fs.readdirSync(dir);
-    commands.forEach(file => {
-      this.register(require(path.join(dir, file)));
-    });
+    const exist = await exists(dir);
+    if (exist) {
+      const commands = await readdir(dir);
+      commands.forEach(file => {
+        this.register(require(path.join(dir, file)));
+      });
+    }
     await this.run();
   }
 
@@ -309,7 +315,7 @@ class App {
       printer.println('    Print help information');
       return true;
     }
-    return false
+    return false;
   }
 }
 
