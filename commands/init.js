@@ -87,7 +87,7 @@ const { App } = require('@axiosleo/cli-tool');
 const app = new App();
 
 app.start({
-  name: ${name},
+  name: '${name}',
   version: '1.0.0',
   desc: '',
   commands_dir: path.join(__dirname, '../commands'),
@@ -105,7 +105,7 @@ app.start({
       await _write(path.join(output, file), content);
     });
     printer.success('done initialize.');
-    printer.print('please exec ').yellow('"npm install"').print(' and ').yellow('"npm link"').print(' before use.');
+    printer.print('please exec ').yellow('"npm install"').print(' and ').yellow('"npm link"').println(' before use.');
   }
 
   async addCommand(output, first = true) {
