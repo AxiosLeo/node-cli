@@ -99,12 +99,13 @@ app.start({
     await this.addCommand(output);
 
     // generate other files
-
     const files = ['.gitignore', '.eslintrc'];
     files.map(async file => {
       const content = await readFile(path.join(__dirname, '../', file), 'utf-8');
       await _write(path.join(output, file), content);
     });
+    printer.success('done initialize.');
+    printer.print('please exec ').yellow('"npm install"').print(' and ').yellow('"npm link"').print(' before use.');
   }
 
   async addCommand(output, first = true) {
