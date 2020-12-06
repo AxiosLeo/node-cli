@@ -100,6 +100,9 @@ module.exports = {
     return this;
   },
   fixed(content, length = 10, fillPosition = 'l', fill = ' ') {
+    if (!content) {
+      content = '';
+    }
     if (content.length < length) {
       var leftFill = '';
       var rightFill = '';
