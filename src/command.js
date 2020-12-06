@@ -2,7 +2,7 @@
 
 const printer = require('./printer');
 const debug = require('./debug');
-const { prompt } = require('enquirer');
+const { ask } = require('./helper');
 
 class Command {
   constructor(config) {
@@ -102,26 +102,11 @@ class Command {
   }
 
   async ask(message = '') {
-    const response = await prompt([
-      {
-        type: 'input',
-        name: 'name',
-        message: message
-      }
-    ]);
-    return response.name;
+    return await ask(message);
   }
 
   async confirm(message = '', default_value = false) {
-    const response = await prompt([
-      {
-        type: 'confirm',
-        name: 'name',
-        message: message,
-        initial: default_value
-      }
-    ]);
-    return response.name;
+    return await confirm(message, default_value);
   }
 }
 
