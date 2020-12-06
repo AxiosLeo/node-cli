@@ -9,6 +9,8 @@ const promisify = require('util').promisify;
 const exists = promisify(fs.exists);
 const readdir = promisify(fs.readdir);
 
+const { confirm, select } = require('./helper');
+
 class App {
   constructor(commandList = []) {
     this.commands = {};
@@ -185,29 +187,18 @@ class App {
 
   async showAmbiguous(commandName, matched) {
     printer.println();
-
-    const maxNameLength = Math.max(...matched.map((item) => item.config.name.length));
-    const maxDescLength = Math.max(...matched.map((item) => item.config.desc.length));
-
-    const maxLength = Math.max(maxNameLength + maxDescLength + 14, 34);
-    printer.print(printer.bgRed);
-    printer.print(printer.fgWhite);
-    printer.fixed('', maxLength).println();
-    printer.fixed(`    Command "${commandName}" is ambiguous.`, maxLength).println();
-    printer.fixed('    Did you mean one of these?    ', maxLength).println();
-
-    matched.forEach((item) => {
-      const { key, desc } = item.config;
-      printer.fixed('', 8).print();
-      printer.fixed(key, maxNameLength).print();
-      printer.print('  ');
-      printer.fixed(desc, maxDescLength).print();
-      printer.println('    ');
-    });
-
-    printer.fixed('', maxLength).println();
-    printer.print(printer.reset);
-    printer.println();
+    if (matched.length > 1) {
+      printer.error(`    Command "${commandName}" is ambiguous.`);
+      const commands = matched.map(command => command.config.name);
+      const name = await select(commands, 'Did you mean one of these?');
+      this.exec(name);
+    } else {
+      const name = matched[0].config.name;
+      const res = await confirm(`Did you mean "${matched[0].config.name}" command?`, true);
+      if (res) {
+        this.exec(name);
+      }
+    }
   }
 
   async showHelp() {
