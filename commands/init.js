@@ -99,11 +99,11 @@ app.start({
     await this.addCommand(output);
 
     // generate other files
-    const files = ['.gitignore', '.eslintrc'];
-    files.map(async file => {
-      const content = await readFile(path.join(__dirname, '../', file), 'utf-8');
-      await _write(path.join(output, file), content);
-    });
+    await _write(path.join(output, '.gitignore'), `node_modules/
+runtime/
+package-lock.json`);
+    await _write(path.join(output, '.eslintrc'), await readFile(path.join(__dirname, '../', '.eslintrc'), 'utf-8'));
+
     printer.success('done initialize.');
     printer.print('please exec ').yellow('"npm install"').print(' and ').yellow('"npm link"').println(' before use.');
   }
