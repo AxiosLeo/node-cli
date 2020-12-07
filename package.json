@@ -1,6 +1,6 @@
 {
   "name": "@axiosleo/cli-tool",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Design for quickly developing CLI applications with Node.js.",
   "main": "./main.js",
   "author": "AxiosLeo",
