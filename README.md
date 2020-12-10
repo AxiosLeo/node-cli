@@ -25,9 +25,7 @@ cli-tool init <app-name>
 
 ```js
 const { App } = require('@axiosleo/cli-tool');
-const app = new App();
-
-app.start({
+const app = new App({
   name: 'cli',                  // cli app command name
   desc: 'cli app description',
   version: '1.0.0',
@@ -37,6 +35,7 @@ app.start({
     'group description': ['command_name', ...], // will print by group, need @1.0.0 version
   }
 });
+app.start();
 
 // or
 app.register(require('/path/to/your/command/file'))

@@ -12,17 +12,15 @@ const readdir = promisify(fs.readdir);
 const { confirm, select } = require('./helper');
 
 class App {
-  constructor(commandList = []) {
+  constructor(options = {}) {
     this.commands = {};
-    commandList.forEach(command => {
-      this.register(command);
-    });
     this.options = {
       name: 'node-cli',
       version: '0.0.1',
       desc: '',
       commands_dir: '',
-      commands_sort: []
+      commands_sort: [],
+      ...options
     };
   }
 
