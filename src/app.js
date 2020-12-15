@@ -64,6 +64,14 @@ class App {
       this.exec(commandName, 3);
       return;
     }
+    const keys = Object.keys(this.commands);
+    for (let i = 0; i < keys.length; i++) {
+      const command = this.commands[keys[i]];
+      if (command.config.alias && command.config.alias.indexOf(commandName) > -1) {
+        this.exec(keys[i], 3);
+        return;
+      }
+    }
 
     const matched = [];
     Object.keys(this.commands).forEach((key) => {
@@ -71,7 +79,6 @@ class App {
         matched.push(this.commands[key]);
       }
     });
-
     if (matched.length === 0) {
       await this.showHelp();
       if (commandName !== 'help') {
@@ -295,7 +302,13 @@ class App {
       printer.print(printer.fgGreen);
       printer.fixed('    ' + name, max_len + 4).print();
       printer.print(printer.reset);
-      printer.println('    ' + desc);
+      printer.print('    ');
+      if (cmd.config.alias && cmd.config.alias.length) {
+        printer.print('[');
+        printer.print(cmd.config.alias.join('|'));
+        printer.print('] ');
+      }
+      printer.println(desc);
       return true;
     } else if (command_name === 'help') {
       printer.print(printer.fgGreen);

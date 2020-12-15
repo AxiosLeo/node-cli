@@ -63,6 +63,7 @@ class CommandExample extends Command {
     super({
       name: 'command-name',
       desc: 'command desc',
+      alias: ['command-alia1','command-alia2', ...], // need @axiosleo/cli-tool >= 1.0.6
       args: [
           {
             name: 'name',     // argument name
