@@ -70,7 +70,13 @@ class Command {
       printer.println().println();
       printer.yellow('Arguments:').println();
       this.config.args.forEach((arg) => {
-        printer.print('  ' + printer.fgGreen).fixed(arg.name, 20).print(printer.reset).println(arg.desc ? arg.desc : '');
+        printer.print(' ');
+        if (arg.mode === 'required') {
+          printer.red('*');
+        } else {
+          printer.print(' ');
+        }
+        printer.print(printer.fgGreen).fixed(arg.name, 20).print(printer.reset).println(arg.desc ? arg.desc : '');
       });
     } else {
       printer.println();
@@ -86,13 +92,15 @@ class Command {
           str += `-${option.short}, `;
         }
         str += `--${option.name}`;
-        printer.print('  ' + printer.fgGreen).fixed(str, 20).print(printer.reset);
-        printer.print(option.desc ? option.desc : '');
+        printer.print(' ');
         if (option.mode === 'required') {
-          printer.red(' (required)').println();
+          printer.red('*');
         } else {
-          printer.println();
+          printer.print(' ');
         }
+        printer.print(printer.fgGreen).fixed(str, 20).print(printer.reset);
+        printer.print(option.desc ? option.desc : '');
+        printer.println();
       });
     } else {
       printer.println();
