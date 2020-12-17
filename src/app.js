@@ -183,10 +183,12 @@ class App {
     command.argv = argv._;
 
     command.exec(cArgs, cOpts, argv._, this).catch((err) => {
-      printer.println()
-        .error('exec error :').println()
-        .println(err.stack).println();
-      process.exit(-1);
+      if (err) {
+        printer.println()
+          .error('exec error :').println()
+          .println(err.stack).println();
+        process.exit(-1);
+      }
     });
   }
 
