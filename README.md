@@ -26,13 +26,14 @@ cli-tool init <app-name>
 ```js
 const { App } = require('@axiosleo/cli-tool');
 const app = new App({
-  name: 'cli',                  // cli app command name
+  name: 'cli', // cli app command name
   desc: 'cli app description',
   version: '1.0.0',
   commands_dir: '/path/to/commands/dir/', // will auto load command files
   commands_sort: ['help', ... ],
   commands_group: {
-    'group description': ['command_name', ...], // will print by group, need @1.0.0 version
+    // will print by group, this feature need @axiosleo/cli-tool >= 1.0.0
+    'group description': ['command_name', ...],
   }
 });
 app.start();
@@ -63,7 +64,8 @@ class CommandExample extends Command {
     super({
       name: 'command-name',
       desc: 'command desc',
-      alias: ['command-alia1','command-alia2', ...], // need @axiosleo/cli-tool >= 1.0.6
+      // command alias feature need @axiosleo/cli-tool >= 1.0.6
+      alias: ['command-alia1','command-alia2', ...],
       args: [
           {
             name: 'name',     // argument name
@@ -112,13 +114,23 @@ module.exports = CommandExample;
 ```js
 const { debug } = require('@axiosleo/cli-tool');
 
-// debug methods
-debug.dump(...anything); // Print anything on the console without exiting the process.
-debug.halt(...anything); // Print anything on the console and exiting the process.
-debug.jump(trigger_times, ...anything);  // Print anything on the console after the number of triggers is reached.
-debug.warning('<message>', ...anything); // Print warning message and not exiting the process.
-debug.error('<message>', ...anything);   // Print error message and exiting the process.
-debug.stack('<message>', ...anything);   // Print anything on the console and throw an error.
+// Print anything on the console without exiting the process.
+debug.dump(...anything);
+
+// Print anything on the console and exiting the process.
+debug.halt(...anything);
+
+// Print anything on the console after the number of triggers is reached.
+debug.jump(trigger_times, ...anything);
+
+// Print warning message and not exiting the process.
+debug.warning('<message>', ...anything);
+
+// Print error message and exiting the process.
+debug.error('<message>', ...anything);
+
+// Print anything on the console and throw an error.
+debug.stack('<message>', ...anything);
 ```
 
 - printer
