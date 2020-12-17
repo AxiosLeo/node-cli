@@ -94,6 +94,8 @@ class Command {
           printer.println();
         }
       });
+    } else {
+      printer.println();
     }
   }
 
