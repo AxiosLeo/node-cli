@@ -85,7 +85,14 @@ class App {
         printer.error(`'${commandName}' command dose not exist.`);
       }
     } else {
-      await this.showAmbiguous(commandName, matched);
+      this.showAmbiguous(commandName, matched).catch((err) => {
+        if (err) {
+          printer.println()
+            .error('exec error :').println()
+            .println(err.stack).println();
+          process.exit(-1);
+        }
+      });
     }
   }
 
