@@ -3,24 +3,11 @@
 const promisify = require('util').promisify;
 const fs = require('fs');
 const path = require('path');
-const writeFile = promisify(fs.writeFile);
 const exists = promisify(fs.exists);
-const mkdir = promisify(fs.mkdir);
 const readFile = promisify(fs.readFile);
 const { Command, printer, debug } = require('../main');
 
-async function _write(filepath, content) {
-  const dir = path.dirname(filepath);
-  let exist = await exists(dir);
-  if (!exist) {
-    await mkdir(dir, { recursive: true });
-  }
-  await writeFile(filepath, content);
-}
-
-function _upperFirst(str) {
-  return str[0].toUpperCase() + str.substring(1);
-}
+const { _write } = require('../src/helper');
 
 class InitCommand extends Command {
   constructor() {
@@ -96,7 +83,12 @@ app.start({
 `;
     _write(path.join(output, `bin/${name}.js`), content);
 
-    await this.addCommand(output);
+    await _write(path.join(output, 'commands/README.md'), `you can write code of commands in here.
+or you can use \`cli-tool make <command-name> <command-dir-path>\` to make a command code in here.
+
+command example: 
+cli-tool make test ./commands/
+`);
 
     // generate other files
     await _write(path.join(output, '.gitignore'), `node_modules/
@@ -106,42 +98,6 @@ package-lock.json`);
 
     printer.success('done initialize.');
     printer.print('please exec ').yellow('"npm install"').print(' and ').yellow('"npm link"').println(' before use.');
-  }
-
-  async addCommand(output, first = true) {
-    const exist = await exists(path.join(output, 'commands'));
-    if (!exist) {
-      await mkdir(path.join(output, 'commands'), { recursive: true });
-    }
-    printer.yellow(first ? 'Add a command now? ' : 'Continue add command? ');
-    printer.println('input command name or input "no" to cancel.', printer.fgWhite);
-    const name = await this.ask();
-    if (name && name !== 'no') {
-      _write(path.join(output, `commands/${name}.js`), `'use strict';
-
-const { Command, printer } = require('@axiosleo/cli-tool');
-
-class ${_upperFirst(name)}Example extends Command {
-  constructor() {
-    super({
-      name: '${name}',
-      desc: '',
-      args: [],
-      options: [],
-    });
-  }
-
-  async exec(args, options, argList, app) {
-    printer.println('this is ${name} command');
-  }
-}
-
-module.exports = ${_upperFirst(name)}Example;
-`);
-      printer.success(`generate ${name} command`);
-      return await this.addCommand(output, false);
-    }
-    return;
   }
 }
 
