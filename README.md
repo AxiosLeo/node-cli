@@ -17,6 +17,11 @@ npm install @axiosleo/cli-tool
 npm install @axiosleo/cli-tool -g
 
 cli-tool init <app-name>
+
+# make command file
+cli-tool make <command-name> <commands-dir-path>
+# for example
+cli-tool make test ./commands/ # will generate ./commands/test.js command file
 ```
 
 ## Usage
@@ -32,7 +37,6 @@ const app = new App({
   commands_dir: '/path/to/commands/dir/', // will auto load command files
   commands_sort: ['help', ... ],
   commands_group: {
-    // will print by group, this feature need @axiosleo/cli-tool >= 1.0.0
     'group description': ['command_name', ...],
   }
 });
@@ -64,7 +68,6 @@ class CommandExample extends Command {
     super({
       name: 'command-name',
       desc: 'command desc',
-      // command alias feature need @axiosleo/cli-tool >= 1.0.6
       alias: ['command-alia1','command-alia2', ...],
       args: [
           {
