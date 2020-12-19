@@ -8,8 +8,8 @@ const { App } = require('../main');
 
 const app = new App({
   name: 'cli',
-  version: '1.0.8',
-  desc: 'CLI tools',
+  version: '1.0.9',
+  desc: 'For quickly initialize CLI application',
   commands_dir: path.join(__dirname, '../commands'),
   commands_sort: ['help', 'init']
 });
