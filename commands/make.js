@@ -18,14 +18,12 @@ class MakeCommand extends Command {
         {
           name: 'name',
           mode: 'required',
-          desc: 'Command name',
-          default: null
+          desc: 'Command name'
         },
         {
           name: 'output',
           mode: 'required',
-          desc: 'The commands dir path, like `./commands/`',
-          default: process.cwd()
+          desc: 'The commands dir path, like `./commands/`'
         }
       ],
       options: [],
@@ -35,6 +33,7 @@ class MakeCommand extends Command {
   async exec(args) {
     const name = args.name;
     await this.genCommand(args.output, name);
+    await this.addCommand(args.output);
   }
 
   async genCommand(output_dir, name) {
@@ -49,7 +48,7 @@ class MakeCommand extends Command {
     content += `'use strict';
 const { Command, printer } = require('@axiosleo/cli-tool');
 
-class ${_upperFirst(name)}Example extends Command {
+class ${_upperFirst(name)}Command extends Command {
   constructor() {
     super({
       name: '${name}',
@@ -65,21 +64,23 @@ class ${_upperFirst(name)}Example extends Command {
 
 module.exports = ${_upperFirst(name)}Command;
 `;
-    _write(path.join(output_dir, `${name}.js`), content);
+    _write(output_path, content);
+    printer.println();
+    printer.green(`success generate ${name} command on `).println(output_path);
+    printer.println();
   }
 
-  async addCommand(output_dir, first = true) {
+  async addCommand(output_dir) {
     output_dir = path.resolve(output_dir);
     let exist = await exists(output_dir);
     if (!exist) {
       await mkdir(output_dir, { recursive: true });
     }
-    printer.yellow(first ? 'Add a command now? ' : 'Continue add command? ');
-    printer.println('input command name or input "no" to cancel.', printer.fgWhite);
+    printer.yellow('Continue add command? ');
+    printer.println('please input command name. (input "enter" or "ctrl+c" to cancel)', printer.fgWhite);
     const name = await this.ask();
-    if (name && name !== 'no') {
+    if (name) {
       await this.genCommand(output_dir, name);
-      printer.success(`success generate ${name} command`);
       return await this.addCommand(output_dir, false);
     }
     return;
