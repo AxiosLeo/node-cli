@@ -105,7 +105,7 @@ class Command {
   }
 
   async exec() {
-    throw new Error(`Please override exec : ${this.config.name} command`);
+    printer.warning(`Please override exec() method for ${this.config.name} command`);
   }
 
   async ask(message = '') {
