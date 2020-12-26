@@ -14,9 +14,6 @@ class Command {
       options: [],
       ...config
     };
-    this.args = {};
-    this.argv = [];
-    this.options = {};
     this.debug = debug;
     this.printer = printer;
 
