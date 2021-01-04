@@ -2,6 +2,8 @@
 
 const os = require('os');
 
+const { prompt } = require('enquirer');
+
 var count = 0;
 
 function dump(...data) {
@@ -47,6 +49,17 @@ function warning(...data) {
   }
 }
 
+async function pause(...data) {
+  this.dump(...data);
+  await prompt([
+    {
+      type: 'input',
+      name: 'name',
+      message: '\x1b[33mpause:\x1b[0m input anything to continue...'
+    }
+  ]);
+}
+
 function error(...data) {
   let msg = '';
   if (data[0] && typeof data[0] === 'string') {
@@ -66,5 +79,6 @@ module.exports = {
   stack,
   jump,
   warning,
-  error
+  error,
+  pause
 };
