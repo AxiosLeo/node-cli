@@ -134,6 +134,9 @@ debug.error('<message>', ...anything);
 
 // Print anything on the console and throw an error.
 debug.stack('<message>', ...anything);
+
+// Pause process and print something on the console. Only support async method.
+await debug.pause(...anything);
 ```
 
 - printer
