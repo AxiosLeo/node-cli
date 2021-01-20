@@ -306,6 +306,7 @@ class App {
   // print a line for single command
   async printCommand(command_name, max_len) {
     const cmd = this.commands[command_name];
+    max_len = max_len < 4 ? 4 : max_len;
     if (cmd) {
       const { name, desc } = cmd.config;
       printer.print(printer.fgGreen);
