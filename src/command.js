@@ -2,7 +2,7 @@
 
 const printer = require('./printer');
 const debug = require('./debug');
-const { ask } = require('./helper');
+const { ask, select } = require('./helper');
 
 class Command {
   constructor(config) {
@@ -114,6 +114,10 @@ class Command {
 
   async confirm(message = '', default_value = false) {
     return await confirm(message, default_value);
+  }
+
+  async select(message = '', choices = []) {
+    return await select(choices, message);
   }
 }
 
