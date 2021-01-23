@@ -31,9 +31,7 @@ class MakeCommand extends Command {
   }
 
   async exec(args) {
-    const name = args.name;
-    await this.genCommand(args.output, name);
-    await this.addCommand(args.output);
+    await this.genCommand(args.output, args.name);
   }
 
   async genCommand(output_dir, name) {
@@ -42,7 +40,8 @@ class MakeCommand extends Command {
     const exist = await exists(output_path);
     if (exist) {
       printer.error(`${name} command file is exist on ${output_path}`);
-      return await this.addCommand(output_dir, false);
+      await this.addCommand(output_dir, false);
+      return;
     }
     let content = '';
     content += `'use strict';
