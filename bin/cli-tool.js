@@ -13,5 +13,8 @@ const app = new App({
   commands_dir: path.join(__dirname, '../commands'),
   commands_sort: ['help', 'init']
 });
-
+app.locale({
+  dir: path.join(__dirname, '../locales'),
+  sets: ['en-US', 'zh-CN']
+});
 app.start();

@@ -8,20 +8,51 @@ const debug = require('./debug');
 const promisify = require('util').promisify;
 const exists = promisify(fs.exists);
 const readdir = promisify(fs.readdir);
+const { I18n } = require('i18n');
+const osLocale = require('os-locale');
 
 const { confirm, select } = require('./helper');
+
+let i18n = null;
+
+function emit(str) {
+  return i18n ? i18n.__(str) : str;
+}
 
 class App {
   constructor(options = {}) {
     this.commands = {};
     this.options = {
-      name: 'node-cli',
-      version: '0.0.1',
+      name: '',
+      version: '',
       desc: '',
       commands_dir: '',
       commands_sort: [],
+      locale: {
+        sets: [],
+        dir: '',
+        default: null
+      },
       ...options
     };
+  }
+
+  locale(options = {}) {
+    let config = this.options.locale;
+    Object.assign(config, options);
+    if (!config.sets.length) {
+      debug.error('locale.sets cannot be empty');
+    }
+    let default_locale = config.default || osLocale.sync();
+
+    if (config.sets.indexOf(default_locale) < 0 && config.sets[0]) {
+      default_locale = config.sets[0];
+    }
+    i18n = new I18n({
+      defaultLocale: default_locale,
+      locales: config.sets, //The supported locales, expects an array of locale strings
+      directory: config.dir //The path to the language packs directory
+    });
   }
 
   register(Command) {
@@ -37,6 +68,13 @@ class App {
 
   async start(options = {}) {
     Object.assign(this.options, options);
+    // validate options
+    const fields = ['name', 'version', 'commands_dir'];
+    fields.forEach(field => {
+      if (!this.options[field]) {
+        debug.error(`Need setting "${field}" options for App`);
+      }
+    });
     const dir = this.options.commands_dir;
     const exist = await exists(dir);
     if (exist) {
@@ -223,7 +261,7 @@ class App {
       printer.println();
       printer.yellow(this.options.name);
       printer.green(` ${this.options.version} `);
-      printer.println(this.options.desc).println();
+      printer.println(emit(this.options.desc)).println();
 
       // print Usage
       printer.warning('Usage:');
@@ -231,8 +269,8 @@ class App {
 
       // print options
       printer.warning('Options:');
-      printer.green('    -h, --help').println('         Display this help message');
-      printer.green('    -q, --quiet').println('        Do not output any message').println();
+      printer.green('    -h, --help').println('         ' + emit('Display this help message'));
+      printer.green('    -q, --quiet').println('        ' + emit('Do not output any message')).println();
 
       // print available commands
       const {
@@ -284,7 +322,8 @@ class App {
       if (!cmd) {
         debug.stack(`load ${key} command error`, cmd);
       }
-      const { name, desc } = cmd.config;
+      let { name, desc } = cmd.config;
+      desc = emit(desc);
       if (name.length > name_max_len) {
         name_max_len = name.length;
       }
@@ -308,7 +347,8 @@ class App {
     const cmd = this.commands[command_name];
     max_len = max_len < 4 ? 4 : max_len;
     if (cmd) {
-      const { name, desc } = cmd.config;
+      let { name, desc } = cmd.config;
+      desc = emit(desc);
       printer.print(printer.fgGreen);
       printer.fixed('    ' + name, max_len + 4).print();
       printer.print(printer.reset);
@@ -324,7 +364,7 @@ class App {
       printer.print(printer.fgGreen);
       printer.fixed('    help', max_len + 4).print();
       printer.print(printer.reset);
-      printer.println('    Print help information');
+      printer.println('    ' + emit('Print help information'));
       return true;
     }
     return false;
