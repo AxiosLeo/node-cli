@@ -8,16 +8,9 @@ const debug = require('./debug');
 const promisify = require('util').promisify;
 const exists = promisify(fs.exists);
 const readdir = promisify(fs.readdir);
-const { I18n } = require('i18n');
-const osLocale = require('os-locale');
 
 const { confirm, select } = require('./helper');
-
-let i18n = null;
-
-function emit(str) {
-  return i18n ? i18n.__(str) : str;
-}
+const { __, init } = require('./locales');
 
 class App {
   constructor(options = {}) {
@@ -40,19 +33,7 @@ class App {
   locale(options = {}) {
     let config = this.options.locale;
     Object.assign(config, options);
-    if (!config.sets.length) {
-      debug.error('locale.sets cannot be empty');
-    }
-    let default_locale = config.default || osLocale.sync();
-
-    if (config.sets.indexOf(default_locale) < 0 && config.sets[0]) {
-      default_locale = config.sets[0];
-    }
-    i18n = new I18n({
-      defaultLocale: default_locale,
-      locales: config.sets, //The supported locales, expects an array of locale strings
-      directory: config.dir //The path to the language packs directory
-    });
+    init(options);
   }
 
   register(Command) {
@@ -261,7 +242,7 @@ class App {
       printer.println();
       printer.yellow(this.options.name);
       printer.green(` ${this.options.version} `);
-      printer.println(emit(this.options.desc)).println();
+      printer.println(__(this.options.desc)).println();
 
       // print Usage
       printer.warning('Usage:');
@@ -269,8 +250,8 @@ class App {
 
       // print options
       printer.warning('Options:');
-      printer.green('    -h, --help').println('         ' + emit('Display this help message'));
-      printer.green('    -q, --quiet').println('        ' + emit('Do not output any message')).println();
+      printer.green('    -h, --help').println('         ' + __('Display this help message'));
+      printer.green('    -q, --quiet').println('        ' + __('Do not output any message')).println();
 
       // print available commands
       const {
@@ -323,7 +304,7 @@ class App {
         debug.stack(`load ${key} command error`, cmd);
       }
       let { name, desc } = cmd.config;
-      desc = emit(desc);
+      desc = __(desc);
       if (name.length > name_max_len) {
         name_max_len = name.length;
       }
@@ -348,7 +329,7 @@ class App {
     max_len = max_len < 4 ? 4 : max_len;
     if (cmd) {
       let { name, desc } = cmd.config;
-      desc = emit(desc);
+      desc = __(desc);
       printer.print(printer.fgGreen);
       printer.fixed('    ' + name, max_len + 4).print();
       printer.print(printer.reset);
@@ -364,7 +345,7 @@ class App {
       printer.print(printer.fgGreen);
       printer.fixed('    help', max_len + 4).print();
       printer.print(printer.reset);
-      printer.println('    ' + emit('Print help information'));
+      printer.println('    ' + __('Print help information'));
       return true;
     }
     return false;

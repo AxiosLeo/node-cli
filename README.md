@@ -69,6 +69,9 @@ app.locale({
   sets: ['en-US', 'zh-CN'] // cannot be empty
 });
 app.start(); // set locale before start app
+
+const { __ } = require('@axiosleo/cli-tool').locales;
+console.log(__('some word'));
 ```
 
 ### Command example
