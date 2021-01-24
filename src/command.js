@@ -3,6 +3,7 @@
 const printer = require('./printer');
 const debug = require('./debug');
 const { ask, select } = require('./helper');
+const { __ } = require('./locales');
 
 class Command {
   constructor(config) {
@@ -45,7 +46,7 @@ class Command {
     printer.println();
     if (this.config.desc) {
       printer.yellow('Description:').println();
-      printer.print(`  ${this.config.desc}`).println().println();
+      printer.print(`  ${__(this.config.desc)}`).println().println();
     }
     // print usage
     printer.yellow('Usage:').println();
@@ -73,7 +74,7 @@ class Command {
         } else {
           printer.print(' ');
         }
-        printer.print(printer.fgGreen).fixed(arg.name, 20).print(printer.reset).println(arg.desc ? arg.desc : '');
+        printer.print(printer.fgGreen).fixed(arg.name, 20).print(printer.reset).println(arg.desc ? __(arg.desc) : '');
       });
     } else {
       printer.println();
@@ -96,7 +97,7 @@ class Command {
           printer.print(' ');
         }
         printer.print(printer.fgGreen).fixed(str, 20).print(printer.reset);
-        printer.print(option.desc ? option.desc : '');
+        printer.print(option.desc ? __(option.desc) : '');
         printer.println();
       });
     } else {

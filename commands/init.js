@@ -13,12 +13,12 @@ class InitCommand extends Command {
   constructor() {
     super({
       name: 'init',
-      desc: 'Quickly initialize an application.',
+      desc: 'init_command_desc',
       args: [
         {
           name: 'name',
           mode: 'required',
-          desc: 'The binary name of cli application',
+          desc: 'init_command_args_name_desc',
           default: null
         }
       ],
@@ -27,7 +27,7 @@ class InitCommand extends Command {
           name: 'output',
           short: 'o',
           mode: 'optional',
-          desc: 'output dir path',
+          desc: 'init_command_options_output_desc',
           default: process.cwd()
         }
       ],

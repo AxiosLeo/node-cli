@@ -24,12 +24,6 @@ function init(config) {
     locales: config.sets, //The supported locales, expects an array of locale strings
     directory: config.dir, //The path to the language packs directory
   });
-  console.log({
-    defaultLocale: default_locale,
-    locales: config.sets, //The supported locales, expects an array of locale strings
-    directory: config.dir, //The path to the language packs directory
-  },i18n.getLocale());
-  console.log(i18n.__('Display this help message'));
 }
 
 module.exports = {

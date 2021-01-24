@@ -13,17 +13,17 @@ class MakeCommand extends Command {
   constructor() {
     super({
       name: 'make',
-      desc: 'Make Command Node.js file',
+      desc: 'make_command_desc',
       args: [
         {
           name: 'name',
           mode: 'required',
-          desc: 'Command name'
+          desc: 'make_command_args_name_desc'
         },
         {
           name: 'output',
           mode: 'required',
-          desc: 'The commands dir path, like `./commands/`'
+          desc: 'make_command_args_output_desc'
         }
       ],
       options: [],

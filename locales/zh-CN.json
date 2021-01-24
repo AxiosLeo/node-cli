@@ -1,10 +1,12 @@
 {
 	"Print help information": "打印帮助信息",
-	"cli app name": "CLI 应用名称",
-	"command desc": "命令描述",
-	"For quickly initialize CLI application": "为快速开发CLI应用而设计",
-	"Quickly initialize an application.": "快速初始化一个应用",
-	"Make Command Node.js file": "生成命令行 Node.js 脚本文件",
 	"Display this help message": "显示帮助信息",
-	"Do not output any message": "不输出任何终端信息"
+	"Do not output any message": "不输出任何终端信息",
+	"application_desc": "为快速开发CLI应用而设计",
+	"init_command_desc": "快速初始化一个应用",
+	"init_command_args_name_desc": "CLI应用的执行名称",
+	"init_command_options_output_desc": "输出路径",
+	"make_command_desc": "生成命令行 Node.js 脚本文件",
+	"make_command_args_name_desc": "子命令名称",
+	"make_command_args_output_desc": "命令集目录名称"
 }
