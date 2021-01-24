@@ -13,14 +13,14 @@ function dump(...data) {
 }
 
 function halt(...data) {
-  this.dump(...data);
+  dump(...data);
   process.exit(-1);
 }
 
 function jump(jumpNumber = 0, ...data) {
   if (count === jumpNumber) {
     count = 0;
-    this.halt(...data);
+    halt(...data);
   } else {
     count++;
   }
@@ -33,7 +33,7 @@ function stack(...data) {
     msg = data[0];
     data = data.slice(1);
   }
-  this.dump(...data);
+  dump(...data);
   throw new Error(msg);
 }
 
@@ -43,14 +43,14 @@ function warning(...data) {
     msg = data[0];
     data = data.slice(1);
   }
-  this.dump(...data);
+  dump(...data);
   if (msg.length) {
     process.stdout.write(`\x1b[33m${os.EOL}[WARNING] ${msg}\x1b[0m${os.EOL}`);
   }
 }
 
 async function pause(...data) {
-  this.dump(...data);
+  dump(...data);
   await prompt([
     {
       type: 'input',
@@ -66,11 +66,11 @@ function error(...data) {
     msg = data[0];
     data = data.slice(1);
   }
-  this.dump(...data);
+  dump(...data);
   if (msg.length) {
-    process.stdout.write(`\x1b[31m${os.EOL}[ERROR] ${msg}\x1b[0m${os.EOL}`);
+    process.stdout.write(`\x1b[31m${os.EOL}[ERROR] ${msg}\x1b[0m${os.EOL}${os.EOL}`);
   }
-  this.halt();
+  halt();
 }
 
 module.exports = {
