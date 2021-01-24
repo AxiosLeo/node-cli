@@ -54,7 +54,14 @@
     "no-undefined": 1,
     "no-undef": 2,
     "global-require": 0,
-    "no-console": 0
+    "no-console": 0,
+    "key-spacing": [
+      2,
+      {
+        "beforeColon": false,
+        "afterColon": true
+      }
+    ]
   },
   "env": {
     "es6": true,
