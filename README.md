@@ -56,6 +56,21 @@ app.register(require('path/to/your/command/file'));
 app.exec("<command-name>");
 ```
 
+## Use locales
+
+> The "desc" will be automatically translated by using the locales json file.
+> 
+> locales example json file : [locales](./locales)
+
+```js
+const path = require('path');
+app.locale({
+  dir: path.join(__dirname, '../locales'), // /path/to/app/locales/dir
+  sets: ['en-US', 'zh-CN'] // cannot be empty
+});
+app.start(); // set locale before start app
+```
+
 ### Command example
 
 ```js
