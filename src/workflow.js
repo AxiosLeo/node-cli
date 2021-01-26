@@ -50,8 +50,9 @@ class Workflow {
       end: null,
       success: null
     };
+    let res = null;
     try {
-      await operator[curr].call(this, context);
+      res = await operator[curr].call(this, context);
       context.curr.success = true;
     } catch (e) {
       context.curr.success = false;
@@ -61,6 +62,8 @@ class Workflow {
     context.step_data[curr] = context.curr;
     if (!context.curr.success) {
       await this.wrong(context, context.curr.error);
+    } else if (typeof res === 'string' && context.workflows.indexOf(res) > -1) {
+      await this.dispatch(context, res);
     } else {
       curr = next(context, curr);
       if (curr) {
