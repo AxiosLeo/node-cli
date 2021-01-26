@@ -24,7 +24,7 @@ class App {
       locale: {
         sets: [],
         dir: '',
-        default: null
+        use: null
       },
       ...options
     };

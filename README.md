@@ -66,12 +66,9 @@ app.exec("<command-name>");
 const path = require('path');
 app.locale({
   dir: path.join(__dirname, '../locales'), // /path/to/app/locales/dir
-  sets: ['en-US', 'zh-CN'] // cannot be empty
+  sets: ['en-US', 'zh-CN'],                // cannot be empty, the first set as default. it's "en-US" in this example.
 });
 app.start(); // set locale before start app
-
-const { __ } = require('@axiosleo/cli-tool').locales;
-console.log(__('some word'));
 ```
 
 ### Command example
@@ -170,6 +167,18 @@ printer.println('<some-string>');
 
 // Print fixed-length strings
 printer.fixed(content, length = 10, fillPosition = 'l', fill = ' ');
+```
+
+- locales
+
+```js
+const { __, use } = require('@axiosleo/cli-tool').locales;
+
+console.log(__('some word')); // translate word
+
+use('en-US'); // specifies the language set from sets([en-US,zh-CN])
+
+console.log(__('use en-US language set to translate'));
 ```
 
 ## License
