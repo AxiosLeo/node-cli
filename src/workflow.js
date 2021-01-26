@@ -26,6 +26,7 @@ class Workflow {
     context.success = false;
     context.curr = {
       workflow: 'error',
+      error_step: context.curr.workflow,
       start: moment().valueOf(),
       end: null,
       error: e
