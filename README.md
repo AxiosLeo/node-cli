@@ -4,6 +4,8 @@
 [![npm download](https://img.shields.io/npm/dm/@axiosleo/cli-tool.svg?style=flat-square)](https://npmjs.org/package/@axiosleo/cli-tool)
 
 > Design for quickly developing CLI applications with Node.js
+> 
+> See detail usage from [wiki](https://github.com/AxiosCros/node-cli/wiki)
 
 ## Installation
 
@@ -66,7 +68,7 @@ app.exec("<command-name>");
 const path = require('path');
 app.locale({
   dir: path.join(__dirname, '../locales'), // /path/to/app/locales/dir
-  sets: ['en-US', 'zh-CN'],                // cannot be empty, the first set as default. it's "en-US" in this example.
+  sets: ['en-US', 'zh-CN'],                // cannot be empty, the first set as default.
 });
 app.start(); // set locale before start app
 ```
@@ -123,62 +125,6 @@ class CommandExample extends Command {
 }
 
 module.exports = CommandExample;
-```
-
-### Util
-
-- debug
-
-```js
-const { debug } = require('@axiosleo/cli-tool');
-
-// Print anything on the console without exiting the process.
-debug.dump(...anything);
-
-// Print anything on the console and exiting the process.
-debug.halt(...anything);
-
-// Print anything on the console after the number of triggers is reached.
-debug.jump(trigger_times, ...anything);
-
-// Print warning message and not exiting the process.
-debug.warning('<message>', ...anything);
-
-// Print error message and exiting the process.
-debug.error('<message>', ...anything);
-
-// Print anything on the console and throw an error.
-debug.stack('<message>', ...anything);
-
-// Pause process and print something on the console. Only support async method.
-await debug.pause(...anything);
-```
-
-- printer
-
-```js
-const { printer } = require('@axiosleo/cli-tool');
-
-// Print some string on the console without EOL.
-printer.print('<some-string>');
-
-// Print some string on the console with EOL.
-printer.println('<some-string>');
-
-// Print fixed-length strings
-printer.fixed(content, length = 10, fillPosition = 'l', fill = ' ');
-```
-
-- locales
-
-```js
-const { __, use } = require('@axiosleo/cli-tool').locales;
-
-console.log(__('some word')); // translate word
-
-use('en-US'); // specifies the language set from sets([en-US,zh-CN])
-
-console.log(__('use en-US language set to translate'));
 ```
 
 ## License
