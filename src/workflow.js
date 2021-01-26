@@ -70,7 +70,6 @@ class Workflow {
   }
 
   async start(context) {
-    const self = this;
     return new Promise((resolve, reject) => {
       if (!context) {
         debug.stack('Invalid context.');
@@ -85,7 +84,7 @@ class Workflow {
       context.success = null;
       context.curr = {};
       context.step_data = {};
-      self.dispatch(context, context.workflows[0]).then(() => {
+      this.dispatch(context, context.workflows[0]).then(() => {
         context.curr = {};
         context.success = true;
         resolve(context);
