@@ -2,7 +2,7 @@
 
 const printer = require('./printer');
 const debug = require('./debug');
-const { ask, select } = require('./helper');
+const { ask, select, confirm } = require('./helper');
 const { __ } = require('./locales');
 
 class Command {
