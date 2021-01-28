@@ -33,12 +33,16 @@ async function confirm(message = '', default_value = false) {
   return response.name;
 }
 
-async function select(choices = [], message = '') {
-  const prompt = new Select({
+async function select(choices = [], message = '', default_choice = null) {
+  const options = {
     name: 'value',
     message: message,
     choices: choices
-  });
+  };
+  if (default_choice && choices.indexOf(default_choice) > -1) {
+    options.initial = default_choice;
+  }
+  const prompt = new Select(options);
   return await prompt.run();
 }
 

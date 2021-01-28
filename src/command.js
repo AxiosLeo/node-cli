@@ -117,8 +117,8 @@ class Command {
     return await confirm(message, default_value);
   }
 
-  async select(message = '', choices = []) {
-    return await select(choices, message);
+  async select(message = '', choices = [], default_choice = null) {
+    return await select(choices, message, default_choice);
   }
 }
 
