@@ -9,12 +9,13 @@ const writeFile = promisify(fs.writeFile);
 
 const { prompt, Select } = require('enquirer');
 
-async function ask(message = '') {
+async function ask(message = '', default_value = null) {
   const response = await prompt([
     {
       type: 'input',
       name: 'name',
-      message: message
+      message: message,
+      initial: default_value
     }
   ]);
   return response.name;

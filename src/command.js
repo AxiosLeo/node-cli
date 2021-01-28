@@ -109,8 +109,8 @@ class Command {
     printer.warning(`Please override exec() method for ${this.config.name} command`);
   }
 
-  async ask(message = '') {
-    return await ask(message);
+  async ask(message = '', default_value = null) {
+    return await ask(message, default_value);
   }
 
   async confirm(message = '', default_value = false) {
