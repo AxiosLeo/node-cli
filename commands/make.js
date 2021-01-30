@@ -5,7 +5,7 @@ const fs = require('fs');
 const promisify = require('util').promisify;
 const exists = promisify(fs.exists);
 const mkdir = promisify(fs.mkdir);
-const { _upperFirst, _write } = require('../src/helper');
+const { _upper_first, _write } = require('../src/helper');
 
 const { Command, printer } = require('../main');
 
@@ -47,7 +47,7 @@ class MakeCommand extends Command {
     content += `'use strict';
 const { Command, printer } = require('@axiosleo/cli-tool');
 
-class ${_upperFirst(name)}Command extends Command {
+class ${_upper_first(name)}Command extends Command {
   constructor() {
     super({
       name: '${name}',
@@ -61,7 +61,7 @@ class ${_upperFirst(name)}Command extends Command {
   }
 }
 
-module.exports = ${_upperFirst(name)}Command;
+module.exports = ${_upper_first(name)}Command;
 `;
     _write(output_path, content);
     printer.println();

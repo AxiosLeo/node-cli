@@ -2,7 +2,7 @@
 
 const printer = require('./printer');
 const debug = require('./debug');
-const { ask, select, confirm } = require('./helper');
+const { prompt, Select } = require('enquirer');
 const { __ } = require('./locales');
 
 class Command {
@@ -110,15 +110,40 @@ class Command {
   }
 
   async ask(message = '', default_value = null) {
-    return await ask(message, default_value);
+    const response = await prompt([
+      {
+        type: 'input',
+        name: 'name',
+        message: message,
+        initial: default_value
+      }
+    ]);
+    return response.name;
   }
 
   async confirm(message = '', default_value = false) {
-    return await confirm(message, default_value);
+    const response = await prompt([
+      {
+        type: 'confirm',
+        name: 'name',
+        message: message,
+        initial: default_value
+      }
+    ]);
+    return response.name;
   }
 
   async select(message = '', choices = [], default_choice = null) {
-    return await select(choices, message, default_choice);
+    const options = {
+      name: 'value',
+      message: message,
+      choices: choices
+    };
+    if (default_choice && choices.indexOf(default_choice) > -1) {
+      options.initial = default_choice;
+    }
+    const prompt = new Select(options);
+    return await prompt.run();
   }
 }
 

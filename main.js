@@ -7,6 +7,7 @@ const Workflow = require('./src/workflow');
 const debug = require('./src/debug');
 const printer = require('./src/printer');
 const locales = require('./src/locales');
+const helper = require('./src/helper');
 
 module.exports = {
   App,
@@ -14,5 +15,6 @@ module.exports = {
   Workflow,
   debug,
   printer,
-  locales
+  locales,
+  helper
 };
