@@ -1,13 +1,9 @@
 'use strict';
 
 const path = require('path');
-const fs = require('fs');
-const promisify = require('util').promisify;
-const exists = promisify(fs.exists);
-const mkdir = promisify(fs.mkdir);
-const { _upper_first, _write } = require('../src/helper');
-
-const { Command, printer } = require('../main');
+const { Command, printer, helper: { fs, str } } = require('../main');
+const { _exists, _write, _mkdir } = fs;
+const { _upper_first } = str;
 
 class MakeCommand extends Command {
   constructor() {
@@ -37,7 +33,7 @@ class MakeCommand extends Command {
   async genCommand(output_dir, name) {
     name = name.toLowerCase();
     const output_path = path.join(output_dir, `${name}.js`);
-    const exist = await exists(output_path);
+    const exist = await _exists(output_path);
     if (exist) {
       printer.error(`${name} command file is exist on ${output_path}`);
       await this.addCommand(output_dir, false);
@@ -46,6 +42,14 @@ class MakeCommand extends Command {
     let content = '';
     content += `'use strict';
 const { Command, printer } = require('@axiosleo/cli-tool');
+
+/**
+ * import more features
+ * @import const { Workflow } = require('@axiosleo/cli-tool');
+ * @import const { helper: { fs, cmd, is, obj, str } } = require('@axiosleo/cli-tool');
+ * @import const { debug } = require('@axiosleo/cli-tool');
+ * @import const { locales } = require('@axiosleo/cli-tool');
+ */
 
 class ${_upper_first(name)}Command extends Command {
   constructor() {
@@ -57,6 +61,7 @@ class ${_upper_first(name)}Command extends Command {
     });
   }
   async exec(args, options, argList, app) {
+    console.log(args, options, argList, app);
     printer.println('this is ${name} command');
   }
 }
@@ -71,9 +76,9 @@ module.exports = ${_upper_first(name)}Command;
 
   async addCommand(output_dir) {
     output_dir = path.resolve(output_dir);
-    let exist = await exists(output_dir);
+    let exist = await _exists(output_dir);
     if (!exist) {
-      await mkdir(output_dir, { recursive: true });
+      await _mkdir(output_dir, { recursive: true });
     }
     printer.yellow('Continue add command? ');
     printer.println('please input command name. (input "enter" or "ctrl+c" to cancel)', printer.fgWhite);
