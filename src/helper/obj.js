@@ -57,5 +57,7 @@ function _assign(targetObj, ...objs) {
 }
 
 module.exports = {
-  _assign
+  _assign,
+  _flatten,
+  _unflatten
 };
