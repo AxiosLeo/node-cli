@@ -15,6 +15,7 @@
   },
   "license": "MIT",
   "dependencies": {
+    "camelcase": "^6.2.0",
     "enquirer": "^2.3.6",
     "eslint": "^7.13.0",
     "i18n": "^0.13.2",

@@ -1,13 +1,9 @@
 'use strict';
 
-const promisify = require('util').promisify;
-const fs = require('fs');
 const path = require('path');
-const exists = promisify(fs.exists);
-const readFile = promisify(fs.readFile);
-const { Command, printer, debug } = require('../main');
 
-const { _write } = require('../src/helper');
+const { Command, printer, debug, helper: { fs } } = require('../main');
+const { _write, _exists, _read } = fs;
 
 class InitCommand extends Command {
   constructor() {
@@ -37,7 +33,7 @@ class InitCommand extends Command {
   async exec(args, options, argList, app) {
     const name = args.name;
     const output = path.join(options.output, name);
-    const exist = await exists(output);
+    const exist = await _exists(output);
     if (exist) {
       debug.error(`${output} is exist.`);
     }
@@ -94,7 +90,7 @@ cli-tool make test ./commands/
     await _write(path.join(output, '.gitignore'), `node_modules/
 runtime/
 package-lock.json`);
-    await _write(path.join(output, '.eslintrc'), await readFile(path.join(__dirname, '../', '.eslintrc'), 'utf-8'));
+    await _write(path.join(output, '.eslintrc'), await _read(path.join(__dirname, '../', '.eslintrc')));
 
     printer.success('done initialize.');
     printer.print('please exec ').yellow('"npm install"').print(' and ').yellow('"npm link"').println(' before use.');

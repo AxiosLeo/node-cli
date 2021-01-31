@@ -2,8 +2,8 @@
 
 const printer = require('./printer');
 const debug = require('./debug');
-const { prompt, Select } = require('enquirer');
 const { __ } = require('./locales');
+const { _confirm, _select, _ask } = require('./helper/cmd');
 
 class Command {
   constructor(config) {
@@ -110,40 +110,15 @@ class Command {
   }
 
   async ask(message = '', default_value = null) {
-    const response = await prompt([
-      {
-        type: 'input',
-        name: 'name',
-        message: message,
-        initial: default_value
-      }
-    ]);
-    return response.name;
+    return await _ask(message, default_value);
   }
 
   async confirm(message = '', default_value = false) {
-    const response = await prompt([
-      {
-        type: 'confirm',
-        name: 'name',
-        message: message,
-        initial: default_value
-      }
-    ]);
-    return response.name;
+    return await _confirm(message, default_value);
   }
 
   async select(message = '', choices = [], default_choice = null) {
-    const options = {
-      name: 'value',
-      message: message,
-      choices: choices
-    };
-    if (default_choice && choices.indexOf(default_choice) > -1) {
-      options.initial = default_choice;
-    }
-    const prompt = new Select(options);
-    return await prompt.run();
+    return await _select(message, choices, default_choice);
   }
 }
 

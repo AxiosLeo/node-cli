@@ -9,7 +9,7 @@ const promisify = require('util').promisify;
 const exists = promisify(fs.exists);
 const readdir = promisify(fs.readdir);
 
-const { confirm, select } = require('./helper');
+const { _confirm, _select } = require('./helper/cmd');
 const { __, init } = require('./locales');
 
 class App {
@@ -223,11 +223,11 @@ class App {
     if (matched.length > 1) {
       printer.error(`    Command "${commandName}" is ambiguous.`);
       const commands = matched.map(command => command.config.name);
-      const name = await select(commands, 'Did you mean one of these?');
+      const name = await _select(commands, 'Did you mean one of these?');
       this.exec(name);
     } else {
       const name = matched[0].config.name;
-      const res = await confirm(`Did you mean "${matched[0].config.name}" command?`, true);
+      const res = await _confirm(`Did you mean "${matched[0].config.name}" command?`, true);
       if (res) {
         this.exec(name);
       }
