@@ -1,6 +1,7 @@
 'use strict';
 
 const camelCase = require('camelcase');
+const fs = require('./fs');
 
 function _upper_first(str) {
   if (!str) {
@@ -54,10 +55,19 @@ async function _render(tmpl_string, params = {}, left = '${', right = '}') {
   return tmpl_string;
 }
 
+async function _render_with_file(tmpl_file, params = {}, left = '${', right = '}') {
+  if (!await fs._exists(tmpl_file)) {
+    throw new Error(`${tmpl_file} not exist.`);
+  }
+  let tmpl_string = await fs._read(tmpl_file);
+  return await _render(tmpl_string, params, left, right);
+}
+
 module.exports = {
   _render,
   _caml_case,
   _snake_case,
   _upper_first,
-  _lower_first
+  _lower_first,
+  _render_with_file
 };
