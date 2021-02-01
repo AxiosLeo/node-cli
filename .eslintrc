@@ -61,6 +61,10 @@
         "beforeColon": false,
         "afterColon": true
       }
+    ],
+    "eol-last": [
+      2,
+      "always"
     ]
   },
   "env": {
