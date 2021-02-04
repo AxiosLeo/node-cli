@@ -3,6 +3,7 @@
 let quiet = false;
 
 const os = require('os');
+const { _fixed } = require('./helper/str');
 
 module.exports = {
   quiet(quiet_flag) {
@@ -100,25 +101,7 @@ module.exports = {
     return this;
   },
   fixed(content, length = 10, fillPosition = 'l', fill = ' ') {
-    if (!content) {
-      content = '';
-    }
-    if (content.length < length) {
-      var leftFill = '';
-      var rightFill = '';
-      if (fillPosition.indexOf('r') === 0) {
-        leftFill = fill.repeat(length - content.length);
-      } else if (fillPosition.indexOf('c') === 0) {
-        var left = Math.floor((length - content.length) / 2);
-        leftFill = fill.repeat(left);
-        rightFill = fill.repeat(length - content.length - left);
-      } else {
-        rightFill = fill.repeat(length - content.length);
-      }
-      fill = fill.repeat(length - content.length);
-      content = leftFill + content + rightFill;
-    }
-    this.tmp = this.tmp + content;
+    this.tmp = `${this.tmp}${_fixed(content, length, fillPosition, fill)}`;
     return this;
   },
   tmp: '',
