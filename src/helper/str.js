@@ -63,7 +63,28 @@ async function _render_with_file(tmpl_file, params = {}, left = '${', right = '}
   return await _render(tmpl_string, params, left, right);
 }
 
+function _fixed(content, length = 10, fillPosition = 'l', fill = ' ') {
+  content = `${content}`;
+  if (content.length < length) {
+    var leftFill = '';
+    var rightFill = '';
+    if (fillPosition.indexOf('r') === 0) {
+      leftFill = fill.repeat(length - content.length);
+    } else if (fillPosition.indexOf('c') === 0) {
+      var left = Math.floor((length - content.length) / 2);
+      leftFill = fill.repeat(left);
+      rightFill = fill.repeat(length - content.length - left);
+    } else {
+      rightFill = fill.repeat(length - content.length);
+    }
+    fill = fill.repeat(length - content.length);
+    content = leftFill + content + rightFill;
+  }
+  return content;
+}
+
 module.exports = {
+  _fixed,
   _render,
   _caml_case,
   _snake_case,
