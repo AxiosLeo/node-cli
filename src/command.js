@@ -3,7 +3,7 @@
 const printer = require('./printer');
 const debug = require('./debug');
 const { __ } = require('./locales');
-const { _confirm, _select, _ask } = require('./helper/cmd');
+const { _confirm, _select, _ask, _table } = require('./helper/cmd');
 
 class Command {
   constructor(config) {
@@ -119,6 +119,16 @@ class Command {
 
   async select(message = '', choices = [], default_choice = null) {
     return await _select(message, choices, default_choice);
+  }
+
+  async table(rows = [], headers = []) {
+    printer.println();
+    _table(rows, headers, {
+      margin_left: 4,
+      spacing: '-',
+      padding: ' '
+    });
+    printer.println();
   }
 }
 

@@ -6,6 +6,8 @@ const promisify = require('util').promisify;
 const cp = require('child_process');
 const exec = promisify(cp.exec);
 const { prompt, Select } = require('enquirer');
+const { _fixed } = require('./str');
+const is = require('./is');
 
 async function _shell(cmd, cwd = null, options = {}) {
   if (null === cwd) {
@@ -81,10 +83,76 @@ async function _ask(message = '', default_value = null) {
   return response.name;
 }
 
+function _table(rows = [], headers = [], options = {}) {
+  let config = {
+    columns_width: [],
+    columns_align: [],
+    margin_left: 0,
+    spacing: '-',
+    padding: ' '
+  };
+  Object.assign(config, options);
+  let cols_lens = config.columns_width && config.columns_width.length ? config.columns_width : [];
+  const has_headers = headers && is.array(headers) && headers.length;
+  if (!cols_lens.length) {
+    if (has_headers) {
+      headers.map((header, index) => {
+        header = `${header}`;
+        if (!cols_lens[index]) {
+          cols_lens[index] = 0;
+        }
+        if (cols_lens[index] < header.length) {
+          cols_lens[index] = header.length;
+        }
+      });
+    }
+    rows.map((row) => {
+      row.map((col, index) => {
+        col = `${col}`;
+        if (!cols_lens[index]) {
+          cols_lens[index] = 0;
+        }
+        if (cols_lens[index] < col.length) {
+          cols_lens[index] = col.length;
+        }
+        return col;
+      });
+    });
+  }
+  const indent = ' '.repeat(config.margin_left);
+  rows.map((row) => {
+    row.map((col, index) => {
+      col = `${col}`;
+      if (!cols_lens[index]) {
+        cols_lens[index] = 0;
+      }
+      if (cols_lens[index] < col.length) {
+        cols_lens[index] = col.length;
+      }
+    });
+  });
+  const div = cols_lens.map(col => config.spacing.repeat(col)).join(config.padding);
+  // print headers
+  if (has_headers) {
+    let headers_str = headers.map((header, index) => _fixed(header, cols_lens[index], config.columns_align[index] || 'c')).join(config.padding);
+    printer.yellow(`${indent}${headers_str}`).println();
+  }
+  printer.println(`${indent}${div}`);
+  // print rows
+  rows.forEach(row => {
+    let str = row.map((col, index) => _fixed(`${col}`, cols_lens[index], config.columns_align[index] || 'c', ' ')).join(config.padding);
+    printer.println(`${indent}${str}`);
+    if (!has_headers) {
+      printer.println(`${indent}${div}`);
+    }
+  });
+}
+
 module.exports = {
   _ask,
   _exec,
   _shell,
+  _table,
   _select,
   _confirm
 };
