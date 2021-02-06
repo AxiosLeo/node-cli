@@ -57,8 +57,23 @@ class ${_upper_first(name)}Command extends Command {
     super({
       name: '${name}',
       desc: '',
-      args: [],
-      options: [],
+      args: [
+          {
+            name: 'name',     // argument name
+            mode: 'optional', // required | optional
+            desc: 'arg desc',
+            default: null     // only supported on optional mode
+          }
+      ],
+      options: [
+          {
+            name: 'name',     // option name
+            short: 'n',       // option short name like 'n'
+            mode: 'optional', // required | optional
+            desc: 'option desc',
+            default: null     // only supported on optional mode
+          }
+      ],
     });
   }
   async exec(args, options, argList, app) {

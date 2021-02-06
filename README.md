@@ -91,16 +91,16 @@ class CommandExample extends Command {
             name: 'name',     // argument name
             mode: 'optional', // required | optional
             desc: 'arg desc',
-            default: null     // only supported optional mode
+            default: null     // only supported on optional mode
           }
       ],
       options: [
           {
             name: 'name',     // option name
-            short: 'n',       // like 'n'
+            short: 'n',       // option short name like 'n'
             mode: 'optional', // required | optional
             desc: 'option desc',
-            default: null     // only supported optional mode
+            default: null     // only supported on optional mode
           }
       ],
     });
