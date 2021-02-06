@@ -114,6 +114,7 @@ class CommandExample extends Command {
       const option1 = options.optionName;
 
       // get arg by index
+      const index = 0;
       const arg2 = argList[index];
 
       // ask for answer
@@ -121,6 +122,15 @@ class CommandExample extends Command {
 
       // ask for confirm, default value is 'false'
       const confirm = await this.confirm('Confirm do this now?', false);
+
+      // select action
+      const action = await this.select('select an action', ['info', 'update']);
+
+      // printer table
+      const rows = [
+        ['Bob', 2]
+      ];
+      this.table(rows, ['Name', 'Score']);
   }
 }
 
