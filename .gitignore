@@ -1,3 +1,7 @@
 node_modules/
 runtime/
 package-lock.json
+.nyc_output/
+.idea/
+.vscode/
+coverage/
