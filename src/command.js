@@ -22,7 +22,7 @@ class Command {
     let set = [];
     this.config.args.forEach((arg) => {
       if (set.indexOf(arg.name) > -1) {
-        debug.error(`Argument Name Duplication  : ${arg.name}`);
+        debug.error(__('Argument Name Duplication  : ${name}', { name: arg.name }));
       }
       set.push(arg.name);
     });
@@ -30,12 +30,12 @@ class Command {
     set = ['help', 'h'];
     this.config.options.forEach((option) => {
       if (set.indexOf(option.name) > -1) {
-        debug.error(`Option Name Duplication : ${option.name}`);
+        debug.error(__('Option Name Duplication : ${name}', { name: option.name }));
       }
       set.push(option.name);
       if (option.short) {
         if (set.indexOf(option.short) > -1) {
-          debug.error(`Option Short Name Duplication : -${option.short} for ${option.name} option`);
+          debug.error(__('Option Short Name Duplication : -${short} for ${name} option', { short: option.short, name: option.name }));
         }
         set.push(option.short);
       }
@@ -106,7 +106,7 @@ class Command {
   }
 
   async exec() {
-    printer.warning(`Please override exec() method for ${this.config.name} command`);
+    printer.warning(__('Please override exec() method for ${name} command', { name: this.config.name }));
   }
 
   async ask(message = '', default_value = null) {

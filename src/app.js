@@ -38,8 +38,7 @@ class App {
     const command = new Command();
     const name = command.config.name;
     if (this.commands[name]) {
-      printer.error(`${name} command already exist!`);
-      process.exit(-1);
+      debug.error(__('${name} command already exist!', { name: name }));
     }
     this.commands[name] = command;
     return this;
@@ -51,7 +50,7 @@ class App {
     // validate options
     const failed = this.config.validate(['name', 'version', 'commands_dir']);
     if (failed && failed.length) {
-      debug.error(`Need setting "${failed.join(', ')}" options for App`);
+      debug.error(__('Need setting "${keys}" options for App', { keys: failed.join(', ') }));
     }
 
     // init commands
@@ -64,7 +63,7 @@ class App {
         this.register(require(file));
       });
     } else {
-      printer.error(`commands dir not exist on ${app.commands_dir}`);
+      printer.warning(__('commands dir not exist on ${dir}', { dir: app.commands_dir }));
     }
     await this.run();
   }
@@ -103,7 +102,7 @@ class App {
     if (matched.length === 0) {
       await this.showHelp();
       if (commandName !== 'help') {
-        printer.error(`'${commandName}' command dose not exist.`);
+        debug.error(__('${name} command dose not exist.', { name: commandName }));
       }
     } else {
       this.showAmbiguous(commandName, matched).catch((err) => {
@@ -132,16 +131,14 @@ class App {
     var checkSet = [];
     commandOpts.forEach(opt => {
       if (checkSet.indexOf(opt.name) > -1) {
-        printer.error(`  Duplication option : ${opt.name}   `);
         command.usage();
-        process.exit(-1);
+        debug.error(`  ${__('Duplication option : ${name}', { name: opt.name })}   `);
       }
       checkSet.push(opt.name);
       if (opt.short) {
         if (checkSet.indexOf(opt.short) > -1) {
-          printer.error(`  Duplication option short : ${opt.name}(${opt.short})   `);
           command.usage();
-          process.exit(-1);
+          debug.error(`  ${__('Duplication option short : ${name}(${short})', { name: opt.name, short: opt.short })}   `);
         }
         aliasOption[opt.name] = opt.short;
         checkSet.push(opt.short);
@@ -165,15 +162,13 @@ class App {
     checkSet = [];
     commandArgs.forEach((arg, key) => {
       if (checkSet.indexOf(arg.name) > -1) {
-        printer.error(`  Duplication argument : ${arg.name}   `);
         command.usage();
-        process.exit(-1);
+        debug.error(`  ${__('Duplication argument : ${name}', { name: arg.name })}   `);
       }
       arg['value'] = argv._[key] ? argv._[key] : '';
       if (arg.mode === 'required' && arg['value'] === '') {
-        printer.error(`  Required augument : ${arg.name}   `);
         command.usage();
-        process.exit(-1);
+        debug.error(`  ${__('Required argument : ${name}', { name: arg.name })}   `);
       }
       checkSet.push(arg.name);
     });
@@ -181,9 +176,8 @@ class App {
     commandOpts.forEach(opt => {
       opt['value'] = argv[opt.name] ? argv[opt.name] : '';
       if (opt.mode === 'required' && opt['value'] === '') {
-        printer.error(`  Required option : ${opt.name}   `);
         command.usage();
-        process.exit(-1);
+        debug.error(`  ${__('Required option : ${name}', { name: opt.name })}   `);
       }
     });
 
@@ -223,13 +217,13 @@ class App {
   async showAmbiguous(commandName, matched) {
     printer.println();
     if (matched.length > 1) {
-      printer.error(`    Command "${commandName}" is ambiguous.`);
+      printer.error(`    ${__('Command "${name}" is ambiguous.', { name: commandName })}`);
       const commands = matched.map(command => command.config.name);
-      const name = await _select(commands, 'Did you mean one of these?');
+      const name = await _select(commands, __('Did you mean one of these?'));
       this.exec(name);
     } else {
       const name = matched[0].config.name;
-      const res = await _confirm(`Did you mean "${matched[0].config.name}" command?`, true);
+      const res = await _confirm(__('Did you mean "${name}" command?', { name: matched[0].config.name }), true);
       if (res) {
         this.exec(name);
       }
@@ -304,7 +298,7 @@ class App {
     Object.keys(commands).forEach((key) => {
       const cmd = commands[key];
       if (!cmd) {
-        debug.stack(`load ${key} command error`, cmd);
+        debug.stack(__('load ${name} command error', { name: key }), cmd);
       }
       let { name, desc } = cmd.config;
       desc = __(desc);
