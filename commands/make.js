@@ -46,6 +46,7 @@ const { Command, printer } = require('@axiosleo/cli-tool');
 /**
  * import more features
  * @import const { Workflow } = require('@axiosleo/cli-tool');
+ * @import const { Configuration } = require('@axiosleo/cli-tool');
  * @import const { helper: { fs, cmd, is, obj, str } } = require('@axiosleo/cli-tool');
  * @import const { debug } = require('@axiosleo/cli-tool');
  * @import const { locales } = require('@axiosleo/cli-tool');

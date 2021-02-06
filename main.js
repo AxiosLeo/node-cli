@@ -6,6 +6,7 @@
 const App = require('./src/app');
 const Command = require('./src/command');
 const Workflow = require('./src/workflow');
+const Configuration = require('./src/config');
 
 /**
  * utils
@@ -34,6 +35,8 @@ module.exports = {
   App,
   Command,
   Workflow,
+  Configuration,
+
   debug,
   printer,
   locales,
