@@ -48,10 +48,10 @@ function _snake_case(name) {
   return res;
 }
 
-async function _render(tmpl_string, params = {}, left = '${', right = '}') {
-  await Promise.all(Object.keys(params).map(async (key) => {
+function _render(tmpl_string, params = {}, left = '${', right = '}') {
+  Object.keys(params).forEach((key) => {
     tmpl_string = tmpl_string.split(left + key + right).join(params[key]);
-  }));
+  });
   return tmpl_string;
 }
 
@@ -60,7 +60,7 @@ async function _render_with_file(tmpl_file, params = {}, left = '${', right = '}
     throw new Error(`${tmpl_file} not exist.`);
   }
   let tmpl_string = await fs._read(tmpl_file);
-  return await _render(tmpl_string, params, left, right);
+  return _render(tmpl_string, params, left, right);
 }
 
 function _fixed(content, length = 10, fillPosition = 'l', fill = ' ') {

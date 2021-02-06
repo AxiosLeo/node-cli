@@ -3,11 +3,16 @@
 const debug = require('./debug');
 const osLocale = require('os-locale');
 const { I18n } = require('i18n');
+const { _render } = require('./helper/str');
 
 let i18n, sets;
 
-function __(str) {
-  return i18n ? i18n.__(str) : str;
+function __(str, params = null) {
+  if (!params) {
+    return i18n ? i18n.__(str) : str;
+  }
+  let content = i18n ? i18n.__(str) : str;
+  return _render(content, params);
 }
 
 function init(config) {
