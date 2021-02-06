@@ -41,23 +41,25 @@ class Configuration {
   }
 
   validate(keys = []) {
+    let failed = [];
     if (is.array(keys)) {
       let i = 0;
       while (i < keys.length) {
         const value = this.get(keys[i]);
         if (is.empty(value)) {
-          debug.stack(`must be set a valid value for the configuration "${keys[i]}".`);
+          failed.push(keys[i]);
         }
         i++;
       }
     } else if (is.string(keys)) {
       const value = this.get(keys);
       if (is.empty(value)) {
-        debug.stack(`must be set a valid value for the configuration "${keys}".`);
+        failed.push(keys);
       }
     } else {
       debug.stack(`Unsupported keys data type. ${typeof keys}`);
     }
+    return failed;
   }
 }
 

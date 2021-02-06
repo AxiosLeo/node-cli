@@ -2,20 +2,17 @@
 
 const minimist = require('minimist');
 const printer = require('./printer');
-const fs = require('fs');
-const path = require('path');
 const debug = require('./debug');
-const promisify = require('util').promisify;
-const exists = promisify(fs.exists);
-const readdir = promisify(fs.readdir);
+const Configuration = require('./config');
 
 const { _confirm, _select } = require('./helper/cmd');
 const { __, init } = require('./locales');
+const { _exists, _search } = require('./helper/fs');
 
 class App {
   constructor(options = {}) {
     this.commands = {};
-    this.options = {
+    this.config = new Configuration({
       name: '',
       version: '',
       desc: '',
@@ -25,15 +22,16 @@ class App {
         sets: [],
         dir: '',
         use: null
-      },
-      ...options
-    };
+      }
+    });
+    this.config.assign(options);
   }
 
   locale(options = {}) {
-    let config = this.options.locale;
-    Object.assign(config, options);
-    init(options);
+    this.config.assign({
+      locale: options
+    });
+    init(this.config.get('locale'));
   }
 
   register(Command) {
@@ -48,21 +46,25 @@ class App {
   }
 
   async start(options = {}) {
-    Object.assign(this.options, options);
+    this.config.assign(options);
+
     // validate options
-    const fields = ['name', 'version', 'commands_dir'];
-    fields.forEach(field => {
-      if (!this.options[field]) {
-        debug.error(`Need setting "${field}" options for App`);
-      }
-    });
-    const dir = this.options.commands_dir;
-    const exist = await exists(dir);
+    const failed = this.config.validate(['name', 'version', 'commands_dir']);
+    if (failed && failed.length) {
+      debug.error(`Need setting "${failed.join(', ')}" options for App`);
+    }
+
+    // init commands
+    const app = this.config.get();
+    const dir = app.commands_dir;
+    const exist = await _exists(dir);
     if (exist) {
-      const commands = await readdir(dir);
+      const commands = await _search(dir);
       commands.forEach(file => {
-        this.register(require(path.join(dir, file)));
+        this.register(require(file));
       });
+    } else {
+      printer.error(`commands dir not exist on ${app.commands_dir}`);
     }
     await this.run();
   }
@@ -235,18 +237,19 @@ class App {
   }
 
   async showHelp() {
+    const app = this.config.get();
     if (this.commands['help']) {
       this.exec('help');
     } else {
       // print header
       printer.println();
-      printer.yellow(this.options.name);
-      printer.green(` ${this.options.version} `);
-      printer.println(__(this.options.desc)).println();
+      printer.yellow(app.name);
+      printer.green(` ${app.version} `);
+      printer.println(__(app.desc)).println();
 
       // print Usage
       printer.warning('Usage:');
-      printer.println(`    ${this.options.name} <command> [options] [<args>]`).println();
+      printer.println(`    ${app.name} <command> [options] [<args>]`).println();
 
       // print options
       printer.warning('Options:');
@@ -258,7 +261,7 @@ class App {
         name_max_len,
         command_list,
         group
-      } = await this.resolve(this.options.commands_sort, this.options.commands_group);
+      } = await this.resolve(app.commands_sort, app.commands_group);
       printer.warning('Available commands:');
       if (command_list) {
         await Promise.all(command_list.map(async cmd => await this.printCommand(cmd, name_max_len)));
