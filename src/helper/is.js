@@ -12,7 +12,9 @@ const is = {
   boolean: a => typeof (a) === 'boolean',
   bigint: a => typeof (a) === 'bigint',
   file: async a => fs._is_file(a),
-  dir: async a => fs._is_dir(a)
+  dir: async a => fs._is_dir(a),
+  invalid: a => typeof a === 'undefined' || a === null,
+  empty: a => typeof a === 'undefined' || a === null || a === '',
 };
 
 module.exports = is;
