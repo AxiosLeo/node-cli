@@ -148,11 +148,30 @@ function _table(rows = [], headers = [], options = {}) {
   });
 }
 
+async function _dispatch(opts = [], ways) {
+  async function recur(curr_index, opts, ways) {
+    if (is.empty(opts[curr_index])) {
+      const chioce = Object.keys(ways);
+      const action = await _select('', chioce);
+      opts.push(action);
+      ways = ways[action];
+    }
+    if (!is.empty(ways) && is.object(ways)) {
+      return recur(curr_index + 1, opts, ways);
+    } else if (!is.empty(ways)) {
+      return ways;
+    }
+    return opts.join('_');
+  }
+  return await recur(0, opts, ways);
+}
+
 module.exports = {
   _ask,
   _exec,
   _shell,
   _table,
   _select,
-  _confirm
+  _confirm,
+  _dispatch
 };

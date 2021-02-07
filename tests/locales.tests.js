@@ -11,7 +11,6 @@ describe('locales test case', function () {
       dir: path.join(__dirname, '../locales'),
       sets: ['en-US', 'zh-CN']
     });
-
   });
   it('translate with zh-CN', async function () {
     let data = await _read_json(path.join(__dirname, '../locales/zh-CN.json'));
