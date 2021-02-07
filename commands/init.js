@@ -74,7 +74,7 @@ app.start({
   version: '1.0.0',
   desc: '',
   commands_dir: path.join(__dirname, '../commands'),
-  commands_sort:['help']
+  commands_sort: ['help']
 });
 `;
     _write(path.join(output, `bin/${name}.js`), content);

@@ -5,7 +5,7 @@ const expect = require('chai').expect;
 const { locales } = require('../main');
 const { _read_json } = require('../src/helper/fs');
 
-describe('translate messge', function () {
+describe('locales test case', function () {
   beforeEach(async function () {
     locales.init({
       dir: path.join(__dirname, '../locales'),
