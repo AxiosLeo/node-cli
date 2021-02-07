@@ -41,6 +41,7 @@ class MakeCommand extends Command {
     }
     let content = '';
     content += `'use strict';
+
 const { Command, printer } = require('@axiosleo/cli-tool');
 
 /**
@@ -58,21 +59,21 @@ class ${_upper_first(name)}Command extends Command {
       name: '${name}',
       desc: '',
       args: [
-          {
-            name: 'name',     // argument name
-            mode: 'optional', // required | optional
-            desc: 'arg desc',
-            default: null     // only supported on optional mode
-          }
+        {
+          name: 'name',     // argument name
+          mode: 'optional', // required | optional
+          desc: 'arg desc',
+          default: null     // only supported on optional mode
+        }
       ],
       options: [
-          {
-            name: 'name',     // option name
-            short: 'n',       // option short name like 'n'
-            mode: 'optional', // required | optional
-            desc: 'option desc',
-            default: null     // only supported on optional mode
-          }
+        {
+          name: 'name',     // option name
+          short: 'n',       // option short name like 'n'
+          mode: 'optional', // required | optional
+          desc: 'option desc',
+          default: null     // only supported on optional mode
+        }
       ],
     });
   }
