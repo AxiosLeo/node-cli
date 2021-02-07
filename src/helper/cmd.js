@@ -155,6 +155,8 @@ async function _dispatch(opts = [], ways) {
       const action = await _select('', chioce);
       opts.push(action);
       ways = ways[action];
+    } else {
+      ways = ways[opts[curr_index]];
     }
     if (!is.empty(ways) && is.object(ways)) {
       return recur(curr_index + 1, opts, ways);
