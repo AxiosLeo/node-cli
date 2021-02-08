@@ -6,24 +6,32 @@ const { __ } = require('./locales');
 const { _confirm, _select, _ask, _table } = require('./helper/cmd');
 const is = require('./helper/is');
 
-function checkArgument(cmd, args, name) {
-  if (is.empty(name)) {
+const mode_list = ['required', 'optional'];
+
+function checkArgument(cmd, args, arg) {
+  if (is.empty(arg.name)) {
     debug.error(__('The argument name cannot be empty in "${cmd}" command.', { cmd }));
   }
-  if (is.contain(args, name)) {
-    debug.error(__('Argument Name Duplication "${name}" in "${cmd}" command.', { cmd, name }));
+  if (is.contain(args, arg.name)) {
+    debug.error(__('Argument Name Duplication "${name}" in "${cmd}" command.', { cmd, name: arg.name }));
+  }
+  if (arg.mode && !is.contain(mode_list, arg.mode)) {
+    debug.warning(__('The mode name "${mode}" is invalid in "${cmd}" command. Valid mode names are "required" or "optional"', { cmd, mode: arg.mode }));
   }
 }
 
-function checkOption(cmd, opts, name, short) {
-  if (is.empty(name)) {
+function checkOption(cmd, opts, opt) {
+  if (is.empty(opt.name)) {
     debug.error(__('The option name cannot be empty in "${cmd}" command.', { cmd }));
   }
-  if (is.contain(opts, name)) {
-    debug.error(__('Option Name Duplication "${name}" in "${cmd}" command.', { cmd, name }));
+  if (is.contain(opts, opt.name)) {
+    debug.error(__('Option Name Duplication "${name}" in "${cmd}" command.', { cmd, name: opt.name }));
   }
-  if (short && is.contain(opts, short)) {
-    debug.error(__('Option Short Name Duplication -${short} for ${name} option in "${cmd}" command.', { cmd, short, name }));
+  if (opt.short && is.contain(opts, opt.short)) {
+    debug.error(__('Option Short Name Duplication -${short} for ${name} option in "${cmd}" command.', { cmd, short: opt.short, name: opt.name }));
+  }
+  if (opt.mode && !is.contain(mode_list, opt.mode)) {
+    debug.warning(__('The mode name "${mode}" is invalid in "${cmd}" command. Valid mode names are "required" or "optional"', { cmd, mode: opt.mode }));
   }
 }
 
@@ -46,13 +54,13 @@ class Command {
     // check arguments
     this.args = [];
     this.config.args.forEach((arg) => {
-      checkArgument(cmd_name, this.args, arg.name);
+      checkArgument(cmd_name, this.args, arg);
       this.args.push(arg.name);
     });
     // check options
     this.opts = ['help', 'h'];
     this.config.options.forEach((option) => {
-      checkOption(cmd_name, this.opts, option.name);
+      checkOption(cmd_name, this.opts, option);
       this.opts.push(option.name);
       if (option.short) {
         this.opts.push(option.short);
@@ -60,24 +68,26 @@ class Command {
     });
   }
 
-  addArgument(name, desc, mode = 'optional', default_value = null) {
-    checkArgument(this.config.name, this.args, name);
-    this.config.args.push({
+  addArgument(name, desc, mode = 'required', default_value = null) {
+    const arg = {
       name, desc, mode, default: default_value
-    });
+    };
+    checkArgument(this.config.name, this.args, arg);
+    this.config.args.push(arg);
     this.args.push(name);
     return this;
   }
 
-  addOption(name, short, desc, mode = 'optional', default_value = null) {
-    checkOption(this.config.name, this.opts, name, short);
+  addOption(name, short, desc, mode = 'required', default_value = null) {
+    const opt = {
+      name, short, mode, desc, default: default_value
+    };
+    checkOption(this.config.name, this.opts, opt);
     this.opts.push(name);
     if (short) {
       this.opts.push(short);
     }
-    this.config.options.push({
-      name, short, mode, desc, default: default_value
-    });
+    this.config.options.push(opt);
   }
 
   usage() {
