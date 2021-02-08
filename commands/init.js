@@ -11,11 +11,11 @@ class InitCommand extends Command {
       name: 'init',
       desc: 'init_command_desc',
     });
-    this.addArgument('name', 'init_command_args_name_desc', 'required');
+    this.addArgument('name', 'init_command_args_name_desc');
     this.addOption('output', 'o', 'init_command_options_output_desc', 'optional', process.cwd());
   }
 
-  async exec(args, options, argList, app) {
+  async exec(args, options) {
     const name = args.name;
     const output = path.join(options.output, name);
     const exist = await _exists(output);

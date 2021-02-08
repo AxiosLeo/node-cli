@@ -11,8 +11,8 @@ class MakeCommand extends Command {
       name: 'make',
       desc: 'make_command_desc',
     });
-    this.addArgument('name', 'make_command_args_name_desc', 'required');
-    this.addArgument('output', 'make_command_args_output_desc', 'required');
+    this.addArgument('name', 'make_command_args_name_desc');
+    this.addArgument('output', 'make_command_args_output_desc');
   }
 
   async exec(args) {

@@ -29,5 +29,6 @@
 	"The argument name cannot be empty in \"${cmd}\" command.": "The argument name cannot be empty in \"${cmd}\" command.",
 	"The option name cannot be empty in \"${cmd}\" command.": "The option name cannot be empty in \"${cmd}\" command.",
 	"Argument Name Duplication \"${name}\" in \"${cmd}\" command.": "Argument Name Duplication \"${name}\" in \"${cmd}\" command.",
-	"Option Name Duplication \"${name}\" in \"${cmd}\" command.": "Option Name Duplication \"${name}\" in \"${cmd}\" command."
+	"Option Name Duplication \"${name}\" in \"${cmd}\" command.": "Option Name Duplication \"${name}\" in \"${cmd}\" command.",
+	"The mode name \"${mode}\" is invalid in \"${cmd}\" command. Valid mode names are \"required\" or \"optional\"": "The mode name \"${mode}\" is invalid in \"${cmd}\" command. Valid mode names are \"required\" or \"optional\""
 }

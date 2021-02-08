@@ -27,5 +27,6 @@
 	"The option name cannot be empty in \"${cmd}\" command.": "${cmd} 命令中的配置名称不能为空",
 	"Argument Name Duplication \"${name}\" in \"${cmd}\" command.": "\"${cmd}\" 命令中存在重复的参数名称 \"${name}\"",
 	"Option Name Duplication \"${name}\" in \"${cmd}\" command.": "\"${cmd}\" 命令中存在重复的配置项名称 \"${name}\"",
-	"Option Short Name Duplication : -${short} for ${name} option": "配置项 ${name} 有重复的别名 : -${short}"
+	"Option Short Name Duplication : -${short} for ${name} option": "配置项 ${name} 有重复的别名 : -${short}",
+	"The mode name \"${mode}\" is invalid in \"${cmd}\" command. Valid mode names are \"required\" or \"optional\"": "\"${cmd}\"命令中存在无效的模式名称\"${mode}\"。有效的模式名称为\"required\"或\"optional\""
 }
