@@ -5,38 +5,41 @@ const debug = require('./debug');
 const { __ } = require('./locales');
 const { _confirm, _select, _ask, _table } = require('./helper/cmd');
 const is = require('./helper/is');
+const { _str } = require('./helper/str');
 
 const mode_list = ['required', 'optional'];
 
 function checkArgument(cmd, args, arg) {
   if (is.empty(arg.name)) {
-    debug.error(__('The argument name cannot be empty in "${cmd}" command.', { cmd }));
+    debug.stack(__('The argument name cannot be empty in "${cmd}" command.', { cmd }));
   }
   if (is.contain(args, arg.name)) {
-    debug.error(__('Argument Name Duplication "${name}" in "${cmd}" command.', { cmd, name: arg.name }));
+    debug.stack(__('Argument Name Duplication "${name}" in "${cmd}" command.', { cmd, name: arg.name }));
   }
   if (arg.mode && !is.contain(mode_list, arg.mode)) {
     debug.warning(__('The mode name "${mode}" is invalid in "${cmd}" command. Valid mode names are "required" or "optional"', { cmd, mode: arg.mode }));
+    arg.mode = 'optional';
   }
 }
 
 function checkOption(cmd, opts, opt) {
   if (is.empty(opt.name)) {
-    debug.error(__('The option name cannot be empty in "${cmd}" command.', { cmd }));
+    debug.stack(__('The option name cannot be empty in "${cmd}" command.', { cmd }));
   }
   if (is.contain(opts, opt.name)) {
-    debug.error(__('Option Name Duplication "${name}" in "${cmd}" command.', { cmd, name: opt.name }));
+    debug.stack(__('Option Name Duplication "${name}" in "${cmd}" command.', { cmd, name: opt.name }));
   }
   if (opt.short && is.contain(opts, opt.short)) {
-    debug.error(__('Option Short Name Duplication -${short} for ${name} option in "${cmd}" command.', { cmd, short: opt.short, name: opt.name }));
+    debug.stack(__('Option Short Name Duplication -${short} for ${name} option in "${cmd}" command.', { cmd, short: opt.short, name: opt.name }));
   }
   if (opt.mode && !is.contain(mode_list, opt.mode)) {
     debug.warning(__('The mode name "${mode}" is invalid in "${cmd}" command. Valid mode names are "required" or "optional"', { cmd, mode: opt.mode }));
+    opt.mode = 'optional';
   }
 }
 
 class Command {
-  constructor(config) {
+  constructor(config = {}) {
     this.config = {
       name: '',
       alias: [],
@@ -49,7 +52,7 @@ class Command {
     this.printer = printer;
     const cmd_name = this.config.name;
     if (is.empty(cmd_name)) {
-      debug.error(__('The command name cannot be empty, please check the configuration of the command.'));
+      debug.stack(__('The command name cannot be empty, please check the configuration of the command.'));
     }
     // check arguments
     this.args = [];
@@ -70,7 +73,7 @@ class Command {
 
   addArgument(name, desc, mode = 'required', default_value = null) {
     const arg = {
-      name, desc, mode, default: default_value
+      name, desc: _str(desc), mode, default: default_value
     };
     checkArgument(this.config.name, this.args, arg);
     this.config.args.push(arg);
@@ -80,7 +83,7 @@ class Command {
 
   addOption(name, short, desc, mode = 'required', default_value = null) {
     const opt = {
-      name, short, mode, desc, default: default_value
+      name, short: _str(short), mode, desc: _str(desc), default: default_value
     };
     checkOption(this.config.name, this.opts, opt);
     this.opts.push(name);
