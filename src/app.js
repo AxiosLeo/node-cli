@@ -254,12 +254,12 @@ class App {
 
       // print Usage
       printer.warning('Usage:');
-      printer.println(`    ${app.name} <command> [options] [<args>]`).println();
+      printer.println(`  ${app.name} <command> [options] [<args>]`).println();
 
       // print options
       printer.warning('Options:');
-      printer.green('    -h, --help').println('         ' + __('Display this help message'));
-      printer.green('    -q, --quiet').println('        ' + __('Do not output any message')).println();
+      printer.green('  -h, --help').println('         ' + __('Display this help message'));
+      printer.green('  -q, --quiet').println('        ' + __('Do not output any message')).println();
 
       // print available commands
       const {
@@ -339,9 +339,9 @@ class App {
       let { name, desc } = cmd.config;
       desc = __(desc);
       printer.print(printer.fgGreen);
-      printer.fixed('    ' + name, max_len + 4).print();
+      printer.fixed('  ' + name, max_len + 4).print();
       printer.print(printer.reset);
-      printer.print('    ');
+      printer.print('  ');
       if (cmd.config.alias && cmd.config.alias.length) {
         printer.print('[');
         printer.print(cmd.config.alias.join('|'));
@@ -351,7 +351,7 @@ class App {
       return true;
     } else if (command_name === 'help') {
       printer.print(printer.fgGreen);
-      printer.fixed('    help', max_len + 4).print();
+      printer.fixed('  help', max_len + 2).print();
       printer.print(printer.reset);
       printer.println('    ' + __('Print help information'));
       return true;
