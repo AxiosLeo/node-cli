@@ -22,9 +22,10 @@
 	"Did you mean one of these?": "以下命令是否是你想要的?",
 	"Did you mean \"${name}\" command?": "是要执行 \"${name}\" 命令吗?",
 	"load ${name} command error": "加载 ${name} 命令失败",
-	"Required augument : ${name}": "Required augument : ${name}",
-	"Argument Name Duplication  : ${name}": "重复的参数 : ${name}",
-	"Option Name Duplication : ${name}": "重复的配置项 : ${name}",
-	"Option Short Name Duplication : -${short} for ${name} option" : "配置项 ${name} 有重复的别名 : -${short}",
-	"Please override exec() method for ${name} command": "请重载 ${name} 命令的 exec() 方法"
+	"Please override exec() method for ${name} command": "请重载 ${name} 命令的 exec() 方法",
+	"The argument name cannot be empty in \"${cmd}\" command.": "${cmd} 命令中的参数名称不能为空",
+	"The option name cannot be empty in \"${cmd}\" command.": "${cmd} 命令中的配置名称不能为空",
+	"Argument Name Duplication \"${name}\" in \"${cmd}\" command.": "\"${cmd}\" 命令中存在重复的参数名称 \"${name}\"",
+	"Option Name Duplication \"${name}\" in \"${cmd}\" command.": "\"${cmd}\" 命令中存在重复的配置项名称 \"${name}\"",
+	"Option Short Name Duplication : -${short} for ${name} option": "配置项 ${name} 有重复的别名 : -${short}"
 }

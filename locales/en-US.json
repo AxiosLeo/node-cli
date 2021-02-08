@@ -22,9 +22,12 @@
 	"Did you mean one of these?": "Did you mean one of these?",
 	"Did you mean \"${name}\" command?": "Did you mean \"${name}\" command?",
 	"load ${name} command error": "load ${name} command error",
-	"Required augument : ${name}": "Required augument : ${name}",
 	"Argument Name Duplication  : ${name}": "Argument Name Duplication  : ${name}",
 	"Option Name Duplication : ${name}": "Option Name Duplication : ${name}",
 	"Option Short Name Duplication : -${short} for ${name} option": "Option Short Name Duplication : -${short} for ${name} option",
-	"Please override exec() method for ${name} command": "Please override exec() method for ${name} command"
+	"Please override exec() method for ${name} command": "Please override exec() method for ${name} command",
+	"The argument name cannot be empty in \"${cmd}\" command.": "The argument name cannot be empty in \"${cmd}\" command.",
+	"The option name cannot be empty in \"${cmd}\" command.": "The option name cannot be empty in \"${cmd}\" command.",
+	"Argument Name Duplication \"${name}\" in \"${cmd}\" command.": "Argument Name Duplication \"${name}\" in \"${cmd}\" command.",
+	"Option Name Duplication \"${name}\" in \"${cmd}\" command.": "Option Name Duplication \"${name}\" in \"${cmd}\" command."
 }
