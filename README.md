@@ -43,18 +43,35 @@ const app = new App({
   }
 });
 app.start();
-
-// or
-app.register(require('/path/to/your/command/file'))
-   // ... ...
-   .register(require('/path/to/your/other-command/file'));
-app.run();
 ```
 
 ### Run single command
 
+- register with command class
+
 ```js
-app.register(require('path/to/your/command/file'));
+// register with command class
+const CommandExample = require('/path/to/your/other-command/file'); 
+app.register(CommandExample);
+
+app.exec("<command-name>");
+```
+
+- register with command object
+
+```js
+const CommandExample = require('/path/to/your/other-command/file');
+const command = new CommandExample();
+app.register(command);
+
+app.exec("<command-name>");
+```
+
+- register with command file path
+
+```js
+app.register('/path/to/your/other-command/file');
+
 app.exec("<command-name>");
 ```
 
