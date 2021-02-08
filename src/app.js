@@ -8,6 +8,7 @@ const Configuration = require('./config');
 const { _confirm, _select } = require('./helper/cmd');
 const { __, init } = require('./locales');
 const { _exists, _search } = require('./helper/fs');
+const is = require('./helper/is');
 
 class App {
   constructor(options = {}) {
@@ -34,8 +35,16 @@ class App {
     init(this.config.get('locale'));
   }
 
-  register(Command) {
-    const command = new Command();
+  register(cmd) {
+    let command;
+    if (is.object(cmd)) {
+      command = cmd;
+    } else if (is.string(cmd)) {
+      const Command = require(cmd);
+      command = new Command();
+    } else {
+      command = new cmd();
+    }
     const name = command.config.name;
     if (this.commands[name]) {
       debug.error(__('${name} command already exist!', { name: name }));
@@ -48,22 +57,24 @@ class App {
     this.config.assign(options);
 
     // validate options
-    const failed = this.config.validate(['name', 'version', 'commands_dir']);
+    const failed = this.config.validate(['name', 'version']);
     if (failed && failed.length) {
       debug.error(__('Need setting "${keys}" options for App', { keys: failed.join(', ') }));
     }
 
     // init commands
     const app = this.config.get();
-    const dir = app.commands_dir;
-    const exist = await _exists(dir);
-    if (exist) {
-      const commands = await _search(dir);
-      commands.forEach(file => {
-        this.register(require(file));
-      });
-    } else {
-      printer.warning(__('commands dir not exist on ${dir}', { dir: app.commands_dir }));
+    if (app.commands_dir && app.commands_dir.length) {
+      const dir = app.commands_dir;
+      const exist = await _exists(dir);
+      if (exist) {
+        const commands = await _search(dir);
+        commands.forEach(file => {
+          this.register(require(file));
+        });
+      } else {
+        printer.warning(__('commands dir not exist on ${dir}', { dir: app.commands_dir }));
+      }
     }
     await this.run();
   }
