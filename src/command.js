@@ -4,6 +4,28 @@ const printer = require('./printer');
 const debug = require('./debug');
 const { __ } = require('./locales');
 const { _confirm, _select, _ask, _table } = require('./helper/cmd');
+const is = require('./helper/is');
+
+function checkArgument(cmd, args, name) {
+  if (is.empty(name)) {
+    debug.error(__('The argument name cannot be empty in "${cmd}" command.', { cmd }));
+  }
+  if (is.contain(args, name)) {
+    debug.error(__('Argument Name Duplication "${name}" in "${cmd}" command.', { cmd, name }));
+  }
+}
+
+function checkOption(cmd, opts, name, short) {
+  if (is.empty(name)) {
+    debug.error(__('The option name cannot be empty in "${cmd}" command.', { cmd }));
+  }
+  if (is.contain(opts, name)) {
+    debug.error(__('Option Name Duplication "${name}" in "${cmd}" command.', { cmd, name }));
+  }
+  if (short && is.contain(opts, short)) {
+    debug.error(__('Option Short Name Duplication -${short} for ${name} option in "${cmd}" command.', { cmd, short, name }));
+  }
+}
 
 class Command {
   constructor(config) {
@@ -17,28 +39,44 @@ class Command {
     };
     this.debug = debug;
     this.printer = printer;
-
+    const cmd_name = this.config.name;
+    if (is.empty(cmd_name)) {
+      debug.error(__('The command name cannot be empty, please check the configuration of the command.'));
+    }
     // check arguments
-    let set = [];
+    this.args = [];
     this.config.args.forEach((arg) => {
-      if (set.indexOf(arg.name) > -1) {
-        debug.error(__('Argument Name Duplication  : ${name}', { name: arg.name }));
-      }
-      set.push(arg.name);
+      checkArgument(cmd_name, this.args, arg.name);
+      this.args.push(arg.name);
     });
     // check options
-    set = ['help', 'h'];
+    this.opts = ['help', 'h'];
     this.config.options.forEach((option) => {
-      if (set.indexOf(option.name) > -1) {
-        debug.error(__('Option Name Duplication : ${name}', { name: option.name }));
-      }
-      set.push(option.name);
+      checkOption(cmd_name, this.opts, option.name);
+      this.opts.push(option.name);
       if (option.short) {
-        if (set.indexOf(option.short) > -1) {
-          debug.error(__('Option Short Name Duplication : -${short} for ${name} option', { short: option.short, name: option.name }));
-        }
-        set.push(option.short);
+        this.opts.push(option.short);
       }
+    });
+  }
+
+  addArgument(name, desc, mode = 'optional', default_value = null) {
+    checkArgument(this.config.name, this.args, name);
+    this.config.args.push({
+      name, desc, mode, default: default_value
+    });
+    this.args.push(name);
+    return this;
+  }
+
+  addOption(name, short, desc, mode = 'optional', default_value = null) {
+    checkOption(this.config.name, this.opts, name, short);
+    this.opts.push(name);
+    if (short) {
+      this.opts.push(short);
+    }
+    this.config.options.push({
+      name, short, mode, desc, default: default_value
     });
   }
 
@@ -100,9 +138,8 @@ class Command {
         printer.print(option.desc ? __(option.desc) : '');
         printer.println();
       });
-    } else {
-      printer.println();
     }
+    printer.println();
   }
 
   async exec() {
