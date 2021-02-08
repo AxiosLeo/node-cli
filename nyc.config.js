@@ -10,9 +10,9 @@ module.exports = {
     'commands'
   ],
   'watermarks': {
-    'lines': [0, 100],
-    'functions': [0, 100],
-    'branches': [0, 100],
-    'statements': [0, 100]
+    'lines': [0, 80],
+    'functions': [0, 80],
+    'branches': [0, 80],
+    'statements': [0, 80]
   }
 };

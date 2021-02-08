@@ -83,7 +83,12 @@ function _fixed(content, length = 10, fillPosition = 'l', fill = ' ') {
   return content;
 }
 
+function _str(s){
+  return typeof s === 'undefined' || s === null ? '' : s;
+}
+
 module.exports = {
+  _str,
   _fixed,
   _render,
   _caml_case,
