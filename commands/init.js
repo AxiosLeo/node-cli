@@ -10,24 +10,9 @@ class InitCommand extends Command {
     super({
       name: 'init',
       desc: 'init_command_desc',
-      args: [
-        {
-          name: 'name',
-          mode: 'required',
-          desc: 'init_command_args_name_desc',
-          default: null
-        }
-      ],
-      options: [
-        {
-          name: 'output',
-          short: 'o',
-          mode: 'optional',
-          desc: 'init_command_options_output_desc',
-          default: process.cwd()
-        }
-      ],
     });
+    this.addArgument('name', 'init_command_args_name_desc', 'required');
+    this.addOption('output', 'o', 'init_command_options_output_desc', 'optional', process.cwd());
   }
 
   async exec(args, options, argList, app) {

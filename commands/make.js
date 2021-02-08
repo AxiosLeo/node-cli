@@ -10,20 +10,9 @@ class MakeCommand extends Command {
     super({
       name: 'make',
       desc: 'make_command_desc',
-      args: [
-        {
-          name: 'name',
-          mode: 'required',
-          desc: 'make_command_args_name_desc'
-        },
-        {
-          name: 'output',
-          mode: 'required',
-          desc: 'make_command_args_output_desc'
-        }
-      ],
-      options: [],
     });
+    this.addArgument('name', 'make_command_args_name_desc', 'required');
+    this.addArgument('output', 'make_command_args_output_desc', 'required');
   }
 
   async exec(args) {
