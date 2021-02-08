@@ -9,8 +9,10 @@ module.exports = {
     'locales',
     'commands'
   ],
-  branches: 100,
-  functions: 100,
-  lines: 100,
-  statements: 100
+  'watermarks': {
+    'lines': [0, 100],
+    'functions': [0, 100],
+    'branches': [0, 100],
+    'statements': [0, 100]
+  }
 };
