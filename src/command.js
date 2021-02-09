@@ -40,7 +40,7 @@ class Command {
     });
   }
 
-  addArgument(name, desc, mode = 'required', default_value = null) {
+  addArgument(name, desc = '', mode = 'required', default_value = null) {
     const arg = {
       name, desc: _str(desc), mode, default: default_value
     };
@@ -50,7 +50,7 @@ class Command {
     return this;
   }
 
-  addOption(name, short, desc, mode = 'required', default_value = null) {
+  addOption(name, short = '', desc = '', mode = 'required', default_value = null) {
     const opt = {
       name, short: _str(short), mode, desc: _str(desc), default: default_value
     };
