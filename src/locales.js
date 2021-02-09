@@ -18,7 +18,7 @@ function __(str, params = null) {
 function init(config) {
   sets = config.sets;
   if (!sets.length) {
-    debug.error('locale.sets cannot be empty');
+    debug.stack('locale.sets cannot be empty');
   }
   let default_locale = sets[0];
   let locale = config.use || osLocale.sync();
@@ -36,7 +36,7 @@ function init(config) {
 
 function use(set) {
   if (sets.indexOf(set) < 0) {
-    debug.error(`${set} not exist in config.sets which is (${sets.join(',')}) `);
+    debug.stack(`"${set}" not exist in config.sets which is (${sets.join(',')})`);
   }
   options.defaultLocale = set;
   i18n = new I18n(options);
