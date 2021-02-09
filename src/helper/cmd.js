@@ -8,6 +8,7 @@ const exec = promisify(cp.exec);
 const { prompt, Select } = require('enquirer');
 const { _fixed } = require('./str');
 const is = require('./is');
+const { __ } = require('../locales');
 
 async function _shell(cmd, cwd = null, options = {}) {
   if (null === cwd) {
@@ -168,6 +169,38 @@ async function _dispatch(opts = [], ways) {
   return await recur(0, opts, ways);
 }
 
+const mode_list = ['required', 'optional'];
+
+function _check_option(command_name, opts, opt) {
+  if (is.empty(opt.name)) {
+    debug.stack(__('The option name cannot be empty in "${cmd}" command.', { cmd: command_name }));
+  }
+  if (is.contain(opts, opt.name)) {
+    debug.stack(__('Option Name Duplication "${name}" in "${cmd}" command.', { cmd: command_name, name: opt.name }));
+  }
+  if (opt.short && is.contain(opts, opt.short)) {
+    debug.stack(__('Option Short Name Duplication -${short} for ${name} option in "${cmd}" command.', { cmd: command_name, short: opt.short, name: opt.name }));
+  }
+  if (opt.mode && !is.contain(mode_list, opt.mode)) {
+    debug.warning(__('The mode name "${mode}" is invalid in "${cmd}" command. Valid mode names are "required" or "optional"', { cmd: command_name, mode: opt.mode }));
+    opt.mode = 'optional';
+  }
+}
+
+function _check_argument(command_name, args, arg) {
+  if (is.empty(arg.name)) {
+    debug.stack(__('The argument name cannot be empty in "${cmd}" command.', { cmd: command_name }));
+  }
+  if (is.contain(args, arg.name)) {
+    debug.stack(__('Argument Name Duplication "${name}" in "${cmd}" command.', { cmd: command_name, name: arg.name }));
+  }
+  if (arg.mode && !is.contain(mode_list, arg.mode)) {
+    debug.warning(__('The mode name "${mode}" is invalid in "${cmd}" command. Valid mode names are "required" or "optional"', { cmd: command_name, mode: arg.mode }));
+    arg.mode = 'optional';
+  }
+}
+
+
 module.exports = {
   _ask,
   _exec,
@@ -175,5 +208,7 @@ module.exports = {
   _table,
   _select,
   _confirm,
-  _dispatch
+  _dispatch,
+  _check_option,
+  _check_argument
 };

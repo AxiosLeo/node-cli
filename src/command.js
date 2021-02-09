@@ -3,40 +3,9 @@
 const printer = require('./printer');
 const debug = require('./debug');
 const { __ } = require('./locales');
-const { _confirm, _select, _ask, _table } = require('./helper/cmd');
+const { _confirm, _select, _ask, _table, _check_argument, _check_option } = require('./helper/cmd');
 const is = require('./helper/is');
 const { _str } = require('./helper/str');
-
-const mode_list = ['required', 'optional'];
-
-function checkArgument(cmd, args, arg) {
-  if (is.empty(arg.name)) {
-    debug.stack(__('The argument name cannot be empty in "${cmd}" command.', { cmd }));
-  }
-  if (is.contain(args, arg.name)) {
-    debug.stack(__('Argument Name Duplication "${name}" in "${cmd}" command.', { cmd, name: arg.name }));
-  }
-  if (arg.mode && !is.contain(mode_list, arg.mode)) {
-    debug.warning(__('The mode name "${mode}" is invalid in "${cmd}" command. Valid mode names are "required" or "optional"', { cmd, mode: arg.mode }));
-    arg.mode = 'optional';
-  }
-}
-
-function checkOption(cmd, opts, opt) {
-  if (is.empty(opt.name)) {
-    debug.stack(__('The option name cannot be empty in "${cmd}" command.', { cmd }));
-  }
-  if (is.contain(opts, opt.name)) {
-    debug.stack(__('Option Name Duplication "${name}" in "${cmd}" command.', { cmd, name: opt.name }));
-  }
-  if (opt.short && is.contain(opts, opt.short)) {
-    debug.stack(__('Option Short Name Duplication -${short} for ${name} option in "${cmd}" command.', { cmd, short: opt.short, name: opt.name }));
-  }
-  if (opt.mode && !is.contain(mode_list, opt.mode)) {
-    debug.warning(__('The mode name "${mode}" is invalid in "${cmd}" command. Valid mode names are "required" or "optional"', { cmd, mode: opt.mode }));
-    opt.mode = 'optional';
-  }
-}
 
 class Command {
   constructor(config = {}) {
@@ -57,13 +26,13 @@ class Command {
     // check arguments
     this.args = [];
     this.config.args.forEach((arg) => {
-      checkArgument(cmd_name, this.args, arg);
+      _check_argument(cmd_name, this.args, arg);
       this.args.push(arg.name);
     });
     // check options
     this.opts = ['help', 'h'];
     this.config.options.forEach((option) => {
-      checkOption(cmd_name, this.opts, option);
+      _check_option(cmd_name, this.opts, option);
       this.opts.push(option.name);
       if (option.short) {
         this.opts.push(option.short);
@@ -75,7 +44,7 @@ class Command {
     const arg = {
       name, desc: _str(desc), mode, default: default_value
     };
-    checkArgument(this.config.name, this.args, arg);
+    _check_argument(this.config.name, this.args, arg);
     this.config.args.push(arg);
     this.args.push(name);
     return this;
@@ -85,7 +54,7 @@ class Command {
     const opt = {
       name, short: _str(short), mode, desc: _str(desc), default: default_value
     };
-    checkOption(this.config.name, this.opts, opt);
+    _check_option(this.config.name, this.opts, opt);
     this.opts.push(name);
     if (short) {
       this.opts.push(short);
