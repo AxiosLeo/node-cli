@@ -8,6 +8,7 @@ var count = 0;
 
 function dump(...data) {
   data.forEach(d => {
+    // eslint-disable-next-line no-console
     console.log(d);
   });
 }

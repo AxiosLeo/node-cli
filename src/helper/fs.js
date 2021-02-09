@@ -2,6 +2,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const debug = require('../debug');
 const promisify = require('util').promisify;
 const exists = promisify(fs.exists);
 const mkdir = promisify(fs.mkdir);
@@ -99,7 +100,7 @@ async function _search(dir, ext = '*', recur = true) {
 
 async function _remove(filepath) {
   if (filepath === path.sep) {
-    console.error(`cannot delete root of system with : ${filepath}`);
+    debug.error(`cannot delete root of system with : ${filepath}`);
     return;
   }
   {if (await _exists(filepath)) {
