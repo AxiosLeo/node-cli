@@ -1,13 +1,10 @@
 'use strict';
 
 module.exports = {
-  exclude: [
-    'coverage',
-    'self-coverage',
-    'tests/*.js',
-    'bin',
-    'locales',
-    'commands'
+  all: false,
+  include: [
+    'src/helper/*.js',
+    'src/locales.js'
   ],
   'watermarks': {
     'lines': [0, 80],
