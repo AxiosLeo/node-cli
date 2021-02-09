@@ -18,26 +18,27 @@ class Configuration {
     return _assign(this.config, config);
   }
 
-  get(key = null, default_value = null) {
+  get(key = null, _default = null) {
     if (!key) {
       return this.config;
     } else if (key.indexOf(this.sep) < 0) {
-      return !is.invalid(this.config[key]) ? this.config[key] : default_value;
+      return !is.invalid(this.config[key]) ? this.config[key] : _default;
     }
     const keyArr = key.split(this.sep);
-    let tmp = JSON.parse(JSON.stringify(this.config));
-    let i = 0;
-    while (i < keyArr.length) {
-      const key = keyArr[i];
-      if (!tmp[key]) {
-        tmp = default_value;
-        break;
-      } else {
-        tmp = tmp[key];
+    function recur(keys, curr, _default) {
+      if (is.invalid(keys)) {
+        return _default;
       }
-      i++;
+      if (!keys.length) {
+        return curr;
+      }
+      const key = keys.shift();
+      if (is.invalid(curr[key])) {
+        return _default;
+      }
+      return recur(keys, curr[key], _default);
     }
-    return tmp;
+    return recur(keyArr, this.config, _default);
   }
 
   validate(keys = []) {
