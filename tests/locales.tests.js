@@ -12,6 +12,24 @@ describe('locales test case', function () {
       sets: ['en-US', 'zh-CN']
     });
   });
+  it('init with empty lang sets', function () {
+    expect(function () {
+      locales.init({
+        dir: path.join(__dirname, '../locales'),
+        sets: []
+      });
+    }).to.be.throw('locale.sets cannot be empty');
+  });
+  it('use lang set which is not exist in sets', function () {
+    locales.init({
+      dir: path.join(__dirname, '../locales'),
+      sets: ['zh-CN', 'en-US'],
+      use: 'invalid'
+    });
+    expect(function () {
+      locales.use('invalid');
+    }).to.be.throw('"invalid" not exist in config.sets which is (zh-CN,en-US)');
+  });
   it('translate with zh-CN', async function () {
     let data = await _read_json(path.join(__dirname, '../locales/zh-CN.json'));
     locales.use('zh-CN');
