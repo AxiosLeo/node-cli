@@ -1,29 +1,46 @@
 'use strict';
 
+const debug = require('../debug');
 const camelCase = require('camelcase');
 const fs = require('./fs');
+const is = require('./is');
+
+function _str(s) {
+  return is.invalid(s) ? '' : s;
+}
 
 function _upper_first(str) {
-  if (!str) {
+  if (is.empty(str)) {
     return '';
+  }
+  if (!is.string(str)) {
+    debug.stack('Only supported for string.');
   }
   return str[0].toUpperCase() + str.substring(1);
 }
 
 function _lower_first(str) {
-  if (!str) {
+  if (is.empty(str)) {
     return '';
+  }
+  if (!is.string(str)) {
+    debug.stack('Only supported for string.');
   }
   return str[0].toLowerCase() + str.substring(1);
 }
 
 function _caml_case(name, pascalCase = true) {
+  name = _str(name);
+  if (!is.string(name)) {
+    debug.stack('Only supported for string.');
+  }
   return camelCase(name, { pascalCase });
 }
 
 function _snake_case(name) {
-  if (!name) {
-    return '';
+  name = _str(name);
+  if (!is.string(name)) {
+    debug.stack('Only supported for string.');
   }
   let res = '';
   let tmp = '';
@@ -64,7 +81,7 @@ async function _render_with_file(tmpl_file, params = {}, left = '${', right = '}
 }
 
 function _fixed(content, length = 10, fillPosition = 'l', fill = ' ') {
-  content = `${content}`;
+  content = `${_str(content)}`;
   if (content.length < length) {
     var leftFill = '';
     var rightFill = '';
@@ -81,10 +98,6 @@ function _fixed(content, length = 10, fillPosition = 'l', fill = ' ') {
     content = leftFill + content + rightFill;
   }
   return content;
-}
-
-function _str(s){
-  return typeof s === 'undefined' || s === null ? '' : s;
 }
 
 module.exports = {
