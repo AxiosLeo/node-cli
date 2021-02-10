@@ -3,7 +3,10 @@
 module.exports = {
   all: false,
   include: [
-    'src/helper/*.js',
+    'src/helper/fs.js',
+    'src/helper/is.js',
+    'src/helper/obj.js',
+    'src/helper/str.js',
     'src/locales.js'
   ],
   'watermarks': {
