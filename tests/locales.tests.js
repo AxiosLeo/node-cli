@@ -49,4 +49,17 @@ describe('locales test case', function () {
       expect(res).to.be.equal(expe[word]);
     });
   });
+  it('translate with params', function () {
+    locales.use('en-US');
+    const res = locales.__('Required option : ${name}', { name: 'name' });
+    expect(res).to.be.equal('Required option : name');
+  });
+  it('translate without init locales', function () {
+    locales.restore();
+    let res = locales.__('translate some word');
+    expect(res).to.be.equal('translate some word');
+
+    res = locales.__('translate with ${name} param', { name: 'name' });
+    expect(res).to.be.equal('translate with name param');
+  });
 });
