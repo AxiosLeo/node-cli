@@ -100,14 +100,13 @@ async function _search(dir, ext = '*', recur = true) {
 
 async function _remove(filepath) {
   if (filepath === path.sep) {
-    debug.error(`cannot delete root of system with : ${filepath}`);
-    return;
+    debug.stack(`cannot delete root of system with : ${filepath}`);
   }
   {if (await _exists(filepath)) {
     if (await _is_file(filepath)) {
       await unlink(filepath);
     } else if(await _is_dir(filepath)){
-      await rmdir(filepath);
+      await rmdir(filepath, { recursive: true});
     }
   }}
 }
