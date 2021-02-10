@@ -1,0 +1,78 @@
+/* eslint-disable no-undefined */
+'use strict';
+
+const expect = require('chai').expect;
+const is = require('../src/helper/is');
+const { Configuration } = require('../main');
+
+describe('is test case', function () {
+  it('test case for undefined', async function () {
+    let data = {};
+    expect(is.undefined(data.undefined)).to.be.true;
+    data = [];
+    expect(is.undefined(data[0])).to.be.true;
+    expect(is.undefined(undefined)).to.be.true;
+  });
+  it('test case for array', function () {
+    expect(is.array([])).to.be.true;
+    expect(is.array({})).to.be.false;
+    expect(is.array(undefined)).to.be.false;
+    expect(is.array(null)).to.be.false;
+    expect(is.array('')).to.be.false;
+  });
+  it('test case for string', function () {
+    expect(is.string('')).to.be.true;
+    expect(is.string(0)).to.be.false;
+    expect(is.string({})).to.be.false;
+  });
+  it('test case for number', function () {
+    expect(is.number(1.123)).to.be.true;
+    expect(is.number(1111111111111111111111111)).to.be.true;
+    expect(is.number('123')).to.be.false;
+  });
+  it('test case for object', function () {
+    expect(is.object({})).to.be.true;
+    let obj = {};
+    expect(is.object(obj)).to.be.true;
+    expect(is.object([])).to.be.false;
+    const config = new Configuration();
+    expect(is.object(config)).to.be.true;
+  });
+  it('test case for function', function () {
+    expect(is.function(function name() { })).to.be.true;
+    const func = function () { return; };
+    expect(is.function(func)).to.be.true;
+    const config = new Configuration();
+    expect(is.function(config.get)).to.be.true;
+  });
+  it('test case for boolean', function () {
+    expect(is.boolean(true)).to.be.true;
+    expect(is.boolean(false)).to.be.true;
+  });
+  it('test case for file&dir', async function () {
+    expect(await is.file(__filename)).to.be.true;
+    expect(await is.file(__dirname)).to.be.false;
+
+    expect(await is.dir(__dirname)).to.be.true;
+    expect(await is.dir(__filename)).to.be.false;
+  });
+  it('test case for invalid', function () {
+    expect(is.invalid(null)).to.be.true;
+    expect(is.invalid(undefined)).to.be.true;
+    expect(is.invalid('')).to.be.false;
+  });
+  it('test case for contain', function () {
+    expect(is.contain(['a', 'b'], 'b')).to.be.true;
+    expect(is.contain('ab', 'b')).to.be.true;
+    expect(is.contain({ b: 'B' }, 'b')).to.be.true;
+    expect(is.contain('ab', 'c')).to.be.false;
+  });
+  it('test case for empty', function () {
+    expect(is.empty('')).to.be.true;
+    expect(is.empty([])).to.be.true;
+    expect(is.empty({})).to.be.true;
+    expect(is.empty(undefined)).to.be.true;
+    expect(is.empty(null)).to.be.true;
+    expect(is.empty(0)).to.be.false;
+  });
+});
