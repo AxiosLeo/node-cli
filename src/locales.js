@@ -42,8 +42,12 @@ function use(set) {
   i18n = new I18n(options);
 }
 
+function restore() {
+  i18n = null;
+}
+
 module.exports = {
-  i18n,
+  restore,
   init,
   __,
   use
