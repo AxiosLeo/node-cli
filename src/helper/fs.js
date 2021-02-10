@@ -98,19 +98,24 @@ async function _search(dir, ext = '*', recur = true) {
   return files;
 }
 
-async function _remove(filepath) {
+async function _remove(filepath, recur = true) {
   if (filepath === path.sep) {
     debug.stack(`cannot delete root of system with : ${filepath}`);
   }
-  {if (await _exists(filepath)) {
+  if (await _exists(filepath)) {
     if (await _is_file(filepath)) {
       await unlink(filepath);
-    } else if(await _is_dir(filepath)){
-      await rmdir(filepath, { recursive: true});
+    } else if (await _is_dir(filepath)) {
+      const dir = filepath;
+      const files = await readdir(dir);
+      await Promise.all(files.map(async (filename) => {
+        const full = path.join(dir, filename);
+        await _remove(full, recur);
+      }));
+      await rmdir(filepath);
     }
-  }}
+  }
 }
-
 
 module.exports = {
   _ext,

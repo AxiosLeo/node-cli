@@ -70,7 +70,7 @@ describe('str test case', function () {
     }
     await _write(tmpl_file, 'render string with ${file}');
     expect(await _render_with_file(tmpl_file, { file: 'test.tmpl' })).to.be.equal('render string with test.tmpl');
-    await _remove(tmpl_file);
+    await _remove(path.join(__dirname, '../runtime/test-str/'));
   });
   it('_fixed', function () {
     expect(_fixed(null, 4)).to.be.equal('    ');

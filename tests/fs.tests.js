@@ -9,8 +9,7 @@ describe('fs test case', function () {
     const ext = _ext(__filename);
     let files = await _search(__dirname, ext);
     expect(files.length).not.to.be.equal(0);
-
-    files = await _search(path.join(__dirname, '../src/'));
+    files = await _search(path.join(__dirname, '../node_modules/'), 'js');
     expect(files.length).not.to.be.equal(0);
     try {
       await _search(__filename);
