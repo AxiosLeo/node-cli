@@ -96,12 +96,17 @@ function showHelp() {
     printer.println(`  ${appconfig.name} <command> [options] [<args>]`).println();
 
     // print options
-    printer.warning('Options:');
+    printer.warning('Global Options:');
     let max_len = Math.max(...this.config.options.map(opt => (opt.short ? `-${opt.short}, --${opt.name}` : `--${opt.name}`).length));
     if (this.config.options && this.config.options.length) {
       this.config.options.forEach(opt => {
-        const str = opt.short ? `-${opt.short}, --${opt.name}` : `--${opt.name}`;
-        printer.print('  ').green(_fixed(str, max_len + 4));
+        if (opt.mode === 'required') {
+          printer.print(' ').red('*');
+        } else {
+          printer.print('  '); 
+        }
+        let str = opt.short ? `-${opt.short}, --${opt.name}` : `--${opt.name}`;
+        printer.green(_fixed(str, max_len + 4));
         if (opt.desc) {
           printer.println(__(opt.desc));
         } else {
