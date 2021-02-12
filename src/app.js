@@ -7,141 +7,10 @@ const debug = require('./debug');
 const { _confirm, _select } = require('./helper/cmd');
 const { __, init } = require('./locales');
 const { _exists, _search } = require('./helper/fs');
-const { _str, _fixed } = require('./helper/str');
+const { _str } = require('./helper/str');
 const is = require('./helper/is');
 
 const mode_list = ['required', 'optional'];
-
-function resolveCommands(sort, group) {
-  if (!group) {
-    group = {};
-  }
-  if (is.empty(sort) || is.array(sort)) {
-    sort = [];
-  }
-
-  // resolve by goup
-  const group_commands = [];
-  Object.keys(group).forEach((key) => {
-    group[key].forEach(cmd => {
-      if (group_commands.indexOf(cmd) < 0) {
-        group_commands.push(cmd);
-      }
-    });
-  });
-
-  // resolve by list
-  const commands = this.commands;
-  Object.keys(commands).sort().forEach((key) => {
-    const cmd = commands[key];
-    if (!cmd) {
-      debug.stack(__('load ${name} command error', { name: key }), cmd);
-    }
-    let name = cmd.config.name;
-    if (sort.indexOf(name) < 0 && group_commands.indexOf(name) < 0) {
-      sort.push(name);
-    }
-  });
-
-  let list = sort.filter(cmd => group_commands.indexOf(cmd) < 0);
-  if (list.indexOf('help') < 0 && group_commands.indexOf('help') < 0) {
-    list.push('help');
-  }
-  return { list, group };
-}
-
-function printCommand(command_name, max_len) {
-  const cmd = this.commands[command_name];
-  max_len = max_len < 4 ? 4 : max_len;
-  max_len = max_len + 6;
-  if (cmd) {
-    let { name, desc } = cmd.config;
-    desc = is.empty(desc) ? '' : __(desc);
-    printer.print(printer.fgGreen);
-    printer.fixed('  ' + name, max_len).print();
-    printer.print(printer.reset);
-    if (cmd.config.alias && cmd.config.alias.length) {
-      printer.print('[');
-      printer.print(cmd.config.alias.join('|'));
-      printer.print('] ');
-    }
-    printer.println(desc);
-    return true;
-  } else if (command_name === 'help') {
-    printer.print(printer.fgGreen);
-    printer.fixed('  help', max_len).print();
-    printer.print(printer.reset);
-    printer.println(__('Print help information'));
-    return true;
-  }
-  return false;
-}
-
-function showHelp() {
-  const appconfig = this.config;
-  if (this.commands['help']) {
-    this.exec('help');
-  } else {
-    // print header
-    printer.println();
-    printer.yellow(appconfig.name);
-    printer.green(` ${appconfig.version} `);
-    if (appconfig.desc) {
-      printer.println(__(appconfig.desc));
-    }
-    printer.println();
-
-    // print usage
-    printer.warning('Usage:');
-    printer.println(`  ${appconfig.name} <command> [options] [<args>]`).println();
-
-    // print options
-    printer.warning('Global Options:');
-    let max_len = Math.max(...this.config.options.map(opt => (opt.short ? `-${opt.short}, --${opt.name}` : `--${opt.name}`).length));
-    if (this.config.options && this.config.options.length) {
-      this.config.options.forEach(opt => {
-        if (opt.mode === 'required') {
-          printer.print(' ').red('*');
-        } else {
-          printer.print('  '); 
-        }
-        let str = opt.short ? `-${opt.short}, --${opt.name}` : `--${opt.name}`;
-        printer.green(_fixed(str, max_len + 4));
-        if (opt.desc) {
-          printer.println(__(opt.desc));
-        } else {
-          printer.println();
-        }
-      });
-      printer.println();
-    }
-
-    // print available commands
-    printer.warning('Available commands:');
-    max_len = Math.max(...Object.keys(this.commands).map(command_name => command_name.length));
-    const {
-      list,
-      group
-    } = resolveCommands.call(this, appconfig.commands_sort, appconfig.commands_group);
-    if (list) {
-      list.forEach(cmd => {
-        printCommand.call(this, cmd, max_len);
-      });
-      printer.println();
-    }
-    const group_list = Object.keys(group);
-    for (let i = 0; i < group_list.length; i++) {
-      const desc = group_list[i];
-      if (group[desc]) {
-        printer.println(desc);
-        group[desc].forEach(cmd => {
-          printCommand.call(this, cmd, max_len);
-        });
-        printer.println();
-      }
-    }
-  }
-}
 
 async function showAmbiguous(commandName, matched) {
   printer.println();
@@ -346,11 +215,15 @@ class App {
         printer.warning(__('commands dir not exist on ${dir}', { dir: appconfig.commands_dir }));
       }
     }
+    if (!this.commands['help']) {
+      const HelpCommand = require('../commands/help');
+      this.commands['help'] = new HelpCommand();
+    }
 
     // resolve args
     const argv = resolveArgs.call(this, this.config.options, process.argv.slice(2));
     if (!argv._.length) {
-      showHelp.call(this);
+      this.exec('help');
       return;
     }
 
