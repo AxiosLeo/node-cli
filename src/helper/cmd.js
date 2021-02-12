@@ -24,6 +24,15 @@ async function _shell(cmd, cwd = null, options = {}) {
   return result;
 }
 
+
+async function _bash(cmd, cwd = null, options = {}) {
+  try {
+    return await _shell(cmd, cwd, options);
+  } catch (e) {
+    return e;
+  }
+}
+
 /**
  * 
  * @param {string} cmd 
@@ -203,6 +212,7 @@ function _check_argument(command_name, args, arg) {
 
 module.exports = {
   _ask,
+  _bash,
   _exec,
   _shell,
   _table,
