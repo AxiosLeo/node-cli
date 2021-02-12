@@ -12,7 +12,7 @@ class MakeCommand extends Command {
       desc: 'make_command_desc',
     });
     this.addArgument('name', 'make_command_args_name_desc');
-    this.addArgument('output', 'make_command_args_output_desc');
+    this.addArgument('output', 'make_command_args_output_desc', 'optional', path.join(process.cwd(), './commands/'));
   }
 
   async exec(args) {
