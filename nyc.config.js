@@ -7,6 +7,7 @@ module.exports = {
     'src/helper/is.js',
     'src/helper/obj.js',
     'src/helper/str.js',
+    'src/helper/print.js',
     'src/locales.js'
   ],
   'watermarks': {
