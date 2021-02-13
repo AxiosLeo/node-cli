@@ -23,7 +23,7 @@ cli-tool init <app-name>
 # make command file
 cli-tool make <command-name> <commands-dir-path>
 # for example
-cli-tool make test ./commands/ # will generate ./commands/test.js command file
+cli-tool make test ./commands/ # will generate command file on ./commands/test.js
 ```
 
 ## Usage
@@ -33,9 +33,9 @@ cli-tool make test ./commands/ # will generate ./commands/test.js command file
 ```js
 const { App } = require('@axiosleo/cli-tool');
 const app = new App({
-  name: 'cli', // cli app command name
+  name: 'cli',      // cli app command name, required
   desc: 'cli app description',
-  version: '1.0.0',
+  version: '1.0.0', // cli app version, required
   commands_dir: '/path/to/commands/dir/', // will auto load command files
   commands_sort: ['help', ... ],
   commands_group: {
@@ -51,7 +51,7 @@ app.start();
 
 ```js
 // register with command class
-const CommandExample = require('/path/to/your/other-command/file'); 
+const CommandExample = require('/path/to/your/command/file'); 
 app.register(CommandExample);
 
 app.exec("<command-name>");
@@ -60,7 +60,7 @@ app.exec("<command-name>");
 - register with command object
 
 ```js
-const CommandExample = require('/path/to/your/other-command/file');
+const CommandExample = require('/path/to/your/command/file');
 const command = new CommandExample();
 app.register(command);
 
@@ -80,6 +80,8 @@ app.exec("<command-name>");
 > The "desc" will be automatically translated by using the locales json file.
 > 
 > locales example json file : [locales](./locales)
+> 
+> see detail from [locales wiki](https://github.com/AxiosCros/node-cli/wiki/locales)
 
 ```js
 const path = require('path');
