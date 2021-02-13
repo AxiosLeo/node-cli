@@ -249,7 +249,7 @@ class App {
 
     // match command name
     if (matched.length === 0) {
-      this.exec('help');
+      this.exec('help', 3);
       if (command_ame !== 'help') {
         debug.error(__('${name} command dose not exist.', { name: command_ame }));
       }
@@ -277,7 +277,7 @@ class App {
     if (hasQuietOption && argv.quiet === true) {
       printer.quiet(true);
     }
-    if (argv.h || argv.help) {
+    if (name !== 'help' && argv.help) {
       command.usage();
       return;
     }
