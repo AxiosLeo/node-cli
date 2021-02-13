@@ -5,6 +5,9 @@ let quiet = false;
 const os = require('os');
 const { _fixed } = require('./helper/str');
 
+/**
+ * @deprecated
+ */
 module.exports = {
   quiet(quiet_flag) {
     quiet = quiet_flag;
