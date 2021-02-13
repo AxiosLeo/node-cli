@@ -31,9 +31,9 @@
     "url": "https://github.com/AxiosCros/node-cli"
   },
   "devDependencies": {
-    "eslint": "*",
     "chai": "^4.2.0",
     "codecov": "^3",
+    "eslint": "*",
     "expect.js": "^0.3.1",
     "has-flag": "^4.0.0",
     "mm": "^3.2.0",
