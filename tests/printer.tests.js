@@ -1,38 +1,38 @@
 'use strict';
 
 const expect = require('chai').expect;
-const print = require('../src/helper/printer');
+const printer = require('../src/printer');
 
 describe('print test case', function () {
   it('print some content', function () {
-    print.print().println();
-    print.input('input').input('intput2');
-    print.verbose('verbose').verbose('verbose');
-    print.info('info').info('info');
-    print.data('data').data('data');
-    print.debug('debug').debug('debug');
-    print.success('success row 1', 'success row 2');
-    print.warning('warning row 1', 'warning row 2');
-    print.error('error row 1', 'error row 2');
-    print.yellow('yellow').green('yellow');
-    print.green('green').red('red');
-    print.red('red').yellow('yellow');
-    print.fixed('fixed str', 20, 'center').println('eol');
-    print.fixed('fixed').println('eol');
+    printer.print().println();
+    printer.input('input').input('intput2');
+    printer.verbose('verbose').verbose('verbose');
+    printer.info('info').info('info');
+    printer.data('data').data('data');
+    printer.debug('debug').debug('debug');
+    printer.success('success row 1', 'success row 2');
+    printer.warning('warning row 1', 'warning row 2');
+    printer.error('error row 1', 'error row 2');
+    printer.yellow('yellow').green('yellow');
+    printer.green('green').red('red');
+    printer.red('red').yellow('yellow');
+    printer.fixed('fixed str', 20, 'center').println('eol');
+    printer.fixed('fixed').println('eol');
     // exec here is ok
     expect(true).to.be.true;
   });
   it('enable&disblae', function () {
-    print.disable();
-    print.debug('not have color');
-    print.enable();
-    print.debug('has color');
+    printer.disable();
+    printer.debug('not have color');
+    printer.enable();
+    printer.debug('has color');
   });
   it('change themes', function () {
-    print.themes();
-    print.themes({
+    printer.themes();
+    printer.themes({
       input: 'red'
     });
-    print.red('echo input with red color').println();
+    printer.red('echo input with red color').println();
   });
 });

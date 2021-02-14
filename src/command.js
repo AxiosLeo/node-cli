@@ -5,7 +5,52 @@ const debug = require('./debug');
 const { __ } = require('./locales');
 const { _confirm, _select, _ask, _table, _check_argument, _check_option } = require('./helper/cmd');
 const is = require('./helper/is');
-const { _str } = require('./helper/str');
+const { _str, _fixed } = require('./helper/str');
+
+function printUsage(config) {
+  printer.warning('Usage:');
+  printer.green(`  ${config.name}`);
+  if (config.options.length) {
+    printer.yellow(' [options] ');
+  }
+  if (config.args.length) {
+    if (config.args.some(arg => arg.mode === 'required')) {
+      printer.print('[--] ');
+    }
+    let args = config.args.map(arg => arg.mode === 'required' ? `[${arg.name}]` : `<${arg.name}>`);
+    printer.println(args.join(' '));
+  } else {
+    printer.println();
+  }
+  printer.println();
+}
+
+function printArgsAndOpts(config) {
+  let arg_len = Math.max(config.args.map(arg => arg.name.length));
+  let len = 0;
+  if (config.options.length) {
+    printer.warning('Options:');
+    let opts = config.options.map(opt => opt.short ? `-${opt.short}, --${opt.name}` : `--${opt.name}`);
+    let opt_len = Math.max(opts.map(opt => opt.length));
+    len = Math.max(opt_len, arg_len) + 4;
+    config.options.forEach((opt, index) => {
+      opt.mode === 'required' ? printer.red(' *') : printer.print('  ');
+      printer.green(_fixed(opts[index], len)).println(opt.desc ? __(opt.desc) : '');
+    });
+    printer.println();
+  }
+  if (config.args.length) {
+    if (len === 0) {
+      len = arg_len + 4;
+    }
+    printer.warning('Arguments:');
+    config.args.forEach((arg) => {
+      arg.mode === 'required' ? printer.red(' *') : printer.print('  ');
+      printer.green(_fixed(arg.name, len)).println(arg.desc ? __(arg.desc) : '');
+    });
+    printer.println();
+  }
+}
 
 class Command {
   constructor(config = {}) {
@@ -65,63 +110,16 @@ class Command {
   usage() {
     printer.println();
     if (this.config.desc) {
-      printer.yellow('Description:').println();
+      printer.warning('Description:');
       printer.print(`  ${__(this.config.desc)}`).println().println();
     }
-    // print usage
-    printer.yellow('Usage:').println();
-    printer.print(`  ${this.config.name}`);
-    if (this.config.options.length) {
-      printer.print(' [options]');
-    }
-    if (this.config.args.length) {
-      if (!this.config.args.some(arg => arg.mode === 'required')) {
-        printer.print(' [--]');
-      }
-      this.config.args.forEach((arg) => {
-        if (arg.mode === 'optional') {
-          printer.print(` [${arg.name}]`);
-        } else {
-          printer.print(` <${arg.name}>`);
-        }
-      });
-      printer.println().println();
-      printer.yellow('Arguments:').println();
-      this.config.args.forEach((arg) => {
-        printer.print(' ');
-        if (arg.mode === 'required') {
-          printer.red('*');
-        } else {
-          printer.print(' ');
-        }
-        printer.print(printer.fgGreen).fixed(arg.name, 20).print(printer.reset).println(arg.desc ? __(arg.desc) : '');
-      });
-    } else {
+    printUsage(this.config);
+    if (this.config.example) {
+      printer.warning('Example:');
+      printer.println(`  ${this.config.example}`);
       printer.println();
     }
-    if (this.config.options.length) {
-      printer.println();
-    }
-    if (this.config.options.length) {
-      printer.yellow('Options:').println();
-      this.config.options.forEach((option) => {
-        let str = '';
-        if (option.short) {
-          str += `-${option.short}, `;
-        }
-        str += `--${option.name}`;
-        printer.print(' ');
-        if (option.mode === 'required') {
-          printer.red('*');
-        } else {
-          printer.print(' ');
-        }
-        printer.print(printer.fgGreen).fixed(str, 20).print(printer.reset);
-        printer.print(option.desc ? __(option.desc) : '');
-        printer.println();
-      });
-    }
-    printer.println();
+    printArgsAndOpts(this.config);
   }
 
   async exec() {

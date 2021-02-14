@@ -59,10 +59,10 @@ function _check_global_option(opts, opt) {
   }
 }
 
-async function execCommand(command, argv) {
+function _check_command(command, options, argv) {
   let opts = {};
   let args = {};
-  this.config.options.forEach(opt => {
+  options.forEach(opt => {
     if (argv[opt.name]) {
       opts[opt.name] = argv[opt.name];
       if (opt.short) {
@@ -101,14 +101,7 @@ async function execCommand(command, argv) {
       args[arg.name] = arg.default;
     }
   });
-  command.exec(args, opts, argv._, this).catch((err) => {
-    if (err) {
-      printer.println()
-        .error('exec error :').println()
-        .println(err.stack).println();
-      process.exit(-1);
-    }
-  });
+  return { opts, args };
 }
 
 class App {
@@ -270,18 +263,31 @@ class App {
       debug.error(__('${name} command dose not exist.', { name }));
     }
     const command = this.commands[name];
-    let opts = this.config.options;
-    opts = opts.concat(command.config.options);
-    const argv = resolveArgs.call(this, opts, process.argv.slice(argvSlice));
+    let options = this.config.options;
+    options = options.concat(command.config.options);
+    const argv = resolveArgs.call(this, options, process.argv.slice(argvSlice));
     const hasQuietOption = this.config.options.some(opt => opt.name === 'quiet');
     if (hasQuietOption && argv.quiet === true) {
-      printer.quiet(true);
+      printer.disable();
     }
+    let args = {}, opts = {};
     if (name !== 'help' && argv.help) {
-      command.usage();
-      return;
+      if (argv.help) {
+        command.usage();
+        return;
+      }
+      let res = _check_command(command, options, argv);
+      args = res.args;
+      opts = res.opts;
     }
-    execCommand.call(this, command, argv);
+    command.exec(args, opts, argv._, this).catch((err) => {
+      if (err) {
+        printer.println()
+          .error('exec error :').println()
+          .println(err.stack).println();
+        process.exit(-1);
+      }
+    });
   }
 }
 

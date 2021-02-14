@@ -87,7 +87,7 @@ module.exports = ${_upper_first(name)}Command;
       await _mkdir(output_dir, { recursive: true });
     }
     printer.yellow('Continue add command? ');
-    printer.println('please input command name. (input "enter" or "ctrl+c" to cancel)', printer.fgWhite);
+    printer.println('please input command name. (input "enter" or "ctrl+c" to cancel)'.white);
     const name = await this.ask();
     if (name) {
       await this.genCommand(output_dir, name);

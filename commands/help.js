@@ -17,6 +17,9 @@ function resolveCommands(commands, sort, group) {
   const group_commands = [];
   Object.keys(group).forEach((key) => {
     group[key].forEach(cmd => {
+      if (is.invalid(group_commands[cmd])) {
+        return;
+      }
       if (group_commands.indexOf(cmd) < 0) {
         group_commands.push(cmd);
       }
@@ -49,13 +52,9 @@ function printCommand(commands, command_name, max_len) {
   if (cmd) {
     let { name, desc } = cmd.config;
     desc = is.empty(desc) ? '' : __(desc);
-    printer.print(printer.fgGreen);
-    printer.fixed('  ' + name, max_len).print();
-    printer.print(printer.reset);
+    printer.green(_fixed('  ' + name, max_len));
     if (cmd.config.alias && cmd.config.alias.length) {
-      printer.print('[');
-      printer.print(cmd.config.alias.join('|'));
-      printer.print('] ');
+      printer.print(`[${cmd.config.alias.join('|')}]`);
     }
     printer.println(desc);
   }
@@ -120,12 +119,15 @@ class HelpCommand extends Command {
     const group_list = Object.keys(group);
     for (let i = 0; i < group_list.length; i++) {
       const desc = group_list[i];
-      if (group[desc]) {
-        printer.println(desc);
-        group[desc].forEach(cmd => {
-          printCommand(app.commands, cmd, max_len);
-        });
-        printer.println();
+      const check = group[desc].some(cmd => !is.invalid(app.commands[cmd]));
+      if (check) {
+        if (group[desc]) {
+          printer.println(desc);
+          group[desc].forEach(cmd => {
+            printCommand(app.commands, cmd, max_len);
+          });
+          printer.println();
+        }
       }
     }
   }
