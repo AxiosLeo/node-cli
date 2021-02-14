@@ -75,6 +75,8 @@ class HelpCommand extends Command {
     printer.green(` ${appconfig.version} `);
     if (appconfig.desc) {
       printer.println(__(appconfig.desc));
+    } else {
+      printer.println();
     }
     printer.println();
 
