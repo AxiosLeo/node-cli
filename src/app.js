@@ -271,7 +271,7 @@ class App {
       printer.disable();
     }
     let args = {}, opts = {};
-    if (name !== 'help' && argv.help) {
+    if (name !== 'help') {
       if (argv.help) {
         command.usage();
         return;
