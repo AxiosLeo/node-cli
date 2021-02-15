@@ -52,15 +52,15 @@ class InitCommand extends Command {
 const path = require('path');
 
 const { App } = require('@axiosleo/cli-tool');
-const app = new App();
-
-app.start({
+const app = new App({
   name: '${name}',
   version: '1.0.0',
   desc: '',
   commands_dir: path.join(__dirname, '../commands'),
   commands_sort: ['help']
 });
+
+app.start();
 `;
     _write(path.join(output, `bin/${name}.js`), content);
 
