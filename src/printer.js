@@ -5,6 +5,7 @@
  */
 
 const { _str, _fixed } = require('./helper/str');
+const is = require('./helper/is');
 const os = require('os');
 const colors = require('colors');
 let quiet = false;
@@ -49,7 +50,10 @@ function println(str = '') {
 }
 
 function themes(options = {}) {
-  Object.assign(themesConfig, options);
+  if (!is.empty(options)) {
+    Object.assign(themesConfig, options);
+    colors.setTheme(themesConfig);
+  }
   return themesConfig;
 }
 

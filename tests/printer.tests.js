@@ -31,8 +31,10 @@ describe('print test case', function () {
   it('change themes', function () {
     printer.themes();
     printer.themes({
-      input: 'red'
+      input: 'red',
+      custom: ['red', 'underline'],
     });
     printer.red('echo input with red color').println();
+    printer.println('echo str with red color and underline'.custom);
   });
 });
