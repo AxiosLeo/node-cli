@@ -34,7 +34,7 @@ describe('print test case', function () {
       input: 'red',
       custom: ['red', 'underline'],
     });
-    printer.red('echo input with red color').println();
+    printer.input('echo input with red color').println();
     printer.println('echo str with red color and underline'.custom);
   });
 });
