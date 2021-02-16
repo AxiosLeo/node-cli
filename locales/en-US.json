@@ -30,5 +30,7 @@
 	"The option name cannot be empty in \"${cmd}\" command.": "The option name cannot be empty in \"${cmd}\" command.",
 	"Argument Name Duplication \"${name}\" in \"${cmd}\" command.": "Argument Name Duplication \"${name}\" in \"${cmd}\" command.",
 	"Option Name Duplication \"${name}\" in \"${cmd}\" command.": "Option Name Duplication \"${name}\" in \"${cmd}\" command.",
-	"The mode name \"${mode}\" is invalid in \"${cmd}\" command. Valid mode names are \"required\" or \"optional\"": "The mode name \"${mode}\" is invalid in \"${cmd}\" command. Valid mode names are \"required\" or \"optional\""
+	"The mode name \"${mode}\" is invalid in \"${cmd}\" command. Valid mode names are \"required\" or \"optional\"": "The mode name \"${mode}\" is invalid in \"${cmd}\" command. Valid mode names are \"required\" or \"optional\"",
+	"The global option name cannot be empty.": "The global option name cannot be empty.",
+	"The global option name is duplicated as \"${name}\".": "The global option name is duplicated as \"${name}\"."
 }

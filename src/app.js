@@ -50,7 +50,7 @@ function _check_global_option(opts, opt) {
   }
   if (opt.short) {
     if (is.contain(opts, opt.short)) {
-      debug.stack(__('The global option short name is repeated as "-${short}" for "${name}" option.', { short: opt.short, name: opt.name }));
+      debug.stack(__('The global option short name is duplicated as "-${short}" for "${name}" option.', { short: opt.short, name: opt.name }));
     }
   }
   if (opt.mode && !is.contain(mode_list, opt.mode)) {
