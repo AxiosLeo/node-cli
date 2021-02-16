@@ -56,8 +56,13 @@ function _assign(targetObj, ...objs) {
   return targetObj;
 }
 
+function _deep_clone(obj) {
+  return Object.assign({}, obj);
+}
+
 module.exports = {
   _assign,
   _flatten,
-  _unflatten
+  _unflatten,
+  _deep_clone
 };
