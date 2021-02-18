@@ -3,6 +3,7 @@
 const { _assign } = require('./helper/obj');
 const debug = require('./debug');
 const is = require('./helper/is');
+const { _deep_clone } = require('./helper/obj');
 
 class Configuration {
   constructor(config = {}, sep = '.') {
@@ -10,7 +11,7 @@ class Configuration {
   }
 
   init(config = {}, sep = '.') {
-    this.config = config;
+    this.config = _deep_clone(config);
     this.sep = sep;
   }
 

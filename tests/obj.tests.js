@@ -38,5 +38,20 @@ describe('obj test case', function () {
     clone = _deep_clone(obj);
     clone.a = 'string';
     expect(obj.a).to.be.equal('A');
+
+    const complexObj = {
+      a: {
+        b: {
+          c: {
+            d: [{ x: '1' }]
+          }
+        }
+      }
+    };
+    clone = _deep_clone(complexObj);
+    clone.a.b.c.d.push({ y: 2 });
+    clone.a.b.c.d[0].x = '3';
+    expect(complexObj.a.b.c.d.length).to.be.equal(1);
+    expect(complexObj.a.b.c.d[0].x).to.be.equal('1');
   });
 });

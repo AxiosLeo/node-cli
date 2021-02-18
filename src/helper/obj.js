@@ -1,5 +1,7 @@
 'use strict';
 
+const cloneDeep = require('clone-deep');
+
 function _flatten(obj, sep = '.') {
   function recurse(curr, prefix, res = {}) {
     if (Array.isArray(curr)) {
@@ -57,7 +59,8 @@ function _assign(targetObj, ...objs) {
 }
 
 function _deep_clone(obj) {
-  return Object.assign({}, obj);
+  let copy = cloneDeep(obj);
+  return copy;
 }
 
 module.exports = {
