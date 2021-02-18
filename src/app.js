@@ -74,12 +74,14 @@ function _check_command(command, global_options, argv) {
   });
   command.config.options.forEach(opt => {
     if (opt.short && opts[opt.short]) {
-      debug.stack(
-        __(
-          'Duplication "${cmd}" command option short name "-${short}". it has been used in globel option',
-          { cmd: command.config.name, short: opt.short, name: opt.name }
-        )
-      );
+      if (opts[opt.short]) {
+        debug.stack(
+          __(
+            'Option Short Name Duplication : -${short} for ${name} option in "${cmd}" command.',
+            { cmd: command.config.name, short: opt.short, name: opt.name }
+          )
+        );
+      }
       opts[opt.short] = argv[opt.name];
     }
     if (opts[opt.name]) {
@@ -270,7 +272,7 @@ class App {
       debug.error(__('${name} command dose not exist.', { name }));
     }
     const command = this.commands[name];
-    const argv = resolveArgs.call(this, this.config.options, process.argv.slice(argvSlice));
+    const argv = resolveArgs.call(this, this.config.options.concat(command.config.options), process.argv.slice(argvSlice));
     const hasQuietOption = this.config.options.some(opt => opt.name === 'quiet');
     if (hasQuietOption && argv.quiet === true) {
       printer.disable();
