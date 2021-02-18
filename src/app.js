@@ -59,10 +59,10 @@ function _check_global_option(opts, opt) {
   }
 }
 
-function _check_command(command, options, argv) {
+function _check_command(command, global_options, argv) {
   let opts = {};
   let args = {};
-  options.forEach(opt => {
+  global_options.forEach(opt => {
     if (argv[opt.name]) {
       opts[opt.name] = argv[opt.name];
       if (opt.short) {
@@ -221,9 +221,9 @@ class App {
     }
 
     // exec with command name
-    const command_ame = argv._[0];
-    if (this.commands[command_ame]) {
-      this.exec(command_ame, 3);
+    const command_name = argv._[0];
+    if (this.commands[command_name]) {
+      this.exec(command_name, 3);
       return;
     }
 
@@ -232,10 +232,17 @@ class App {
     const keys = Object.keys(this.commands);
     for (let i = 0; i < keys.length; i++) {
       const command = this.commands[keys[i]];
-      if (command.config.alias && command.config.alias.indexOf(command_ame) > -1) {
-        this.exec(command_ame, 3);
+      const alias = command.config.alias;
+      const name = command.config.name;
+      if (is.string(alias) && command_name === alias) {
+        this.exec(name, 3);
         return;
-      } else if (command.config.name.indexOf(command_ame) !== -1) {
+      }
+      if (is.array(alias) && is.contain(alias, command_name)) {
+        this.exec(name, 3);
+        return;
+      }
+      if (command.config.name.indexOf(command_name) !== -1) {
         matched.push(command);
       }
     }
@@ -243,11 +250,11 @@ class App {
     // match command name
     if (matched.length === 0) {
       this.exec('help', 3);
-      if (command_ame !== 'help') {
-        debug.error(__('${name} command dose not exist.', { name: command_ame }));
+      if (command_name !== 'help') {
+        debug.error(__('${name} command dose not exist.', { name: command_name }));
       }
     } else {
-      showAmbiguous.call(this, command_ame, matched).catch((err) => {
+      showAmbiguous.call(this, command_name, matched).catch((err) => {
         if (err) {
           printer.println()
             .error('exec error :').println()
@@ -263,9 +270,7 @@ class App {
       debug.error(__('${name} command dose not exist.', { name }));
     }
     const command = this.commands[name];
-    let options = this.config.options;
-    options = options.concat(command.config.options);
-    const argv = resolveArgs.call(this, options, process.argv.slice(argvSlice));
+    const argv = resolveArgs.call(this, this.config.options, process.argv.slice(argvSlice));
     const hasQuietOption = this.config.options.some(opt => opt.name === 'quiet');
     if (hasQuietOption && argv.quiet === true) {
       printer.disable();
@@ -276,7 +281,7 @@ class App {
         command.usage();
         return;
       }
-      let res = _check_command(command, options, argv);
+      let res = _check_command(command, this.config.options, argv);
       args = res.args;
       opts = res.opts;
     }
