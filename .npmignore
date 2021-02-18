@@ -1,5 +1,4 @@
 runtime/*
-.eslintrc
 README.md
 .github/*
 tests/*

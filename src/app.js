@@ -200,7 +200,7 @@ class App {
       const dir = appconfig.commands_dir;
       const exist = await _exists(dir);
       if (exist) {
-        const commands = await _search(dir);
+        const commands = await _search(dir, 'js');
         commands.forEach(file => {
           this.register(require(file));
         });
