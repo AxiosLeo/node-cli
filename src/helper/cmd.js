@@ -62,43 +62,58 @@ async function _exec(cmd, cwd = null, options = {}) {
 }
 
 async function _confirm(message = '', default_value = false) {
-  const response = await prompt([
-    {
-      type: 'confirm',
-      name: 'name',
-      message: message,
-      initial: default_value
-    }
-  ]);
-  return response.name;
+  try {
+    const response = await prompt([
+      {
+        type: 'confirm',
+        name: 'name',
+        message: message,
+        initial: default_value
+      }
+    ]);
+    return response.name;
+  } catch (e) {
+    // cancel with ctrl+c
+    debug.halt();
+  }
 }
 
 async function _select(message = '', choices = [], default_choice = null) {
-  const options = {
-    name: 'value',
-    message: message,
-    choices: choices
-  };
-  if (default_choice && choices.indexOf(default_choice) > -1) {
-    options.initial = default_choice;
+  try {
+    const options = {
+      name: 'value',
+      message: message,
+      choices: choices
+    };
+    if (default_choice && choices.indexOf(default_choice) > -1) {
+      options.initial = default_choice;
+    }
+    const prompt = new Select(options);
+    return await prompt.run();
+  } catch (e) {
+    // cancel with ctrl+c
+    debug.halt();
   }
-  const prompt = new Select(options);
-  return await prompt.run();
 }
 
 async function _ask(message = '', default_value = null) {
-  const options = {
-    type: 'input',
-    name: 'name',
-    message: message,
-  };
-  if (default_value) {
-    options.initial = default_value;
+  try {
+    const options = {
+      type: 'input',
+      name: 'name',
+      message: message,
+    };
+    if (default_value) {
+      options.initial = default_value;
+    }
+    const response = await prompt([
+      options
+    ]);
+    return response.name;
+  } catch (e) {
+    // cancel with ctrl+c
+    debug.halt();
   }
-  const response = await prompt([
-    options
-  ]);
-  return response.name;
 }
 
 function _table(rows = [], headers = [], options = {}) {
