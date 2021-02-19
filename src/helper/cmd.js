@@ -51,7 +51,13 @@ async function _exec(cmd, cwd = null, options = {}) {
   Object.assign(opts, options);
   const exec = cp.spawn(cmd, opts);
   return new Promise((resolve, reject) => {
-    exec.on('exit', async function (code) {
+    exec.on('close', function (code) { 
+      resolve(code);
+    });
+    exec.on('error', function (err) { 
+      reject(err);
+    });
+    exec.on('exit', function (code) {
       if (code) {
         reject(new Error(`error executing with code ${code}`));
       } else {
