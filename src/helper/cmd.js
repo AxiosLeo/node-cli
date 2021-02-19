@@ -10,25 +10,25 @@ const { _fixed } = require('./str');
 const is = require('./is');
 const { __ } = require('../locales');
 
-async function _shell(cmd, cwd = null, options = {}) {
+async function _shell(cmd, cwd = null, print = true, throw_error = true) {
   if (null === cwd) {
     cwd = process.cwd();
   }
-  let result = await exec(cmd, { cwd: cwd, ...options });
-  if (result.stderr) {
-    printer.error(result.stderr);
-  }
-  if (result.stdout) {
-    debug.dump(result.stdout);
-  }
-  return result;
-}
-
-
-async function _bash(cmd, cwd = null, options = {}) {
   try {
-    return await _shell(cmd, cwd, options);
+    const result = await exec(cmd, { cwd: cwd });
+    if (print) {
+      if (result.stderr) {
+        printer.error(result.stderr);
+      }
+      if (result.stdout) {
+        debug.dump(result.stdout);
+      }
+    }
+    return result;
   } catch (e) {
+    if (throw_error) {
+      throw e;
+    }
     return e;
   }
 }
@@ -39,17 +39,25 @@ async function _bash(cmd, cwd = null, options = {}) {
  * @param {*} cwd 
  * @param {*} callback 
  */
-async function _exec(cmd, cwd, callback, options = {}) {
-  Object.assign(options, {
+async function _exec(cmd, cwd = null, options = {}) {
+  if (null === cwd) {
+    cwd = process.cwd();
+  }
+  let opts = {
     stdio: 'inherit',
     shell: true,
     cwd: cwd
-  });
-  const exec = cp.spawn(cmd, options);
-  exec.on('exit', async function (code) {
-    if (callback) {
-      callback(code);
-    }
+  };
+  Object.assign(opts, options);
+  const exec = cp.spawn(cmd, opts);
+  return new Promise((resolve, reject) => {
+    exec.on('exit', async function (code) {
+      if (code) {
+        reject(new Error(`error executing with code ${code}`));
+      } else {
+        resolve(code);
+      }
+    });
   });
 }
 
@@ -212,7 +220,6 @@ function _check_argument(command_name, args, arg) {
 
 module.exports = {
   _ask,
-  _bash,
   _exec,
   _shell,
   _table,
