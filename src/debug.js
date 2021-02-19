@@ -1,7 +1,6 @@
 'use strict';
 
-const os = require('os');
-
+const printer = require('./printer');
 const { prompt } = require('enquirer');
 
 var count = 0;
@@ -46,19 +45,23 @@ function warning(...data) {
   }
   dump(...data);
   if (msg.length) {
-    process.stdout.write(`\x1b[33m${os.EOL}[WARNING] ${msg}\x1b[0m${os.EOL}`);
+    printer.println(`[WARNING] ${msg}`);
   }
 }
 
 async function pause(...data) {
   dump(...data);
-  await prompt([
-    {
-      type: 'input',
-      name: 'name',
-      message: '\x1b[33mpause:\x1b[0m input anything to continue...'
-    }
-  ]);
+  return new Promise((resolve, reject) => { 
+    prompt([
+      {
+        type: 'input',
+        name: 'name',
+        message: `${'pause:'.yellow} ${'input anything to continue...'.grey}`
+      }
+    ]).then(res => { resolve(res); }).catch(err => { 
+      reject(err);
+    });
+  });
 }
 
 function error(...data) {
@@ -69,7 +72,8 @@ function error(...data) {
   }
   dump(...data);
   if (msg.length) {
-    process.stdout.write(`\x1b[31m${os.EOL}[ERROR] ${msg}\x1b[0m${os.EOL}${os.EOL}`);
+    printer.println();
+    printer.error(`[ERROR] ${msg}`);
   }
   halt();
 }
