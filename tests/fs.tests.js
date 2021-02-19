@@ -2,7 +2,20 @@
 
 const path = require('path');
 const expect = require('chai').expect;
-const { _search, _ext, _write, _remove, _exists, _read, _append, _mkdir, _read_json, _copy, _move } = require('../src/helper/fs');
+const {
+  _list,
+  _search,
+  _ext,
+  _write,
+  _remove,
+  _exists,
+  _read,
+  _append,
+  _mkdir,
+  _read_json,
+  _copy,
+  _move
+} = require('../src/helper/fs');
 
 describe('fs test case', function () {
   it('search files', async function () {
@@ -43,6 +56,7 @@ describe('fs test case', function () {
     } catch (e) {
       expect(e.message).to.be.equal(`cannot delete root of system with : ${path.sep}`);
     }
+    await _remove(tmp_file);
   });
   it('copy&move file', async function () {
     const tmp_dir = path.join(__dirname, '../runtime/test-fs3');
@@ -52,5 +66,19 @@ describe('fs test case', function () {
     await _move(target, path.join(tmp_dir, 'fs2.tests.js'));
     expect(await _exists(path.join(tmp_dir, 'fs2.tests.js'))).to.be.true;
     await _remove(tmp_dir);
+  });
+  it('file list in dir', async function () {
+    try {
+      await _list(__filename);
+    } catch (e) {
+      expect(e.message).to.be.equal('Only support dir path');
+    }
+    let files1 = await _list(__dirname);
+    expect(files1.length).not.to.be.equal(0);
+
+    let files2 = await _list(__dirname, true);
+    expect(files2.length).not.to.be.equal(0);
+
+    expect(files1[0].length < files2[0].length).to.be.true;
   });
 });

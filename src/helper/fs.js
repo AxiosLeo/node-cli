@@ -98,6 +98,22 @@ async function _search(dir, ext = '*', recur = true) {
   return files;
 }
 
+async function _list(dir, full = false) {
+  if (!await _is_dir(dir)) {
+    throw new Error('Only support dir path');
+  }
+  const tmp = await readdir(dir);
+  if (full) {
+    let files = [];
+    await Promise.all(tmp.map(async (filename) => {
+      const full = path.join(dir, filename);
+      files.push(full);
+    }));
+    return files;
+  }
+  return tmp;
+}
+
 async function _remove(filepath, recur = true) {
   if (filepath === path.sep) {
     debug.stack(`cannot delete root of system with : ${filepath}`);
@@ -119,6 +135,7 @@ async function _remove(filepath, recur = true) {
 
 module.exports = {
   _ext,
+  _list,
   _read,
   _copy,
   _move,
