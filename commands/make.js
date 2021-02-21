@@ -41,7 +41,6 @@ const { Command, printer } = require('@axiosleo/cli-tool');
  * @import const { debug } = require('@axiosleo/cli-tool');
  * @import const { locales } = require('@axiosleo/cli-tool');
  */
-
 class ${_upper_first(name)}Command extends Command {
   constructor() {
     super({
@@ -65,6 +64,8 @@ class ${_upper_first(name)}Command extends Command {
         }
       ],
     });
+    // this.addArgument(name, desc = '', mode = 'required', default_value = null);
+    // this.addOption(name, short = '', desc = '', mode = 'required', default_value = null);
   }
   async exec(args, options, argList, app) {
     console.log(args, options, argList, app);
