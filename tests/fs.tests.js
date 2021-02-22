@@ -67,6 +67,13 @@ describe('fs test case', function () {
     expect(await _exists(path.join(tmp_dir, 'fs2.tests.js'))).to.be.true;
     await _remove(tmp_dir);
   });
+  it('recur copy files', async function () {
+    const source = path.join(__dirname, '../src/');
+    const target = path.join(__dirname, '../runtime/test-fs4');
+    await _copy(source, target, true);
+    await _copy('not-exist', target, true); // copy with not exist file
+    expect(await _exists(path.join(target, 'helper/fs.js'))).to.be.true;
+  });
   it('file list in dir', async function () {
     try {
       await _list(__filename);

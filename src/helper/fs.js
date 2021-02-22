@@ -60,13 +60,6 @@ async function _move(source, target) {
   }
 }
 
-async function _copy(source, target) {
-  if (await _exists(source)) {
-    await _mkdir(path.dirname(target));
-    await copyFile(source, target);
-  }
-}
-
 async function _is_file(filepath) {
   const status = await stat(filepath);
   return status.isFile();
@@ -75,6 +68,27 @@ async function _is_file(filepath) {
 async function _is_dir(dirpath) {
   const status = await stat(dirpath);
   return status.isDirectory();
+}
+
+async function _copy(source, target, recur = false) {
+  if (!await _exists(source)) {
+    return;
+  }
+  if (!recur) {
+    await _mkdir(path.dirname(target));
+    await copyFile(source, target);
+    return;
+  }
+  if (await _is_dir(source)) {
+    const files = await readdir(source);
+    await Promise.all(files.map(async (filename) => {
+      const full = path.join(source, filename);
+      await _copy(full, path.join(target, filename), recur);
+    }));
+  } else if (await _is_file(source)) {
+    await _mkdir(path.dirname(target));
+    await _copy(source, target);
+  }
 }
 
 async function _search(dir, ext = '*', recur = true) {
