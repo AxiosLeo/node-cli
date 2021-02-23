@@ -9,7 +9,8 @@ const {
   _snake_case,
   _render,
   _render_with_file,
-  _fixed
+  _fixed,
+  Emitter
 } = require('../src/helper/str');
 const { _write, _remove } = require('../src/helper/fs');
 
@@ -76,5 +77,18 @@ describe('str test case', function () {
     expect(_fixed(null, 4)).to.be.equal('    ');
     expect(_fixed(null, 4, 'right')).to.be.equal('    ');
     expect(_fixed(null, 4, 'center')).to.be.equal('    ');
+  });
+  it('emitter', function () {
+    const emitter = new Emitter({
+      indent: '  ',
+      eol: '\n',
+      level: 0,
+    });
+    emitter.emitln('function test(){', 'open');
+    emitter.emitln('let a = 0;', true);
+    emitter.emitln('let b = a + 10;', 1);
+    emitter.emit('console.log', true).emitln('(b)');
+    emitter.emitln('}', 'close');
+    expect(emitter.output()).to.be.equal('function test(){\n  let a = 0;\n  let b = a + 10;\n  console.log(b)\n}\n');
   });
 });
