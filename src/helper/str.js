@@ -1,5 +1,6 @@
 'use strict';
 
+const os = require('os');
 const debug = require('../debug');
 const camelCase = require('camelcase');
 const fs = require('./fs');
@@ -100,7 +101,71 @@ function _fixed(content, length = 10, fillPosition = 'l', fill = ' ') {
   return content;
 }
 
+function emitIndent(level = null) {
+  let l;
+  switch (level) {
+  case 'up':
+  case 'open':
+  case 'begin':
+  case 'start':
+    l = this.level;
+    this.level++;
+    break;
+  case 'down':
+  case 'close':
+  case 'end':
+    this.level--;
+    l = this.level;
+    break;
+  case null:
+    l = 0;
+    break;
+  case true:
+    l = this.level;
+    break;
+  default:
+    l = level;
+  }
+  return this.config.indent.repeat(l);
+}
+
+class Emitter {
+  constructor(options = {}) {
+    this.config = {
+      indent: '  ',
+      eol: os.EOL,
+      level: 0,
+      encoding: 'utf8',
+      ...options
+    };
+    this.buffer = '';
+    this.level = this.config.level;
+  }
+
+  /**
+   * 
+   * @param {*} str 
+   * @param {*} level integer|null|false|string
+   */
+  emit(str = '', level = null) {
+    this.buffer += emitIndent.call(this, level);
+    this.buffer += str;
+    return this;
+  }
+
+  emitln(str = '', level = null) {
+    this.emit(str + this.config.eol, level);
+    return this;
+  }
+
+  output() {
+    return this.buffer;
+  }
+}
+
 module.exports = {
+  Emitter,
+
   _str,
   _fixed,
   _render,
