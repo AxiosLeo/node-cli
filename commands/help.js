@@ -17,7 +17,7 @@ function resolveCommands(commands, sort, group) {
   const group_commands = [];
   Object.keys(group).forEach((key) => {
     group[key].forEach(cmd => {
-      if (is.invalid(group_commands[cmd])) {
+      if (is.contain(group_commands[cmd])) {
         return;
       }
       if (group_commands.indexOf(cmd) < 0) {
