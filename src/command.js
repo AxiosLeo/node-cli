@@ -9,9 +9,9 @@ const { _str, _fixed } = require('./helper/str');
 
 function printUsage(config) {
   printer.warning('Usage:');
-  printer.green(`  ${config.name}`);
+  printer.green(`  ${config.name} `);
   if (config.options.length) {
-    printer.yellow(' [options] ');
+    printer.yellow('[options] ');
   }
   if (config.args.length) {
     if (config.args.some(arg => arg.mode === 'required')) {
@@ -26,12 +26,14 @@ function printUsage(config) {
 }
 
 function printArgsAndOpts(config) {
-  let arg_len = Math.max(config.args.map(arg => arg.name.length));
+  const lens = config.args.map(arg => arg.name.length);
+  let arg_len = Math.max(...lens);
   let len = 0;
   if (config.options.length) {
     printer.warning('Options:');
     let opts = config.options.map(opt => opt.short ? `-${opt.short}, --${opt.name}` : `--${opt.name}`);
-    let opt_len = Math.max(opts.map(opt => opt.length));
+    const opts_lens = opts.map(opt => opt.length);
+    let opt_len = Math.max(...opts_lens);
     len = Math.max(opt_len, arg_len) + 4;
     config.options.forEach((opt, index) => {
       opt.mode === 'required' ? printer.red(' *') : printer.print('  ');
