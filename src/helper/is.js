@@ -7,6 +7,15 @@ const is = {
   array: a => Array.isArray(a),
   string: a => typeof (a) === 'string',
   number: a => typeof (a) === 'number',
+  numeric: a => {
+    if (typeof a === 'number') {
+      return a - a === 0;
+    }
+    if (typeof a === 'string' && a.trim() !== '') {
+      return Number.isFinite ? Number.isFinite(+a) : isFinite(+a);
+    }
+    return false;
+  },
   object: a => a !== null && typeof a === 'object' && Array.isArray(a) === false,
   function: a => typeof (a) === 'function',
   boolean: a => typeof (a) === 'boolean',
