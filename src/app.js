@@ -3,6 +3,7 @@
 const minimist = require('minimist');
 const printer = require('./printer');
 const debug = require('./debug');
+const path = require('path');
 
 const { _confirm, _select } = require('./helper/cmd');
 const { __, init } = require('./locales');
@@ -69,6 +70,7 @@ function _check_command(command, global_options, argv) {
         opts[opt.short] = argv[opt.name];
       }
     } else if (opt.mode === 'required') {
+      command.usage();
       debug.error(`  ${__('Required option : ${name}', { name: `--${opt.name}` })}   `);
     }
   });
@@ -89,6 +91,7 @@ function _check_command(command, global_options, argv) {
     } else if (argv[opt.name]) {
       opts[opt.name] = argv[opt.name];
     } else if (opt.mode === 'required') {
+      command.usage();
       debug.error(`  ${__('Required option : ${name}', { name: `--${opt.name}` })}   `);
     } else {
       opts[opt.name] = opt.default;
@@ -98,12 +101,34 @@ function _check_command(command, global_options, argv) {
     if (argv._[index]) {
       args[arg.name] = argv._[index];
     } else if (arg.mode === 'required') {
+      command.usage();
       debug.error(`  ${__('Required argument : ${name}', { name: arg.name })}   `);
     } else {
       args[arg.name] = arg.default;
     }
   });
   return { opts, args };
+}
+
+async function load() {
+  // init commands
+  const appconfig = this.config;
+  if (appconfig.commands_dir && appconfig.commands_dir.length) {
+    const dir = appconfig.commands_dir;
+    const exist = await _exists(dir);
+    if (exist) {
+      const commands = await _search(dir, 'js');
+      commands.forEach(file => {
+        this.register(require(file));
+      });
+    } else {
+      printer.warning(__('commands dir not exist on ${dir}', { dir: appconfig.commands_dir }));
+    }
+  }
+  if (!this.commands['help']) {
+    const HelpCommand = require('../commands/help');
+    this.commands['help'] = new HelpCommand();
+  }
 }
 
 class App {
@@ -184,6 +209,13 @@ class App {
 
   async start(options = {}) {
     Object.assign(this.config, options);
+    // resolve args
+    const argv = resolveArgs.call(this, this.config.options, process.argv.slice(2));
+    if (!argv._.length || argv._[0] === 'help') {
+      await load.call(this);
+      this.exec('help', 3);
+      return;
+    }
 
     // validate config fields
     let missingFields = [];
@@ -196,40 +228,24 @@ class App {
       debug.error(__('Need setting "${keys}" options for App', { keys: missingFields.join(', ') }));
     }
 
-    // init commands
-    const appconfig = this.config;
-    if (appconfig.commands_dir && appconfig.commands_dir.length) {
-      const dir = appconfig.commands_dir;
-      const exist = await _exists(dir);
-      if (exist) {
-        const commands = await _search(dir, 'js');
-        commands.forEach(file => {
-          this.register(require(file));
-        });
-      } else {
-        printer.warning(__('commands dir not exist on ${dir}', { dir: appconfig.commands_dir }));
-      }
-    }
-    if (!this.commands['help']) {
-      const HelpCommand = require('../commands/help');
-      this.commands['help'] = new HelpCommand();
-    }
-
-    // resolve args
-    const argv = resolveArgs.call(this, this.config.options, process.argv.slice(2));
-    if (!argv._.length) {
-      this.exec('help');
-      return;
-    }
-
     // exec with command name
     const command_name = argv._[0];
     if (this.commands[command_name]) {
       this.exec(command_name, 3);
       return;
     }
-
+    const command_path = path.join(this.config.commands_dir, `${command_name}.js`);
+    if (await _exists(command_path)) {
+      this.register(command_path);
+      this.exec(command_name, 3);
+      return;
+    }
     // exec with command alias name
+    await load.call(this);
+    if (this.commands[command_name]) {
+      this.exec(command_name, 3);
+      return;
+    }
     const matched = [];
     const keys = Object.keys(this.commands);
     for (let i = 0; i < keys.length; i++) {
@@ -248,7 +264,6 @@ class App {
         matched.push(command);
       }
     }
-
     // match command name
     if (matched.length === 0) {
       this.exec('help', 3);
@@ -269,7 +284,11 @@ class App {
 
   async exec(name, argvSlice = 2) {
     if (is.invalid(this.commands[name])) {
-      debug.error(__('${name} command dose not exist.', { name }));
+      await load.call(this);
+      if (is.invalid(this.commands[name])) {
+        await this.exec('help');
+        debug.error(__('${name} command dose not exist.', { name }));
+      }
     }
     const command = this.commands[name];
     const argv = resolveArgs.call(this, this.config.options.concat(command.config.options), process.argv.slice(argvSlice));
