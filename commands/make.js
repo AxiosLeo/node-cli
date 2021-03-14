@@ -29,6 +29,7 @@ class MakeCommand extends Command {
       return;
     }
     let content = '';
+    let name_upper = _upper_first(name);
     content += `'use strict';
 
 const { Command, printer } = require('@axiosleo/cli-tool');
@@ -41,28 +42,11 @@ const { Command, printer } = require('@axiosleo/cli-tool');
  * @import const { debug } = require('@axiosleo/cli-tool');
  * @import const { locales } = require('@axiosleo/cli-tool');
  */
-class ${_upper_first(name)}Command extends Command {
+class ${name_upper}Command extends Command {
   constructor() {
     super({
       name: '${name}',
-      desc: '',
-      args: [
-        {
-          name: 'name',     // argument name
-          mode: 'optional', // required | optional
-          desc: 'arg desc',
-          default: null     // only supported on optional mode
-        }
-      ],
-      options: [
-        {
-          name: 'name',     // option name
-          short: 'n',       // option short name like 'n'
-          mode: 'optional', // required | optional
-          desc: 'option desc',
-          default: null     // only supported on optional mode
-        }
-      ],
+      desc: ''
     });
     // this.addArgument(name, desc = '', mode = 'required', default_value = null);
     // this.addOption(name, short = '', desc = '', mode = 'required', default_value = null);
@@ -73,7 +57,7 @@ class ${_upper_first(name)}Command extends Command {
   }
 }
 
-module.exports = ${_upper_first(name)}Command;
+module.exports = ${name_upper}Command;
 `;
     _write(output_path, content);
     printer.println();
@@ -92,7 +76,6 @@ module.exports = ${_upper_first(name)}Command;
     const name = await this.ask();
     if (name) {
       await this.genCommand(output_dir, name);
-      return await this.addCommand(output_dir, false);
     }
     return;
   }
