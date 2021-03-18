@@ -1,3 +1,4 @@
+/* eslint-disable no-extend-native */
 'use strict';
 
 const os = require('os');
@@ -129,6 +130,12 @@ function emitIndent(level = null) {
   return this.config.indent.repeat(l);
 }
 
+function _equal_ignore_case(a, b) {
+  a = a.toLowerCase();
+  b = !b ? '' : b.toLowerCase();
+  return a === b;
+}
+
 class Emitter {
   constructor(options = {}) {
     this.config = {
@@ -173,5 +180,6 @@ module.exports = {
   _snake_case,
   _upper_first,
   _lower_first,
-  _render_with_file
+  _render_with_file,
+  _equal_ignore_case
 };

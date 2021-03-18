@@ -3,13 +3,14 @@
 const path = require('path');
 const expect = require('chai').expect;
 const {
-  _upper_first,
-  _lower_first,
+  _render,
+  _fixed,
   _caml_case,
   _snake_case,
-  _render,
+  _upper_first,
+  _lower_first,
   _render_with_file,
-  _fixed,
+  _equal_ignore_case,
   Emitter
 } = require('../src/helper/str');
 const { _write, _remove } = require('../src/helper/fs');
@@ -90,5 +91,8 @@ describe('str test case', function () {
     emitter.emit('console.log', true).emitln('(b)');
     emitter.emitln('}', 'close');
     expect(emitter.output()).to.be.equal('function test(){\n  let a = 0;\n  let b = a + 10;\n  console.log(b)\n}\n');
+  });
+  it('equal ignore case', function () {
+    expect(_equal_ignore_case('a', 'A')).to.be.true;
   });
 });
