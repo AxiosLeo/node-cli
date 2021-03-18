@@ -102,34 +102,6 @@ function _fixed(content, length = 10, fillPosition = 'l', fill = ' ') {
   return content;
 }
 
-function emitIndent(level = null) {
-  let l;
-  switch (level) {
-  case 'up':
-  case 'open':
-  case 'begin':
-  case 'start':
-    l = this.level;
-    this.level++;
-    break;
-  case 'down':
-  case 'close':
-  case 'end':
-    this.level--;
-    l = this.level;
-    break;
-  case null:
-    l = 0;
-    break;
-  case true:
-    l = this.level;
-    break;
-  default:
-    l = level;
-  }
-  return this.config.indent.repeat(l);
-}
-
 function _equal_ignore_case(a, b) {
   a = a.toLowerCase();
   b = !b ? '' : b.toLowerCase();
@@ -155,7 +127,7 @@ class Emitter {
    * @param {*} level integer|null|false|string
    */
   emit(str = '', level = null) {
-    this.buffer += emitIndent.call(this, level);
+    this.buffer += this.emitIndent.call(this, level);
     this.buffer += str;
     return this;
   }
@@ -163,6 +135,34 @@ class Emitter {
   emitln(str = '', level = null) {
     this.emit(str + this.config.eol, level);
     return this;
+  }
+
+  emitIndent(level = null) {
+    let l;
+    switch (level) {
+    case 'up':
+    case 'open':
+    case 'begin':
+    case 'start':
+      l = this.level;
+      this.level++;
+      break;
+    case 'down':
+    case 'close':
+    case 'end':
+      this.level--;
+      l = this.level;
+      break;
+    case null:
+      l = 0;
+      break;
+    case true:
+      l = this.level;
+      break;
+    default:
+      l = level;
+    }
+    return this.config.indent.repeat(l);
   }
 
   output() {
