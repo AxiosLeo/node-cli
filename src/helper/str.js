@@ -103,8 +103,8 @@ function _fixed(content, length = 10, fillPosition = 'l', fill = ' ') {
 }
 
 function _equal_ignore_case(a, b) {
-  a = a.toLowerCase();
-  b = !b ? '' : b.toLowerCase();
+  a = a && is.string(a) ? a.toLowerCase() : '';
+  b = b && is.string(b) ? b.toLowerCase() : '';
   return a === b;
 }
 
