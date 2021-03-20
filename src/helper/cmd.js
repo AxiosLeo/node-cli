@@ -238,7 +238,6 @@ function _check_argument(command_name, args, arg) {
   }
 }
 
-
 module.exports = {
   _ask,
   _exec,

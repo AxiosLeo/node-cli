@@ -33,7 +33,7 @@ cli-tool make test ./commands/ # will generate command file on ./commands/test.j
 ```js
 const { App } = require('@axiosleo/cli-tool');
 const app = new App({
-  name: 'cli',      // cli app command name, required
+  name: 'cli-tool',      // cli app command name, required
   desc: 'cli app description',
   version: '1.0.0', // cli app version, required
   commands_dir: '/path/to/commands/dir/', // will auto load command files
