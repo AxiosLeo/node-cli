@@ -53,6 +53,15 @@ function themes(options = {}) {
   if (!is.empty(options)) {
     Object.assign(themesConfig, options);
     colors.setTheme(themesConfig);
+    const self = this;
+    Object.keys(themesConfig).forEach((key) => {
+      if (!module.exports[key]) {
+        module.exports[key] = function (str) {
+          println(str[key]);
+          return self;
+        };
+      }
+    });
   }
   return themesConfig;
 }

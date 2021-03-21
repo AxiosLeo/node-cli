@@ -37,4 +37,10 @@ describe('print test case', function () {
     printer.input('echo input with red color').println();
     printer.println('echo str with red color and underline'.custom);
   });
+  it('custom themes', function () {
+    printer.themes({
+      custome: 'blue'
+    });
+    printer.custome('should print blue color string and not throw any exception').println();
+  });
 });
