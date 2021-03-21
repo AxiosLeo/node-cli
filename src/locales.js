@@ -29,7 +29,7 @@ function init(config) {
   options = {
     defaultLocale: locale,
     locales: sets,         // The supported locales, expects an array of locale strings
-    directory: config.dir, // The path to the language packs directory
+    directory: config.dir, // The path to the language packs directory, *.json
   };
   i18n = new I18n(options);
 }
