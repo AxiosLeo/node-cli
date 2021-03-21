@@ -16,7 +16,10 @@ class Configuration {
   }
 
   assign(config) {
-    return _assign(this.config, config);
+    if (!is.empty(config)) {
+      _assign(this.config, config);
+    }
+    return this.config;
   }
 
   get(key = null, _default = null) {
