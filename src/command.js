@@ -2,10 +2,22 @@
 
 const printer = require('./printer');
 const debug = require('./debug');
-const { __ } = require('./locales');
-const { _confirm, _select, _ask, _table, _check_argument, _check_option } = require('./helper/cmd');
 const is = require('./helper/is');
-const { _str, _fixed } = require('./helper/str');
+const { __ } = require('./locales');
+
+const {
+  _str,
+  _fixed
+} = require('./helper/str');
+
+const {
+  _ask,
+  _table,
+  _select,
+  _confirm,
+  _check_option,
+  _check_argument,
+} = require('./helper/cmd');
 
 function printUsage(config) {
   printer.warning('Usage:');
