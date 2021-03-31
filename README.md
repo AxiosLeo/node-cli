@@ -4,7 +4,7 @@
 [![npm download](https://img.shields.io/npm/dm/@axiosleo/cli-tool.svg?style=flat-square)](https://npmjs.org/package/@axiosleo/cli-tool)
 
 > Design for quickly developing CLI applications with Node.js
-> 
+>
 > See detail usage from [wiki](https://github.com/AxiosCros/node-cli/wiki)
 
 ## Installation
@@ -78,9 +78,9 @@ app.exec("<command-name>");
 ## Use locales
 
 > The "desc" will be automatically translated by using the locales json file.
-> 
+>
 > locales example json file : [locales](./locales)
-> 
+>
 > see detail from [locales wiki](https://github.com/AxiosCros/node-cli/wiki/locales)
 
 ```js
