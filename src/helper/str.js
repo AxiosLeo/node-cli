@@ -8,7 +8,7 @@ const fs = require('./fs');
 const is = require('./is');
 
 function _str(s) {
-  return is.invalid(s) ? '' : s;
+  return is.invalid(s) || !is.string(s) ? '' : s;
 }
 
 function _upper_first(str) {
@@ -33,17 +33,11 @@ function _lower_first(str) {
 
 function _caml_case(name, pascalCase = true) {
   name = _str(name);
-  if (!is.string(name)) {
-    debug.stack('Only supported for string.');
-  }
   return camelCase(name, { pascalCase });
 }
 
 function _snake_case(name) {
   name = _str(name);
-  if (!is.string(name)) {
-    debug.stack('Only supported for string.');
-  }
   let res = '';
   let tmp = '';
   for (const c of name) {

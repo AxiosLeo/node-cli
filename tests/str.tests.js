@@ -32,9 +32,7 @@ describe('str test case', function () {
   });
   it('_caml_case', function () {
     expect(_caml_case(null)).to.be.equal('');
-    expect(function () {
-      _caml_case(['1']);
-    }).to.be.throw('Only supported for string.');
+    expect(_caml_case(['1'])).to.be.equal('');
     expect(_caml_case('a_b_c')).to.be.equal('ABC');
     expect(_caml_case('test_abc')).to.be.eql('TestAbc');
     expect(_caml_case('sls')).to.be.eql('Sls');
@@ -51,9 +49,7 @@ describe('str test case', function () {
   });
   it('_snake_case', function () {
     expect(_snake_case(null)).to.be.equal('');
-    expect(function () {
-      _snake_case(['1']);
-    }).to.be.throw('Only supported for string.');
+    expect(_snake_case(['1'])).to.be.equal('');
     expect(_snake_case('snakeCaseExampleString')).to.be.equal('snake_case_example_string');
     expect(_snake_case('TestABC')).to.be.eql('test_abc');
     expect(_snake_case('SLS')).to.be.eql('sls');
