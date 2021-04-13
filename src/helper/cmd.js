@@ -46,7 +46,8 @@ async function _exec(cmd, cwd = null, options = {}) {
   let opts = {
     stdio: 'inherit',
     shell: true,
-    cwd: cwd
+    cwd: cwd,
+    exception: true
   };
   Object.assign(opts, options);
   const exec = cp.spawn(cmd, opts);
@@ -54,12 +55,20 @@ async function _exec(cmd, cwd = null, options = {}) {
     exec.on('close', function (code) { 
       resolve(code);
     });
-    exec.on('error', function (err) { 
-      reject(err);
+    exec.on('error', function (err) {
+      if (opts.exception) {
+        reject(err);
+      } else {
+        resolve(err.code);
+      }
     });
     exec.on('exit', function (code) {
       if (code) {
-        reject(new Error(`error executing with code ${code}`));
+        if (opts.exception) {
+          reject(new Error(`error executing with code ${code}`));
+        } else {
+          resolve(code);
+        }
       } else {
         resolve(code);
       }
