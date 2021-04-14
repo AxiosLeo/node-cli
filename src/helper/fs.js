@@ -112,20 +112,28 @@ async function _search(dir, ext = '*', recur = true) {
   return files;
 }
 
-async function _list(dir, full = false) {
+async function _list(dir, full = false, ext = '*') {
   if (!await _is_dir(dir)) {
     throw new Error('Only support dir path');
   }
   const tmp = await readdir(dir);
-  if (full) {
-    let files = [];
-    await Promise.all(tmp.map(async (filename) => {
-      const full = path.join(dir, filename);
-      files.push(full);
-    }));
-    return files;
-  }
-  return tmp;
+  let files = [];
+  const exts = ext.split('|');
+  await Promise.all(tmp.map(async (filename) => {
+    if (ext !== '*') {
+      const fileext = path.extname(filename);
+      if (exts.indexOf(fileext) < 0) {
+        return;
+      }
+    }
+    if (full) {
+      const full_name = path.join(dir, filename);
+      files.push(full_name);
+    } else {
+      files.push(filename);
+    }
+  }));
+  return files;
 }
 
 async function _remove(filepath, recur = true) {

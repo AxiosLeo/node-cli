@@ -81,11 +81,14 @@ describe('fs test case', function () {
       expect(e.message).to.be.equal('Only support dir path');
     }
     let files1 = await _list(__dirname);
-    expect(files1.length).not.to.be.equal(0);
+    expect(files1[0]).to.be.equal('fs.tests.js');
 
     let files2 = await _list(__dirname, true);
-    expect(files2.length).not.to.be.equal(0);
+    expect(files2[0].length > files1[0].length).to.be.true;
 
     expect(files1[0].length < files2[0].length).to.be.true;
+
+    let files3 = await _list(__dirname, false, '.md');
+    expect(files3.length).to.be.equal(0);
   });
 });
