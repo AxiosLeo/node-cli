@@ -6,13 +6,18 @@ const { prompt } = require('enquirer');
 var count = 0;
 
 function dump(...data) {
-  data.forEach(d => {
-    // eslint-disable-next-line no-console
-    console.log(d);
-  });
+  if (!data || !data.length) {
+    return;
+  }
+  // eslint-disable-next-line no-console
+  data.forEach(d => console.log(d));
 }
 
 function halt(...data) {
+  const stack = (new Error()).stack;
+  let tmp = stack.split(os.EOL);
+  let local = tmp[2].indexOf('at Object.jump') > -1 ? tmp[3] : tmp[2];
+  process.stdout.write(`\x1b[33mhalt ${local.trim()}\x1b[0m${os.EOL}`);
   dump(...data);
   process.exit(-1);
 }
