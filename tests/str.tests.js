@@ -84,9 +84,12 @@ describe('str test case', function () {
     emitter.emitln('function test(){', 'open');
     emitter.emitln('let a = 0;', true);
     emitter.emitln('let b = a + 10;', 1);
-    emitter.emit('console.log', true).emitln('(b)');
+    emitter.emit('console.log', true).emitln('(b);');
+    emitter.emitln('if (a !== b) {', 'up');
+    emitter.emit('console.log', true).emitln('(a, b);');
+    emitter.emitln('}', 'down');
     emitter.emitln('}', 'close');
-    expect(emitter.output()).to.be.equal('function test(){\n  let a = 0;\n  let b = a + 10;\n  console.log(b)\n}\n');
+    expect(emitter.output()).to.be.equal('function test(){\n  let a = 0;\n  let b = a + 10;\n  console.log(b);\n  if (a !== b) {\n    console.log(a, b);\n  }\n}\n');
   });
   it('equal ignore case', function () {
     expect(_equal_ignore_case('a', 'A')).to.be.true;
