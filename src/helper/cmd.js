@@ -9,6 +9,7 @@ const { prompt, Select } = require('enquirer');
 const { _fixed } = require('./str');
 const is = require('./is');
 const { __ } = require('../locales');
+const Workflow = require('../workflow');
 
 async function _shell(cmd, cwd = null, print = true, throw_error = true) {
   if (null === cwd) {
@@ -52,7 +53,7 @@ async function _exec(cmd, cwd = null, options = {}) {
   Object.assign(opts, options);
   const exec = cp.spawn(cmd, opts);
   return new Promise((resolve, reject) => {
-    exec.on('close', function (code) { 
+    exec.on('close', function (code) {
       resolve(code);
     });
     exec.on('error', function (err) {
@@ -247,14 +248,61 @@ function _check_argument(command_name, args, arg) {
   }
 }
 
+/**
+ * Execute asynchronous tasks in a synchronous manner
+ * @param {*} data     object or array
+ * @param {*} resolver async func
+ */
+async function _sync_foreach(data, resolver) {
+  const operator = {};
+  const workflows = [];
+  if (is.object(data)) {
+    Object.keys(data).forEach((key) => {
+      const value = data[key];
+      const name = `task${key}`;
+      operator[name] = async function () {
+        await resolver(value, key);
+      };
+      workflows.push(name);
+    });
+  } else if (is.array(data)) {
+    data.forEach((item, index) => {
+      const name = `task${index}`;
+      operator[name] = async function () {
+        await resolver(item, index);
+      };
+      workflows.push(name);
+    });
+  } else {
+    debug.stack('Unsupported data type : ' + typeof data);
+  }
+  const workflow = new Workflow(operator);
+  try {
+    return await workflow.start({ workflows });
+  } catch (e) {
+    throw e.curr.error;
+  }
+}
+
+/**
+ * 
+ * @param {*} ms milliseconds
+ * @returns 
+ */
+async function _sleep(ms) {
+  return new Promise(resolve => setTimeout(() => resolve(), ms));
+}
+
 module.exports = {
   _ask,
   _exec,
+  _sleep,
   _shell,
   _table,
   _select,
   _confirm,
   _dispatch,
   _check_option,
-  _check_argument
+  _sync_foreach,
+  _check_argument,
 };
