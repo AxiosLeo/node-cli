@@ -164,5 +164,4 @@ module.exports = CommandExample;
 
 This project is open-sourced software licensed under the [MIT](LICENSE).
 
-
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FAxiosCros%2Fnode-cli.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FAxiosCros%2Fnode-cli?ref=badge_large)
