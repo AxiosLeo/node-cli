@@ -1,9 +1,10 @@
 # @axiosleo/cli-tool
 
-[![CI Build Status](https://github.com/AxiosCros/node-cli/actions/workflows/ci.yml/badge.svg)](https://github.com/AxiosCros/node-cli/actions/workflows/ci.yml)
 [![NPM version](https://img.shields.io/npm/v/@axiosleo/cli-tool.svg?style=flat-square)](https://npmjs.org/package/@axiosleo/cli-tool)
 [![npm download](https://img.shields.io/npm/dm/@axiosleo/cli-tool.svg?style=flat-square)](https://npmjs.org/package/@axiosleo/cli-tool)
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FAxiosCros%2Fnode-cli.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FAxiosCros%2Fnode-cli?ref=badge_shield)
+[![CI Build Status](https://github.com/AxiosCros/node-cli/actions/workflows/ci.yml/badge.svg)](https://github.com/AxiosCros/node-cli/actions/workflows/ci.yml)
+[![License](https://img.shields.io/github/license/AxiosCros/node-cli?color=%234bc524)]()
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FAxiosCros%2Fnode-cli.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FAxiosCros%2Fnode-cli/refs/branch/master)
 
 > Design for quickly developing CLI applications with Node.js
 >
@@ -165,4 +166,4 @@ module.exports = CommandExample;
 
 This project is open-sourced software licensed under the [MIT](LICENSE).
 
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FAxiosCros%2Fnode-cli.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FAxiosCros%2Fnode-cli?ref=badge_large)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FAxiosCros%2Fnode-cli.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FAxiosCros%2Fnode-cli/refs/branch/master)
