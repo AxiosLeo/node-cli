@@ -106,7 +106,7 @@ async function _search(dir, ext = '*', recur = true) {
         files.push(full);
       }
     } else if (await _is_dir(full) && recur) {
-      (await _search(full)).forEach(item => files.push(item));
+      (await _search(full, ext, recur)).forEach(item => files.push(item));
     }
   }));
   return files;
