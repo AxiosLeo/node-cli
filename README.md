@@ -6,7 +6,7 @@
 [![License](https://img.shields.io/github/license/AxiosCros/node-cli?color=%234bc524)]()
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FAxiosCros%2Fnode-cli.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FAxiosCros%2Fnode-cli/refs/branch/master)
 
-> Design for quickly developing CLI applications with Node.js
+> Design for quickly developing CLI applications using Node.js
 >
 > See detail usage from [wiki](https://github.com/AxiosCros/node-cli/wiki)
 
