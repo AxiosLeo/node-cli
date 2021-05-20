@@ -8,7 +8,8 @@ module.exports = {
     'src/helper/obj.js',
     'src/helper/str.js',
     'src/printer.js',
-    'src/locales.js'
+    'src/locales.js',
+    'src/workflow.js'
   ],
   'watermarks': {
     'lines': [0, 80],
