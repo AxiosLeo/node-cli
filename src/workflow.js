@@ -4,9 +4,6 @@ const moment = require('moment');
 const debug = require('./debug');
 
 function next(context, curr) {
-  if (context.workflows.indexOf(curr) < -1) {
-    debug.stack(`Unsupported workflow : ${curr}`);
-  }
   const index = context.workflows.indexOf(curr);
   if (index + 1 >= context.workflows.length) {
     return null;
@@ -14,29 +11,30 @@ function next(context, curr) {
   return context.workflows[index + 1];
 }
 
+async function wrong(context, e, error_handler) {
+  context.success = false;
+  context.curr = {
+    workflow: 'error',
+    error_step: context.curr.workflow,
+    start: moment().valueOf(),
+    end: null,
+    error: e
+  };
+  try {
+    await error_handler(context, 12);
+  } catch (e) {
+    /* istanbul ignore next */
+    context.curr.error = e;
+  }
+  context.curr.end = moment().valueOf();
+}
+
 class Workflow {
   constructor(workflow_operator) {
     if (!workflow_operator) {
-      debug.stack('Invalid parameter: workflow_operator cannot be null.');
+      debug.stack('Invalid workflow_operator.');
     }
     this.operator = workflow_operator;
-  }
-
-  async wrong(context, e) {
-    context.success = false;
-    context.curr = {
-      workflow: 'error',
-      error_step: context.curr.workflow,
-      start: moment().valueOf(),
-      end: null,
-      error: e
-    };
-    try {
-      await this.error_handler(context, 12);
-    } catch (e) {
-      context.curr.error = e;
-    }
-    context.curr.end = moment().valueOf();
   }
 
   async dispatch(context, curr) {
@@ -61,7 +59,7 @@ class Workflow {
     context.curr.end = moment().valueOf();
     context.step_data[curr] = context.curr;
     if (!context.curr.success) {
-      await this.wrong(context, context.curr.error);
+      throw context.curr.error;
     } else if (typeof res === 'string' && context.workflows.indexOf(res) > -1) {
       await this.dispatch(context, res);
     } else {
@@ -83,7 +81,6 @@ class Workflow {
       if (!context.workflows.length) {
         debug.stack('context.workflows cannot be empty.');
       }
-      this.error_handler = reject;
       context.success = null;
       context.curr = {};
       context.step_data = {};
@@ -93,7 +90,8 @@ class Workflow {
         resolve(context);
       }).catch((e) => {
         context.curr = {};
-        this.wrong(context, e);
+        context.success = false;
+        wrong(context, e, reject);
       });
     });
   }
