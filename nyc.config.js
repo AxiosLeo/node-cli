@@ -12,9 +12,9 @@ module.exports = {
     'src/workflow.js'
   ],
   'watermarks': {
-    'lines': [0, 80],
-    'functions': [0, 80],
-    'branches': [0, 80],
-    'statements': [0, 80]
+    'lines': [80, 95],
+    'functions': [80, 95],
+    'branches': [80, 95],
+    'statements': [80, 95]
   }
 };
