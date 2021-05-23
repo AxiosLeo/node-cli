@@ -11,24 +11,6 @@ function next(context, curr) {
   return context.workflows[index + 1];
 }
 
-async function wrong(context, e, error_handler) {
-  context.success = false;
-  context.curr = {
-    workflow: 'error',
-    error_step: context.curr.workflow,
-    start: moment().valueOf(),
-    end: null,
-    error: e
-  };
-  try {
-    await error_handler(context, 12);
-  } catch (e) {
-    /* istanbul ignore next */
-    context.curr.error = e;
-  }
-  context.curr.end = moment().valueOf();
-}
-
 class Workflow {
   constructor(workflow_operator) {
     if (!workflow_operator) {
@@ -89,9 +71,11 @@ class Workflow {
         context.success = true;
         resolve(context);
       }).catch((e) => {
-        context.curr = {};
         context.success = false;
-        wrong(context, e, reject);
+        context.curr.error = e;
+        context.curr.end = moment().valueOf();
+        context.step_data[context.curr.workflow] = context.curr;
+        reject(context);
       });
     });
   }
