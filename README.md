@@ -3,6 +3,7 @@
 [![NPM version](https://img.shields.io/npm/v/@axiosleo/cli-tool.svg?style=flat-square)](https://npmjs.org/package/@axiosleo/cli-tool)
 [![npm download](https://img.shields.io/npm/dm/@axiosleo/cli-tool.svg?style=flat-square)](https://npmjs.org/package/@axiosleo/cli-tool)
 [![CI Build Status](https://github.com/AxiosCros/node-cli/actions/workflows/ci.yml/badge.svg)](https://github.com/AxiosCros/node-cli/actions/workflows/ci.yml)
+[![](https://codecov.io/gh/AxiosCros/node-cli/branch/master/graph/badge.svg)](https://codecov.io/gh/AxiosCros/node-cli)
 [![License](https://img.shields.io/github/license/AxiosCros/node-cli?color=%234bc524)](LICENSE)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FAxiosCros%2Fnode-cli.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FAxiosCros%2Fnode-cli/refs/branch/master)
 
