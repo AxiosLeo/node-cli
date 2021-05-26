@@ -2,6 +2,17 @@
   "name": "@axiosleo/cli-tool",
   "version": "1.2.20",
   "description": "Design for quickly developing CLI applications using Node.js.",
+  "keywords": [
+    "cli",
+    "tool",
+    "nodejs",
+    "develop",
+    "kit",
+    "command",
+    "workflow",
+    "locales",
+    "debug"
+  ],
   "main": "./main.js",
   "author": "AxiosLeo",
   "directories": {
