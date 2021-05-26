@@ -126,7 +126,6 @@ class CommandExample extends Command {
             default: null     // only supported on optional mode
           }
       ],
-      // use addArgument or add Option methods to add arg or option
       // this.addArgument(name, desc = '', mode = 'required', default_value = null);
       // this.addOption(name, short = '', desc = '', mode = 'required', default_value = null);
     });
