@@ -81,7 +81,7 @@ describe('fs test case', function () {
       expect(e.message).to.be.equal('Only support dir path');
     }
     let files1 = await _list(__dirname);
-    expect(files1[1]).to.be.equal('fs.tests.js');
+    expect(files1[0]).to.be.equal('cmd.tests.js');
 
     let files2 = await _list(__dirname, true);
     expect(files2[0].length > files1[0].length).to.be.true;
