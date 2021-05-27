@@ -140,14 +140,17 @@ class Command {
     printer.warning(__('Please override exec() method for ${name} command', { name: this.config.name }));
   }
 
+  /* istanbul ignore next */
   async ask(message = '', default_value = null) {
     return await _ask(message, default_value);
   }
 
+  /* istanbul ignore next */
   async confirm(message = '', default_value = false) {
     return await _confirm(message, default_value);
   }
 
+  /* istanbul ignore next */
   async select(message = '', choices = [], default_choice = null) {
     return await _select(message, choices, default_choice);
   }
