@@ -44,6 +44,8 @@ describe('command test case', () => {
     command.addArgument('arg_name', 'argument', 'optional', true);
     command.addArgument('require_arg', 'required argument', 'required');
     command.usage();
+    expect(command.config.args.length).to.be.equal(3);
+    expect(command.config.options.length).to.be.equal(3);
   });
   it('not have options', () => {
     const command = new Command({
@@ -58,6 +60,8 @@ describe('command test case', () => {
       ],
     });
     command.usage();
+    expect(command.config.args.length).to.be.equal(1);
+    expect(command.config.options.length).to.be.equal(0);
   });
   it('cmd methods', () => {
     const command = new Command({
@@ -66,9 +70,12 @@ describe('command test case', () => {
     command.table([['Bob', 1000]], ['Name', 'Score']);
     command.exec();
     command.usage();
+    expect(command.config.name).to.be.equal('test');
 
     command.config.desc = 'command description';
     command.config.example = 'command example';
     command.usage();
+    expect(command.config.desc).to.be.equal('command description');
+    expect(command.config.example).to.be.equal('command example');
   });
 });
