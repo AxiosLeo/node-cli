@@ -10,7 +10,8 @@ module.exports = {
     'src/printer.js',
     'src/locales.js',
     'src/workflow.js',
-    'src/command.js'
+    'src/command.js',
+    'src/config.js'
   ],
   'watermarks': {
     'lines': [80, 95],
