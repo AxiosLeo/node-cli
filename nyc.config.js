@@ -3,15 +3,12 @@
 module.exports = {
   all: false,
   include: [
-    'src/helper/fs.js',
-    'src/helper/is.js',
-    'src/helper/obj.js',
-    'src/helper/str.js',
-    'src/printer.js',
-    'src/locales.js',
-    'src/workflow.js',
-    'src/command.js',
-    'src/config.js'
+    'src/'
+  ],
+  exclude: [
+    'src/app.js',
+    'src/debug.js',
+    'src/helper/cmd.js',
   ],
   'watermarks': {
     'lines': [80, 95],
