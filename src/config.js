@@ -11,28 +11,26 @@ class Configuration {
   }
 
   init(config = {}, sep = '.') {
-    this.config = _deep_clone(config);
-    this.sep = sep;
+    _assign(this, _deep_clone(config));
+    this.__sep = sep;
+    return this;
   }
 
   assign(config) {
     if (!is.empty(config)) {
-      _assign(this.config, config);
+      _assign(this, config);
     }
-    return this.config;
+    return this;
   }
 
   get(key = null, _default = null) {
     if (!key) {
-      return this.config;
-    } else if (key.indexOf(this.sep) < 0) {
-      return !is.invalid(this.config[key]) ? this.config[key] : _default;
+      return this;
+    } else if (is.string(key) && key.indexOf(this.__sep) < 0) {
+      return !is.invalid(this[key]) ? this[key] : _default;
     }
-    const keyArr = key.split(this.sep);
+    const keyArr = key.split(this.__sep);
     function recur(keys, curr, _default) {
-      if (is.invalid(keys)) {
-        return _default;
-      }
       if (!keys.length) {
         return curr;
       }
@@ -42,7 +40,7 @@ class Configuration {
       }
       return recur(keys, curr[key], _default);
     }
-    return recur(keyArr, this.config, _default);
+    return recur(keyArr, this, _default);
   }
 
   validate(keys = []) {
@@ -62,7 +60,7 @@ class Configuration {
         failed.push(keys);
       }
     } else {
-      debug.stack(`Unsupported keys data type. ${typeof keys}`);
+      debug.stack(`Unsupported keys data type: ${typeof keys}`);
     }
     return failed;
   }
