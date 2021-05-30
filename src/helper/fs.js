@@ -85,7 +85,7 @@ async function _copy(source, target, recur = false) {
       const full = path.join(source, filename);
       await _copy(full, path.join(target, filename), recur);
     }));
-  } else if (await _is_file(source)) {
+  } else {
     await _mkdir(path.dirname(target));
     await _copy(source, target);
   }
@@ -105,7 +105,7 @@ async function _search(dir, ext = '*', recur = true) {
       if (!exts.length || exts.indexOf(file_ext) > -1) {
         files.push(full);
       }
-    } else if (await _is_dir(full) && recur) {
+    } else if (recur) {
       (await _search(full, ext, recur)).forEach(item => files.push(item));
     }
   }));
@@ -143,7 +143,7 @@ async function _remove(filepath, recur = true) {
   if (await _exists(filepath)) {
     if (await _is_file(filepath)) {
       await unlink(filepath);
-    } else if (await _is_dir(filepath)) {
+    } else {
       const dir = filepath;
       const files = await readdir(dir);
       await Promise.all(files.map(async (filename) => {

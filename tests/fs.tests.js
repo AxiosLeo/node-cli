@@ -18,11 +18,22 @@ const {
 } = require('../src/helper/fs');
 
 describe('fs test case', function () {
+  it('_ext', function () {
+    // eslint-disable-next-line no-undefined
+    expect(_ext(undefined)).to.be.equal('');
+    expect(_ext('a.b.c.d')).to.be.equal('d');
+  });
   it('search files', async function () {
     const ext = _ext(__filename);
     let files = await _search(__dirname, ext);
     expect(files.length).not.to.be.equal(0);
     files = await _search(path.join(__dirname, '../node_modules/'), 'js');
+    expect(files.length).not.to.be.equal(0);
+
+    files = await _search(path.join(__dirname, '../node_modules/'), 'js', false);
+    expect(files.length).to.be.equal(0);
+
+    files = await _search(path.join(__dirname, '../node_modules/'));
     expect(files.length).not.to.be.equal(0);
     try {
       await _search(__filename);
@@ -66,6 +77,8 @@ describe('fs test case', function () {
     await _move(target, path.join(tmp_dir, 'fs2.tests.js'));
     expect(await _exists(path.join(tmp_dir, 'fs2.tests.js'))).to.be.true;
     await _remove(tmp_dir);
+
+    await _move('not-exist', 'fs2.tests.js');
   });
   it('recur copy files', async function () {
     const source = path.join(__dirname, '../src/');
@@ -90,5 +103,8 @@ describe('fs test case', function () {
 
     let files3 = await _list(__dirname, false, '.md');
     expect(files3.length).to.be.equal(0);
+
+    let files4 = await _list(__dirname, false, '.js');
+    expect(files4.length).to.be.equal(10);
   });
 });
