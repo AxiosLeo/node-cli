@@ -35,6 +35,12 @@ describe('is test case', function () {
     expect(is.numeric('1.23')).to.be.true;
     expect(is.numeric('60s')).to.be.false;
     expect(is.numeric('')).to.be.false;
+    expect(is.numeric('0')).to.be.true;
+    expect(is.numeric(0)).to.be.true;
+    expect(is.numeric(null)).to.be.false;
+    expect(is.numeric(-Infinity)).to.be.false;
+    expect(is.numeric(Infinity)).to.be.false;
+    expect(is.numeric(NaN)).to.be.false;
     expect(is.numeric({})).to.be.false;
   });
   it('test case for object', function () {
