@@ -3,7 +3,7 @@
 const cloneDeep = require('clone-deep');
 
 function _flatten(obj, sep = '.') {
-  function recurse(curr, prefix, res = {}) {
+  function recurse(curr, prefix, res) {
     if (Array.isArray(curr)) {
       curr.forEach((item, index) => {
         recurse(item, prefix ? `${prefix}${sep}${index}` : `${index}`, res);
