@@ -14,6 +14,7 @@
     "debug"
   ],
   "main": "./main.js",
+  "types": "./main.d.ts",
   "author": "AxiosLeo",
   "directories": {
     "lib": "src"
