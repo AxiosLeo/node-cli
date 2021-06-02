@@ -3,27 +3,32 @@
 const moment = require('moment');
 const debug = require('./debug');
 
-function next(context, curr) {
-  const index = context.workflows.indexOf(curr);
-  if (index + 1 >= context.workflows.length) {
+function next(workflows, curr) {
+  const index = workflows.indexOf(curr);
+  if (index + 1 >= workflows.length) {
     return null;
   }
-  return context.workflows[index + 1];
+  return workflows[index + 1];
 }
 
 class Workflow {
-  constructor(workflow_operator) {
-    if (!workflow_operator) {
+  constructor(operator, workflows = []) {
+    if (!operator) {
       debug.stack('Invalid workflow_operator.');
     }
-    this.operator = workflow_operator;
+    this.operator = operator;
+    if (workflows && workflows.length) {
+      this.workflows = workflows;
+    } else {
+      this.workflows = Object.keys(operator);
+    }
+    if (!this.workflows.length) {
+      debug.stack('context.workflows cannot be empty.');
+    }
   }
 
   async dispatch(context, curr) {
     const operator = this.operator;
-    if (typeof operator[curr] === 'undefined') {
-      debug.stack(`Unimplemented ${curr}() method in operator.`);
-    }
     context.curr = {
       workflow: curr,
       start: moment().valueOf(),
@@ -42,10 +47,10 @@ class Workflow {
     context.step_data[curr] = context.curr;
     if (!context.curr.success) {
       throw context.curr.error;
-    } else if (typeof res === 'string' && context.workflows.indexOf(res) > -1) {
+    } else if (typeof res === 'string' && this.workflows.indexOf(res) > -1) {
       await this.dispatch(context, res);
     } else {
-      curr = next(context, curr);
+      curr = next(this.workflows, curr);
       if (curr) {
         await this.dispatch(context, curr);
       }
@@ -57,16 +62,10 @@ class Workflow {
       if (!context) {
         debug.stack('Invalid context.');
       }
-      if (!Array.isArray(context.workflows)) {
-        debug.stack('context.workflows should be Array.');
-      }
-      if (!context.workflows.length) {
-        debug.stack('context.workflows cannot be empty.');
-      }
       context.success = null;
       context.curr = {};
       context.step_data = {};
-      this.dispatch(context, context.workflows[0]).then(() => {
+      this.dispatch(context, this.workflows[0]).then(() => {
         context.curr = {};
         context.success = true;
         resolve(context);

@@ -12,9 +12,7 @@ describe('workflow test case', () => {
       b: async () => { }
     };
     const workflow = new Workflow(operator);
-    const context = {
-      workflows: ['a', 'b']
-    };
+    const context = {};
     workflow.start(context).then(() => {
       // not to be here
       expect(true).to.be.false;
@@ -41,40 +39,12 @@ describe('workflow test case', () => {
     }
   });
   it('invalid context.workflows', async () => {
-    const operator = {
-      a: async () => { },
-      b: async () => { }
-    };
-    const workflow = new Workflow(operator);
-    const context = {
-      workflows: 'string is invalid'
-    };
+    const context = {};
     try {
-      await workflow.start(context);
-    } catch (e) {
-      expect(e.message).to.be.equal('context.workflows should be Array.');
-    }
-    try {
-      context.workflows = [];
+      const workflow = new Workflow({});
       await workflow.start(context);
     } catch (e) {
       expect(e.message).to.be.equal('context.workflows cannot be empty.');
-    }
-  });
-  it('use a non-existent workflow name', async () => {
-    const operator = {
-      a: async () => { },
-      b: async () => { }
-    };
-    const workflow = new Workflow(operator);
-    const context = {
-      workflows: ['a', 'b', 'c', 'd', 'e']
-    };
-    try {
-      await workflow.start(context);
-    } catch (e) {
-      expect(e.success).to.be.false;
-      expect(e.curr.error.message).to.be.equal('Unimplemented c() method in operator.');
     }
   });
   it('throw error in reject', async () => {
@@ -83,9 +53,7 @@ describe('workflow test case', () => {
       b: async () => { }
     };
     const workflow = new Workflow(operator);
-    const context = {
-      workflows: ['a', 'b', 'c', 'd', 'e']
-    };
+    const context = {};
     const error_handler = () => {
       throw new Error('throw error in reject');
     };
@@ -102,13 +70,27 @@ describe('workflow test case', () => {
       b: async () => { },
       c: async () => { },
     };
-    const workflow = new Workflow(operator);
-    const context = {
-      workflows: ['a', 'b', 'e', 'f', 'c']
-    };
+    let workflow = new Workflow(operator);
+    const context = {};
     await workflow.start(context);
     expect(context.success).to.be.true;
     expect(context.step_data).to.include.all.keys('a', 'c');
-    expect(context.step_data).to.not.include.all.keys('b', 'e', 'f');
+    expect(context.step_data).to.not.include.all.keys('b');
+
+    workflow = new Workflow(operator);
+  });
+  it('reset workflows', async () => {
+    const operator = {
+      a: async () => { },
+      b: async () => { },
+      c: async () => { },
+    };
+    let workflow = new Workflow(operator, ['c', 'b']);
+    const context = {};
+    await workflow.start(context);
+    expect(context.success).to.be.true;
+    expect(context.step_data).to.include.all.keys('b', 'c');
+    expect(context.step_data).to.not.include.all.keys('a');
+    expect(workflow.workflows[0]).to.be.equal('c');
   });
 });
