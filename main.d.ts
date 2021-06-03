@@ -7,7 +7,7 @@ export type LocaleSettings = {
 export enum MODE {
   OPTIONAL = 'optional',
   REQUIRED = 'required'
-};
+}
 
 export type OptionItem = {
   name: string
@@ -48,7 +48,7 @@ export declare class App {
   register(cmd: any);
   start(options: AppSettings): Promise<void>;
   exec(name: string, argvSlice: number[]): Promise<void>;
-};
+}
 
 export type CommandSettings = {
   name: string,
@@ -71,7 +71,7 @@ export declare class Command {
   confirm(message: string, default_value: boolean): Promise<boolean>;
   select(message: string, choices: Array<string>, default_choice: any | null): Promise<string>;
   table(rows: Array<Array<string>>, headers: Array<string>): Promise<void>;
-};
+}
 
 export type Step = {
   workflow: string
@@ -83,8 +83,8 @@ export type Step = {
 
 export type Context = {
   workflows: Array<string>
-  curr: IStep | null
-  steps: Record<string, IStep>
+  curr: Step | null
+  steps: Record<string, Step>
   success: boolean | null
 };
 
@@ -94,4 +94,4 @@ export declare class Workflow {
   construct(operator: Record<string, (context: Context) => void | string>, workflows: Array<string>);
   dispatch(context: Context, curr: string): Promise<void>;
   start(context: Context): Promise<Context>;
-};
+}
