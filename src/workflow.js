@@ -33,21 +33,14 @@ class Workflow {
       workflow: curr,
       start: moment().valueOf(),
       end: null,
-      success: null
+      success: null,
+      error: null
     };
-    let res = null;
-    try {
-      res = await operator[curr].call(this, context);
-      context.curr.success = true;
-    } catch (e) {
-      context.curr.success = false;
-      context.curr.error = e;
-    }
+    let res = await operator[curr].call(this, context);
+    context.curr.success = true;
     context.curr.end = moment().valueOf();
     context.step_data[curr] = context.curr;
-    if (!context.curr.success) {
-      throw context.curr.error;
-    } else if (typeof res === 'string' && this.workflows.indexOf(res) > -1) {
+    if (typeof res === 'string' && this.workflows.indexOf(res) > -1) {
       await this.dispatch(context, res);
     } else {
       curr = next(this.workflows, curr);
@@ -63,7 +56,6 @@ class Workflow {
         debug.stack('Invalid context.');
       }
       context.success = null;
-      context.curr = {};
       context.step_data = {};
       this.dispatch(context, this.workflows[0]).then(() => {
         context.curr = {};
@@ -71,6 +63,7 @@ class Workflow {
         resolve(context);
       }).catch((e) => {
         context.success = false;
+        context.curr.success = false;
         context.curr.error = e;
         context.curr.end = moment().valueOf();
         context.step_data[context.curr.workflow] = context.curr;
