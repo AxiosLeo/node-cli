@@ -1,3 +1,5 @@
+import { Color } from 'colors';
+
 export type LocaleSettings = {
   sets: Array<string>,
   dir: string,
@@ -105,19 +107,48 @@ export declare class Configuration {
   validate(keys?: Array<string> | string);
 }
 
-export namespace debug {
-  function dump(...data: any[]): void;
-  function halt(...data: any[]): void;
-  function jump(jumpNumber?: number, ...data: any[]): void;
-  function stack(...data: any[]): void;
-  function warning(...data: any[]): void;
-  function pause(...data: any[]): Promise<void>;
-  function error(...data: any[]): void;
+interface Debug {
+  dump(...data: any[]): void;
+  halt(...data: any[]): void;
+  jump(jumpNumber?: number, ...data: any[]): void;
+  stack(...data: any[]): void;
+  warning(...data: any[]): void;
+  pause(...data: any[]): Promise<void>;
+  error(...data: any[]): void;
 }
 
-export namespace locales {
-  function restore(): void;
-  function init(config: Record<string, any>): void;
-  function __(str: string, params?: Record<string, string>): string;
-  function use(set: Array<string>): void;
+export const debug: Debug;
+
+interface Locales {
+  restore(): void;
+  init(config?: Record<string, any>): void;
+  __(str: string, params?: Record<string, string>): string;
+  use(set: string): void;
 }
+
+export const locales: Locales;
+
+interface Printer {
+  fixed(content: string, length?: number, fillPosition?: string, fill?: string): this;
+  themes(options?: Record<string, string>): Record<string, string>;
+  println(str?: string): this;
+  print(str?: string): this;
+  enable(): this;
+  disable(): this;
+
+  input(str?: string): this;
+  verbose(str?: string): this;
+  info(str?: string): this;
+  data(str?: string): this;
+  debug(str?: string): this;
+
+  yellow(str?: string): this;
+  green(str?: string): this;
+  red(str?: string): this;
+
+  warning(...str: string[]): this;
+  success(...str: string[]): this;
+  error(...str: string[]): this;
+}
+
+export const printer: Printer
