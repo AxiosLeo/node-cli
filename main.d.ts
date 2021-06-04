@@ -104,3 +104,13 @@ export declare class Configuration {
   get(key?: string, _default?: any);
   validate(keys?: Array<string> | string);
 }
+
+export namespace debug {
+  function dump(...data: any[]): void;
+  function halt(...data: any[]): void;
+  function jump(jumpNumber?: number, ...data: any[]): void;
+  function stack(...data: any[]): void;
+  function warning(...data: any[]): void;
+  function pause(...data: any[]): Promise<void>;
+  function error(...data: any[]): void;
+}
