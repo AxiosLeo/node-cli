@@ -11,13 +11,23 @@ describe('workflow test case', () => {
       },
       b: async () => { }
     };
-    const workflow = new Workflow(operator);
-    const context = {};
+    let workflow = new Workflow(operator);
+    let context = {};
     workflow.start(context).then(() => {
       // not to be here
       expect(true).to.be.false;
     }).catch((context) => {
       expect(context.success).to.be.false;
+    });
+
+    workflow = new Workflow(operator, ['b', 'a']);
+    context = {};
+    workflow.start(context).then(() => {
+      // not to be here
+      expect(true).to.be.false;
+    }).catch((context) => {
+      expect(context.success).to.be.false;
+      expect(Object.keys(context.step_data).join(',')).to.be.equal('b,a');
     });
   });
   it('invalid operator or context', async () => {
