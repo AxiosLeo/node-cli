@@ -1,7 +1,7 @@
 export type LocaleSettings = {
   sets: Array<string>,
   dir: string,
-  use: null | string
+  use?: string
 };
 
 export enum MODE {
@@ -11,21 +11,21 @@ export enum MODE {
 
 export type OptionItem = {
   name: string
-  short: string | null
+  short?: string
   mode: MODE
-  desc: string
+  desc?: string
 };
 
 export type ArgumentItem = {
   name: string
   mode: MODE
-  desc: string
+  desc?: string
 };
 
 export type AppSettings = {
   name: string
   version: string
-  desc: string
+  desc?: string
   commands_dir: string
   commands_sort: Array<string>
   locale: LocaleSettings
@@ -34,15 +34,15 @@ export type AppSettings = {
 
 export declare class App {
   config: AppSettings;
-  opts: Array<OptionItem>
+  opts?: Array<OptionItem>
   commands: Record<string, Command>
   construct(settings: AppSettings);
   addGlobalOption(
     name: string,
     short: string,
-    desc: string,
-    mode: MODE,
-    _default: any | null
+    desc?: string,
+    mode?: MODE,
+    _default?: any
   ): this;
   locale(options: LocaleSettings);
   register(cmd: any);
@@ -53,7 +53,7 @@ export declare class App {
 export type CommandSettings = {
   name: string,
   alias: Array<string>,
-  desc: string,
+  desc?: string,
   args: Array<ArgumentItem>,
   options: Array<OptionItem>,
 };
@@ -63,29 +63,29 @@ export declare class Command {
   args: Array<ArgumentItem>
   opts: Array<OptionItem>
   construct(config: CommandSettings);
-  addArgument(name: string, desc: string, default_value: any | null): this;
-  addOption(name: string, short: string, desc: string, default_value: any | null): this;
+  addArgument(name: string, desc?: string, default_value?: any): this;
+  addOption(name: string, short: string, desc?: string, default_value?: any): this;
   usage(): void;
   exec(): Promise<void>;
-  ask(message: string, default_value: any | null): Promise<string>;
+  ask(message: string, default_value?: any): Promise<string>;
   confirm(message: string, default_value: boolean): Promise<boolean>;
-  select(message: string, choices: Array<string>, default_choice: any | null): Promise<string>;
+  select(message: string, choices: Array<string>, default_choice?: any): Promise<string>;
   table(rows: Array<Array<string>>, headers: Array<string>): Promise<void>;
 }
 
 export type Step = {
   workflow: string
   start: number
-  end: number | null
-  success: boolean | null
-  error: Error | null
+  end?: number
+  success?: boolean
+  error?: Error
 };
 
 export type Context = {
   workflows: Array<string>
-  curr: Step | null
-  steps: Record<string, Step>
-  success: boolean | null
+  curr?: Step
+  steps?: Record<string, Step>
+  success?: boolean
 };
 
 export declare class Workflow {
