@@ -36,7 +36,7 @@ export declare class App {
   config: AppSettings;
   opts?: Array<OptionItem>
   commands: Record<string, Command>
-  construct(settings: AppSettings);
+  constructor(settings: AppSettings);
   addGlobalOption(
     name: string,
     short: string,
@@ -62,7 +62,7 @@ export declare class Command {
   config: CommandSettings
   args: Array<ArgumentItem>
   opts: Array<OptionItem>
-  construct(config: CommandSettings);
+  constructor(config: CommandSettings);
   addArgument(name: string, desc?: string, default_value?: any): this;
   addOption(name: string, short: string, desc?: string, default_value?: any): this;
   usage(): void;
@@ -82,7 +82,7 @@ export type Step = {
 };
 
 export type Context = {
-  workflows: Array<string>
+  workflows?: Array<string>
   curr?: Step
   steps?: Record<string, Step>
   success?: boolean
@@ -91,7 +91,7 @@ export type Context = {
 export declare class Workflow {
   operator: Record<string, (context: Context) => void | string>
   workflows: Array<string>
-  construct(operator: Record<string, (context: Context) => void | string>, workflows: Array<string>);
+  constructor(operator: Record<string, (context: Context) => Promise<void | string>>, workflows?: Array<string>);
   dispatch(context: Context, curr: string): Promise<void>;
   start(context: Context): Promise<Context>;
 }
