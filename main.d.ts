@@ -95,3 +95,12 @@ export declare class Workflow {
   dispatch(context: Context, curr: string): Promise<void>;
   start(context: Context): Promise<Context>;
 }
+
+export declare class Configuration {
+  [key: string]: any
+  constructor(config?: Record<string, unknown>, sep?: string);
+  init(config?: Record<string, unknown>, sep?: string);
+  assign(config: Record<string, unknown>);
+  get(key?: string, _default?: any);
+  validate(keys?: Array<string> | string);
+}
