@@ -13,7 +13,7 @@ function resolveCommands(commands, sort, group) {
     sort = [];
   }
 
-  // resolve by goup
+  // resolve by group
   const group_commands = [];
   Object.keys(group).forEach((key) => {
     group[key].forEach(cmd => {
