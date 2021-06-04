@@ -114,3 +114,10 @@ export namespace debug {
   function pause(...data: any[]): Promise<void>;
   function error(...data: any[]): void;
 }
+
+export namespace locales {
+  function restore(): void;
+  function init(config: Record<string, any>): void;
+  function __(str: string, params?: Record<string, string>): string;
+  function use(set: Array<string>): void;
+}
