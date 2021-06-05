@@ -23,7 +23,7 @@
     "cli-tool": "./bin/cli-tool.js"
   },
   "scripts": {
-    "lint": "eslint --fix src/ tests/",
+    "lint": "tsc ./main.d.ts && eslint --fix src/ tests/",
     "test": "mocha --reporter spec --timeout 3000 tests/*.tests.js",
     "test-cov": "nyc -r=lcov -r=html -r=text -r=json mocha -t 3000 -R spec tests/*.tests.js",
     "ci": "npm run lint && npm run test-cov && codecov",
@@ -61,9 +61,7 @@
   "pre-commit": {
     "silent": false,
     "run": [
-      "lint",
-      "test-cov",
-      "clear"
+      "lint"
     ]
   }
 }
