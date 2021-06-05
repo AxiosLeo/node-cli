@@ -59,6 +59,7 @@ describe('str test case', function () {
   });
   it('_render', async function () {
     const tmpl = 'My name is ${name}';
+    expect(_render(tmpl)).to.be.equal('My name is ${name}');
     expect(_render(tmpl, { name: 'Leo' })).to.be.equal('My name is Leo');
     const tmpl_file = path.join(__dirname, '../runtime/test-str/test.tmpl');
     try {
@@ -67,16 +68,22 @@ describe('str test case', function () {
       expect(e.message).to.be.equal(`${tmpl_file} not exist.`);
     }
     await _write(tmpl_file, 'render string with ${file}');
+    expect(await _render_with_file(tmpl_file)).to.be.equal('render string with ${file}');
     expect(await _render_with_file(tmpl_file, { file: 'test.tmpl' })).to.be.equal('render string with test.tmpl');
+    
     await _remove(path.join(__dirname, '../runtime/test-str/'));
   });
   it('_fixed', function () {
     expect(_fixed(null, 4)).to.be.equal('    ');
     expect(_fixed(null, 4, 'right')).to.be.equal('    ');
     expect(_fixed(null, 4, 'center')).to.be.equal('    ');
+    expect(_fixed('test')).to.be.equal('      test');
+    expect(_fixed('12345', 6, 'left', '-')).to.be.equal('-12345');
+    expect(_fixed('12345', 6, 'right', '-')).to.be.equal('12345-');
   });
   it('emitter', function () {
-    const emitter = new Emitter({
+    let emitter = new Emitter();
+    emitter = new Emitter({
       indent: '  ',
       eol: '\n',
       level: 0,
@@ -89,9 +96,14 @@ describe('str test case', function () {
     emitter.emit('console.log', true).emitln('(a, b);');
     emitter.emitln('}', 'down');
     emitter.emitln('}', 'close');
-    expect(emitter.output()).to.be.equal('function test(){\n  let a = 0;\n  let b = a + 10;\n  console.log(b);\n  if (a !== b) {\n    console.log(a, b);\n  }\n}\n');
+    emitter.emit().emitln();
+    expect(emitter.output()).to.be.equal('function test(){\n  let a = 0;\n  let b = a + 10;\n  console.log(b);\n  if (a !== b) {\n    console.log(a, b);\n  }\n}\n\n');
+
+    expect(emitter.emitIndent()).to.be.equal('');
   });
   it('equal ignore case', function () {
     expect(_equal_ignore_case('a', 'A')).to.be.true;
+    // eslint-disable-next-line no-undefined
+    expect(_equal_ignore_case(null, undefined)).to.be.true;
   });
 });

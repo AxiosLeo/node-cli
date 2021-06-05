@@ -33,7 +33,9 @@ function _lower_first(str) {
 
 function _caml_case(name, pascalCase = true) {
   name = _str(name);
-  return camelCase(name, { pascalCase });
+  return camelCase(name, {
+    pascalCase
+  });
 }
 
 function _snake_case(name) {
@@ -81,7 +83,7 @@ function _fixed(content, length = 10, fillPosition = 'l', fill = ' ') {
   if (content.length < length) {
     var leftFill = '';
     var rightFill = '';
-    if (fillPosition.indexOf('r') === 0) {
+    if (fillPosition.indexOf('l') === 0) {
       leftFill = fill.repeat(length - content.length);
     } else if (fillPosition.indexOf('c') === 0) {
       var left = Math.floor((length - content.length) / 2);
