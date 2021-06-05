@@ -45,6 +45,7 @@
     "url": "https://github.com/AxiosCros/node-cli"
   },
   "devDependencies": {
+    "@types/node": "^15.12.1",
     "chai": "^4.2.0",
     "codecov": "^3",
     "eslint": "*",
