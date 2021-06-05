@@ -56,7 +56,8 @@
     "mocha-sinon": "^2.1.2",
     "nyc": "^14.1.1",
     "pre-commit": "^1.2.2",
-    "sinon": "^9.0.2"
+    "sinon": "^9.0.2",
+    "typescript": "^4.3.2"
   },
   "pre-commit": {
     "silent": false,
