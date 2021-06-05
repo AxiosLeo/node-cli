@@ -52,11 +52,11 @@ describe('is test case', function () {
     expect(is.object(config)).to.be.true;
   });
   it('test case for function', function () {
-    expect(is.function(function name() { })).to.be.true;
+    expect(is.func(function name() { })).to.be.true;
     const func = function () { return; };
-    expect(is.function(func)).to.be.true;
+    expect(is.func(func)).to.be.true;
     const config = new Configuration();
-    expect(is.function(config.get)).to.be.true;
+    expect(is.func(config.get)).to.be.true;
   });
   it('test case for boolean', function () {
     expect(is.boolean(true)).to.be.true;

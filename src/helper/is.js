@@ -17,7 +17,7 @@ const is = {
     return false;
   },
   object: a => a !== null && typeof a === 'object' && Array.isArray(a) === false,
-  function: a => typeof (a) === 'function',
+  func: a => typeof (a) === 'function',
   boolean: a => typeof (a) === 'boolean',
   file: async a => await fs._is_file(a),
   dir: async a => await fs._is_dir(a),
