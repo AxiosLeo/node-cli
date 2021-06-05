@@ -80,6 +80,7 @@ export declare abstract class Command {
 }
 
 type Step = {
+  [key: string]: any
   workflow?: string
   start?: number
   end?: number
@@ -88,18 +89,19 @@ type Step = {
 };
 
 type Context = {
+  [key: string]: any
   workflows?: Array<string>
-  curr?: Step
+  curr: Step
   steps?: Record<string, Step>
   success?: boolean
 };
 
-export declare class Workflow {
-  operator: Record<string, (context: Context) => void | string>
+export declare class Workflow<TContext extends Context> {
+  operator: Record<string, (context: TContext) => Promise<void | string>>
   workflows: Array<string>
-  constructor(operator: Record<string, (context: Context) => Promise<void | string>>, workflows?: Array<string>);
-  dispatch(context: Context, curr: string): Promise<void>;
-  start(context: Context): Promise<Context>;
+  constructor(operator: Record<string, (context: TContext) => Promise<void | string>>, workflows?: Array<string>);
+  dispatch(context: TContext, curr: string): Promise<void>;
+  start(context: TContext): Promise<TContext>;
 }
 
 export declare class Configuration {
