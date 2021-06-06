@@ -78,7 +78,7 @@ async function _render_with_file(tmpl_file, params = {}, left = '${', right = '}
   return _render(tmpl_string, params, left, right);
 }
 
-function _fixed(content, length = 10, fillPosition = 'l', fill = ' ') {
+function _fixed(content, length = 10, fillPosition = 'r', fill = ' ') {
   content = `${_str(content)}`;
   if (content.length < length) {
     var leftFill = '';
