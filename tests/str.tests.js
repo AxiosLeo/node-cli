@@ -77,7 +77,7 @@ describe('str test case', function () {
     expect(_fixed(null, 4)).to.be.equal('    ');
     expect(_fixed(null, 4, 'right')).to.be.equal('    ');
     expect(_fixed(null, 4, 'center')).to.be.equal('    ');
-    expect(_fixed('test')).to.be.equal('      test');
+    expect(_fixed('test')).to.be.equal('test      ');
     expect(_fixed('12345', 6, 'left', '-')).to.be.equal('-12345');
     expect(_fixed('12345', 6, 'right', '-')).to.be.equal('12345-');
   });
