@@ -55,7 +55,7 @@ app.start();
 
 ```js
 // register with command class
-const CommandExample = require('/path/to/your/command/file'); 
+const CommandExample = require('/path/to/your/command/file');
 app.register(CommandExample);
 
 app.exec("<command-name>");
@@ -74,7 +74,7 @@ app.exec("<command-name>");
 - register with command file path
 
 ```js
-app.register('/path/to/your/other-command/file');
+app.register('/path/to/your/command/file');
 
 app.exec("<command-name>");
 ```
@@ -126,8 +126,8 @@ class CommandExample extends Command {
             default: null     // only supported on optional mode
           }
       ],
-      // this.addArgument(name, desc = '', mode = 'required', default_value = null);
-      // this.addOption(name, short = '', desc = '', mode = 'required', default_value = null);
+      // this.addArgument('name', 'desc', 'required', null);
+      // this.addOption('name', 'n', 'desc', 'required', null);
     });
   }
 
@@ -149,13 +149,14 @@ class CommandExample extends Command {
       const confirm = await this.confirm('Confirm do this now?', false);
 
       // select action
-      const action = await this.select('select an action', ['info', 'update']);
+      const action = await this.select('Select an action', ['info', 'update']);
 
       // printer table
       const rows = [
         ['Bob', 2]
       ];
-      this.table(rows, ['Name', 'Score']);
+      const head = ['Name', 'Score'];
+      this.table(rows, head);
   }
 }
 
