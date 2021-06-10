@@ -48,11 +48,10 @@ class ${name_upper}Command extends Command {
       name: '${name}',
       desc: ''
     });
-    // this.addArgument(name, desc = '', mode = 'required', default_value = null);
-    // this.addOption(name, short = '', desc = '', mode = 'required', default_value = null);
+    // this.addArgument('name', 'desc', 'required', null);
+    // this.addOption('name', 'n', 'desc', 'required', null);
   }
   async exec(args, options, argList, app) {
-    console.log(args, options, argList, app);
     printer.println('this is ${name} command');
   }
 }
