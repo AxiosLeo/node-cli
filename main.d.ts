@@ -2,7 +2,10 @@ import { Color } from 'colors';
 import { ChildProcess } from 'child_process';
 
 type Level = number | null | boolean | string;
-type ObjectItem = Record<string, unknown>;
+
+interface ObjectItem {
+  [key: string]: any;
+}
 
 type LocaleSettings = {
   sets: Array<string>,
@@ -72,7 +75,7 @@ export declare abstract class Command {
   addArgument(name: string, desc?: string, default_value?: any): this;
   addOption(name: string, short?: string, desc?: string, default_value?: any): this;
   usage(): void;
-  abstract exec(): Promise<void>;
+  abstract exec(args?: ObjectItem, options?: ObjectItem, argList?: Array<string>, app?: App): Promise<void>;
   ask(message: string, default_value?: any): Promise<string>;
   confirm(message: string, default_value?: boolean): Promise<boolean>;
   select(message: string, choices: Array<string>, default_choice?: any): Promise<string>;
