@@ -1,7 +1,7 @@
 runtime/*
-README.md
 .github/*
 tests/*
 coverage/*
 .nyc_output/*
 package-lock.json
+nyc.config.js
