@@ -128,9 +128,15 @@ interface Debug {
 
 export const debug: Debug;
 
+interface LocalesConfig {
+  sets: Array<string>
+  dir: string
+  use?: string
+}
+
 interface Locales {
   restore(): void;
-  init(config?: Record<string, any>): void;
+  init(config: LocalesConfig): void;
   __(str: string, params?: Record<string, string>): string;
   use(set: string): void;
 }
