@@ -8,6 +8,9 @@ const { _render } = require('./helper/str');
 let i18n, sets, options;
 
 function __(str, params = null) {
+  if (!str) {
+    return '';
+  }
   if (!params) {
     return i18n ? i18n.__(str) : str;
   }

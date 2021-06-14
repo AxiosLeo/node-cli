@@ -54,6 +54,10 @@ describe('locales test case', function () {
     const res = locales.__('Required option : ${name}', { name: 'name' });
     expect(res).to.be.equal('Required option : name');
   });
+  it('translate with invalid string', function () {
+    locales.restore();
+    expect(locales.__(null)).to.be.equal('');
+  });
   it('translate without init locales', function () {
     locales.restore();
     let res = locales.__('translate some word');
