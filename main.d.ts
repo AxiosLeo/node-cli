@@ -188,6 +188,7 @@ export namespace helper {
   }
 
   module cmd {
+    function _sleep(ms: number): Promise<void>;
     function _shell(cmd: string, cwd?: string | null, print?: boolean, throw_error?: boolean): Promise<ChildProcess>
     function _exec(cmd: string, cwd?: string, options?: ObjectItem): Promise<ChildProcess>
     function _confirm(message: string, default_value?: boolean): Promise<boolean>
