@@ -188,16 +188,88 @@ export namespace helper {
   }
 
   module cmd {
+    /**
+     * sleep by milliseconds
+     * @param ms 
+     */
     function _sleep(ms: number): Promise<void>;
+
+    /**
+     * exec bash commands, printout when finished
+     * @param cmd 
+     * @param cwd 
+     * @param print 
+     * @param throw_error 
+     */
     function _shell(cmd: string, cwd?: string | null, print?: boolean, throw_error?: boolean): Promise<ChildProcess>
+
+    /**
+     * exec bash commands, immediate output
+     * @param cmd 
+     * @param cwd 
+     * @param options 
+     */
     function _exec(cmd: string, cwd?: string, options?: ObjectItem): Promise<ChildProcess>
+
+    /**
+     * console conversations: confirm input
+     * @param message 
+     * @param default_value 
+     */
     function _confirm(message: string, default_value?: boolean): Promise<boolean>
+
+    /**
+     * console conversations: select action
+     * @param message 
+     * @param choices 
+     * @param default_choice 
+     */
     function _select(message: string, choices: Array<string>, default_choice?: any): Promise<string>
+
+    /**
+     * console conversations: ask input
+     * @param message 
+     * @param default_value 
+     */
     function _ask(message?: string, default_value?: string): Promise<string>
+
+    /**
+     * print table
+     * @param rows 
+     * @param headers 
+     * @param options 
+     */
     function _table(rows: Array<Array<string>>, headers?: Array<string>, options?: ObjectItem): void
+
+    /**
+     * resolve actions from args[]
+     * @example _dispatch(argList, { action1: '', action2: 'custom-action-name' });
+     * @param opts 
+     * @param ways 
+     */
     function _dispatch(opts: Array<string>, ways: ObjectItem): Promise<string>
+
+    /**
+     * check option of command
+     * @param command_name 
+     * @param opts 
+     * @param opt 
+     */
     function _check_option(command_name: string, opts: Array<string>, opt: OptionItem): void
+
+    /**
+     * check argument of command
+     * @param command_name 
+     * @param args 
+     * @param arg 
+     */
     function _check_argument(command_name: string, args: Array<string>, arg: ArgumentItem): void
+    
+    /**
+     * exec async tasks one by one in sync
+     * @param data 
+     * @param resolver 
+     */
     function _sync_foreach(data: any, resolver: (value?: any, key?: any) => void): Promise<Context>
   }
 

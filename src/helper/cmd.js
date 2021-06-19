@@ -285,7 +285,7 @@ async function _sync_foreach(data, resolver) {
 }
 
 /**
- * 
+ * sleep by milliseconds
  * @param {*} ms milliseconds
  * @returns 
  */
