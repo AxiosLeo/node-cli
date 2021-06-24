@@ -8,7 +8,7 @@ interface ObjectItem {
 }
 
 type LocaleSettings = {
-  sets: Array<string>,
+  sets: string[],
   dir: string,
   use?: string
 };
@@ -36,14 +36,14 @@ type AppSettings = {
   version: string
   desc?: string
   commands_dir?: string
-  commands_sort?: Array<string>
+  commands_sort?: string[]
   locale?: LocaleSettings
-  options?: Array<OptionItem>
+  options?: OptionItem[]
 };
 
 export declare class App {
   config: AppSettings;
-  opts?: Array<OptionItem>
+  opts?: OptionItem[]
   commands: Record<string, Command>
   constructor(settings?: AppSettings);
   addGlobalOption(
@@ -61,25 +61,25 @@ export declare class App {
 
 type CommandSettings = {
   name: string,
-  alias?: Array<string>,
+  alias?: string[],
   desc?: string,
-  args?: Array<ArgumentItem>,
-  options?: Array<OptionItem>,
+  args?: ArgumentItem[],
+  options?: OptionItem[],
 };
 
 export declare abstract class Command {
   config: CommandSettings
-  args?: Array<ArgumentItem>
-  opts?: Array<OptionItem>
+  args?: ArgumentItem[]
+  opts?: OptionItem[]
   constructor(config?: CommandSettings);
   addArgument(name: string, desc?: string, default_value?: any): this;
   addOption(name: string, short?: string, desc?: string, default_value?: any): this;
   usage(): void;
-  abstract exec(args?: ObjectItem, options?: ObjectItem, argList?: Array<string>, app?: App): Promise<void>;
+  abstract exec(args?: ObjectItem, options?: ObjectItem, argList?: string[], app?: App): Promise<void>;
   ask(message: string, default_value?: any): Promise<string>;
   confirm(message: string, default_value?: boolean): Promise<boolean>;
-  select(message: string, choices: Array<string>, default_choice?: any): Promise<string>;
-  table(rows: Array<Array<string>>, headers?: Array<string>): Promise<void>;
+  select(message: string, choices: string[], default_choice?: any): Promise<string>;
+  table(rows: string[][], headers?: string[]): Promise<void>;
 }
 
 type Step = {
@@ -93,7 +93,7 @@ type Step = {
 
 type Context = {
   [key: string]: any
-  workflows?: Array<string>
+  workflows?: string[]
   curr: Step
   steps?: Record<string, Step>
   success?: boolean
@@ -101,8 +101,8 @@ type Context = {
 
 export declare class Workflow<TContext extends Context> {
   operator: Record<string, (context: TContext) => Promise<void | string>>
-  workflows: Array<string>
-  constructor(operator: Record<string, (context: TContext) => Promise<void | string>>, workflows?: Array<string>);
+  workflows: string[]
+  constructor(operator: Record<string, (context: TContext) => Promise<void | string>>, workflows?: string[]);
   dispatch(context: TContext, curr: string): Promise<void>;
   start(context: TContext): Promise<TContext>;
 }
@@ -113,7 +113,7 @@ export declare class Configuration {
   init(config?: ObjectItem, sep?: string);
   assign(config: ObjectItem);
   get(key?: string, _default?: any);
-  validate(keys?: Array<string> | string);
+  validate(keys?: string[] | string);
 }
 
 interface Debug {
@@ -129,7 +129,7 @@ interface Debug {
 export const debug: Debug;
 
 interface LocalesConfig {
-  sets: Array<string>
+  sets: string[]
   dir: string
   use?: string
 }
@@ -182,8 +182,8 @@ export namespace helper {
     function _is_file(filepath: string): Promise<boolean>;
     function _is_dir(dirpath: string): Promise<boolean>;
     function _copy(source: string, target: string, recur?: boolean): Promise<void>;
-    function _search(dir: string, ext?: string, recur?: boolean): Promise<Array<string>>;
-    function _list(dir: string, full?: boolean, ext?: string): Promise<Array<string>>;
+    function _search(dir: string, ext?: string, recur?: boolean): Promise<string[]>;
+    function _list(dir: string, full?: boolean, ext?: string): Promise<string[]>;
     function _remove(filepath: string, recur?: boolean): Promise<void>;
   }
 
@@ -224,7 +224,7 @@ export namespace helper {
      * @param choices 
      * @param default_choice 
      */
-    function _select(message: string, choices: Array<string>, default_choice?: any): Promise<string>
+    function _select(message: string, choices: string[], default_choice?: any): Promise<string>
 
     /**
      * console conversations: ask input
@@ -239,7 +239,7 @@ export namespace helper {
      * @param headers 
      * @param options 
      */
-    function _table(rows: Array<Array<string>>, headers?: Array<string>, options?: ObjectItem): void
+    function _table(rows: string[][], headers?: string[], options?: ObjectItem): void
 
     /**
      * resolve actions from args[]
@@ -247,7 +247,7 @@ export namespace helper {
      * @param opts 
      * @param ways 
      */
-    function _dispatch(opts: Array<string>, ways: ObjectItem): Promise<string>
+    function _dispatch(opts: string[], ways: ObjectItem): Promise<string>
 
     /**
      * check option of command
@@ -255,7 +255,7 @@ export namespace helper {
      * @param opts 
      * @param opt 
      */
-    function _check_option(command_name: string, opts: Array<string>, opt: OptionItem): void
+    function _check_option(command_name: string, opts: string[], opt: OptionItem): void
 
     /**
      * check argument of command
@@ -263,8 +263,8 @@ export namespace helper {
      * @param args 
      * @param arg 
      */
-    function _check_argument(command_name: string, args: Array<string>, arg: ArgumentItem): void
-    
+    function _check_argument(command_name: string, args: string[], arg: ArgumentItem): void
+
     /**
      * exec async tasks one by one in sync
      * @param data 
@@ -300,9 +300,25 @@ export namespace helper {
     class Emitter {
       config: ObjectItem
       constructor(options?: ObjectItem)
+      /**
+       * append string
+       * @param str 
+       * @param level 
+       */
       emit(str: string, level?: Level): this;
+      /**
+       * append string with eol
+       * @param str 
+       * @param level 
+       */
       emitln(str: string, level?: Level): this;
+      /**
+       * emit indent string
+       */
       emitIndent(): string;
+      /**
+       * curr output content
+       */
       output(): string;
     }
     function _str(s?: any): string;
