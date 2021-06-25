@@ -277,6 +277,7 @@ export namespace helper {
     function undefined(a: any): boolean
     function array(a: any): boolean
     function string(a: any): boolean
+    function integer(a: any): boolean
     function number(a: any): boolean
     function numeric(a: any): boolean
     function object(a: any): boolean
@@ -296,10 +297,17 @@ export namespace helper {
     function _deep_clone(obj: ObjectItem): ObjectItem;
   }
 
+  export interface EmitterConfig {
+    indent: string
+    eol: string
+    level: number
+    encoding: string
+  }
+
   module str {
     class Emitter {
       config: ObjectItem
-      constructor(options?: ObjectItem)
+      constructor(options?: EmitterConfig)
       /**
        * append string
        * @param str 

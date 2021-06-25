@@ -30,6 +30,11 @@ describe('is test case', function () {
     expect(is.number(1111111111111111111111111)).to.be.true;
     expect(is.number('123')).to.be.false;
   });
+  it('test case for integer', function () {
+    expect(is.integer(1.123)).to.be.false;
+    expect(is.integer(1111111111111111111111111)).to.be.true;
+    expect(is.integer('123')).to.be.false;
+  });
   it('test case for numeric', function () {
     expect(is.numeric(1)).to.be.true;
     expect(is.numeric('1.23')).to.be.true;
