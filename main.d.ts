@@ -110,10 +110,11 @@ export declare class Workflow<TContext extends Context> {
 export declare class Configuration {
   [key: string]: any
   constructor(config?: ObjectItem, sep?: string);
-  init(config?: ObjectItem, sep?: string);
-  assign(config: ObjectItem);
+  init(config?: ObjectItem, sep?: string): this;
+  set(key: any, value: any): this;
+  assign(config: ObjectItem): this;
   get(key?: string, _default?: any);
-  validate(keys?: string[] | string);
+  validate(keys?: string[] | string): string[];
 }
 
 interface Debug {

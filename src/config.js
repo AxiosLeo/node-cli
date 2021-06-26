@@ -16,6 +16,36 @@ class Configuration {
     return this;
   }
 
+  set(key, value) {
+    if (!key || !is.string(key)) {
+      throw new Error('Invalid config key');
+    }
+    const keyArr = key.split(this.__sep);
+    const recur = (keys, curr, value) => {
+      const key = keys.shift();
+      if (is.invalid(curr[key]) && keys.length) {
+        const next = keys[0];
+        if (is.numeric(next) && is.integer(next * 1)) {
+          curr[key] = [];
+        } else {
+          curr[key] = {};
+        }
+      }
+      if (keys.length) {
+        recur(keys, curr[key], value);
+      } else {
+        const keyInt = key - 0;
+        if (is.numeric(key) && is.integer(keyInt)) {
+          curr[keyInt] = value;
+        } else {
+          curr[key] = value;
+        }
+      }
+    };
+    recur(keyArr, this, value);
+    return this;
+  }
+
   assign(config) {
     if (!is.empty(config)) {
       _assign(this, config);

@@ -24,6 +24,22 @@ describe('Configuration test case', () => {
     res = config.get();
     expect(res.name).to.be.equal('abc');
   });
+  it('set', () => {
+    const config = new Configuration({});
+    expect(function () {
+      config.set(1, 1);
+    }).to.be.throw('Invalid config key');
+    config.set('a.b.c.d.e', 1);
+    config.set('a.b.c.d.f.1', 1);
+    config.set('a.b.z.1.a.b.c', 1);
+    config.set('a.b.z.0.a.b.c', 1);
+    expect(JSON.stringify(config.get('a'))).to.be.equal(JSON.stringify({
+      'b': { 'c': { 'd': { 'e': 1, 'f': [null, 1] } }, 'z': [{ 'a': { 'b': { 'c': 1 } } }, { 'a': { 'b': { 'c': 1 } } }] }
+    }));
+    config.set('a', []);
+    config.set('a.0.0', 'A');
+    expect(JSON.stringify(config.get('a'))).to.be.equal(JSON.stringify([['A']]));
+  });
   it('validate', () => {
     let config = new Configuration({
       a: '',
