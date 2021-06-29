@@ -3,6 +3,7 @@
 const fs = require('fs');
 const path = require('path');
 const debug = require('../debug');
+const crypto = require('crypto');
 const promisify = require('util').promisify;
 const exists = promisify(fs.exists);
 const mkdir = promisify(fs.mkdir);
@@ -155,8 +156,16 @@ async function _remove(filepath, recur = true) {
   }
 }
 
+async function _md5(filepath) {
+  const buffer = await _read(filepath);
+  const hash = crypto.createHash('md5');
+  hash.update(buffer, 'utf8');
+  return hash.digest('hex');
+}
+
 module.exports = {
   _ext,
+  _md5,
   _list,
   _read,
   _copy,

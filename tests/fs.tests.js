@@ -3,18 +3,19 @@
 const path = require('path');
 const expect = require('chai').expect;
 const {
-  _list,
-  _search,
   _ext,
+  _md5,
+  _list,
+  _read,
+  _copy,
+  _move,
   _write,
+  _mkdir,
+  _search,
   _remove,
   _exists,
-  _read,
   _append,
-  _mkdir,
   _read_json,
-  _copy,
-  _move
 } = require('../src/helper/fs');
 
 describe('fs test case', function () {
@@ -106,5 +107,13 @@ describe('fs test case', function () {
 
     let files4 = await _list(__dirname, false, '.js');
     expect(files4.length).to.be.equal(10);
+  });
+  it('file md5', async () => {
+    const filepath = path.join(__dirname, '../runtime/md5_test.txt');
+    await _write(filepath, 'some content');
+    const file_md5 = await _md5(filepath);
+    expect(file_md5).to.be.equal('9893532233caff98cd083a116b013c0b');
+    await _remove(filepath);
+    expect(await _exists(filepath)).to.be.false;
   });
 });

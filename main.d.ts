@@ -173,6 +173,7 @@ export const printer: Printer
 export namespace helper {
   module fs {
     function _ext(filename?: string): string;
+    function _md5(filename?: string): Promise<string>;
     function _write(filepath: string, content: string): Promise<void>;
     function _append(filepath: string, content: string): Promise<void>;
     function _read(filepath: string): Promise<string>;
