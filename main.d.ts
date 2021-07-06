@@ -118,6 +118,7 @@ export declare class Configuration {
 }
 
 interface Debug {
+  pos(label: string, color_code: string): void;
   dump(...data: any[]): void;
   halt(...data: any[]): void;
   jump(jumpNumber?: number, ...data: any[]): void;
