@@ -90,7 +90,7 @@ async function _confirm(message = '', default_value = false) {
     return response.name;
   } catch (e) {
     // cancel with ctrl+c
-    debug.halt();
+    process.exit(-1);
   }
 }
 
@@ -108,7 +108,7 @@ async function _select(message = '', choices = [], default_choice = null) {
     return await prompt.run();
   } catch (e) {
     // cancel with ctrl+c
-    debug.halt();
+    process.exit(-1);
   }
 }
 
@@ -128,7 +128,7 @@ async function _ask(message = '', default_value = null) {
     return response.name;
   } catch (e) {
     // cancel with ctrl+c
-    debug.halt();
+    process.exit(-1);
   }
 }
 
