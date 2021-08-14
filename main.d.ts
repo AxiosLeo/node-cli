@@ -72,13 +72,66 @@ export declare abstract class Command {
   args?: ArgumentItem[]
   opts?: OptionItem[]
   constructor(config?: CommandSettings);
-  addArgument(name: string, desc?: string, default_value?: any): this;
-  addOption(name: string, short?: string, desc?: string, default_value?: any): this;
+  /**
+   * add argument of current command
+   * @param name argument name
+   * @param desc argument description
+   * @param mode argument mode : required | optional
+   * @param default_value 
+   */
+  addArgument(name: string, desc?: string, mode?: MODE, default_value?: any): this;
+
+  /**
+   * add option of current command
+   * @param name option name
+   * @param short option short name
+   * @param desc option description
+   * @param mode option mode : required | optional
+   * @param default_value 
+   */
+  addOption(name: string, short?: string, desc?: string, mode?: MODE, default_value?: any): this;
+
+  /**
+   * print usage of current command
+   */
   usage(): void;
+
+  /**
+   * exec current command
+   * @param args 
+   * @param options 
+   * @param argList 
+   * @param app 
+   */
   abstract exec(args?: ObjectItem, options?: ObjectItem, argList?: string[], app?: App): Promise<void>;
+
+  /**
+   * ask input something
+   * @param message 
+   * @param default_value 
+   */
   ask(message: string, default_value?: any): Promise<string>;
+
+  /**
+   * confirm for some operation
+   * @param message 
+   * @param default_value 
+   */
   confirm(message: string, default_value?: boolean): Promise<boolean>;
+
+  /**
+   * select an action
+   * @param message 
+   * @param choices 
+   * @param default_choice 
+   */
   select(message: string, choices: string[], default_choice?: any): Promise<string>;
+
+  /**
+   * print table on console
+   * @param rows 
+   * @param headers 
+   */
   table(rows: string[][], headers?: string[]): Promise<void>;
 }
 
@@ -173,20 +226,104 @@ export const printer: Printer
 
 export namespace helper {
   module fs {
+    /**
+     * get extension of file without dot
+     * @param filename 
+     */
     function _ext(filename?: string): string;
+
+    /**
+     * count file md5 value
+     * @param filename 
+     */
     function _md5(filename?: string): Promise<string>;
+
+    /**
+     * write some content to single file
+     * @param filepath 
+     * @param content 
+     */
     function _write(filepath: string, content: string): Promise<void>;
+
+    /**
+     * append some content to single file
+     * @param filepath 
+     * @param content 
+     */
     function _append(filepath: string, content: string): Promise<void>;
+
+    /**
+     * read content from single file
+     * @param filepath 
+     */
     function _read(filepath: string): Promise<string>;
+
+    /**
+     * read content from single file and parse to JSON object
+     * @param filepath 
+     */
     function _read_json(filepath: string): Promise<string>;
+
+    /**
+     * make dir where it dose not exists
+     * @param dir 
+     */
     function _mkdir(dir: string): Promise<void>;
+
+    /**
+     * check single file exists
+     * @param filepath 
+     */
     function _exists(filepath: string): Promise<boolean>;
+
+    /**
+     * move files or dir to somewhere
+     * @param source 
+     * @param target 
+     */
     function _move(source: string, target: string): Promise<void>;
+
+    /**
+     * check it is file
+     * @param filepath 
+     */
     function _is_file(filepath: string): Promise<boolean>;
+
+    /**
+     * check it is dir
+     * @param dirpath 
+     */
     function _is_dir(dirpath: string): Promise<boolean>;
+
+    /**
+     * copy file or dir
+     * @param source 
+     * @param target 
+     * @param recur 
+     */
     function _copy(source: string, target: string, recur?: boolean): Promise<void>;
+
+    /**
+     * search some files by extension
+     * @param dir 
+     * @param ext 
+     * @param recur 
+     */
     function _search(dir: string, ext?: string, recur?: boolean): Promise<string[]>;
+
+    /**
+     * list files in some directory
+     * @param dir 
+     * @param full 
+     * @param ext 
+     */
     function _list(dir: string, full?: boolean, ext?: string): Promise<string[]>;
+
+    /**
+     * remove some files
+     * @param filepath 
+     * @param recur 
+     */
     function _remove(filepath: string, recur?: boolean): Promise<void>;
   }
 
