@@ -46,6 +46,15 @@ export declare class App {
   opts?: OptionItem[]
   commands: Record<string, Command>
   constructor(settings?: AppSettings);
+
+  /**
+   * add global options for the CLI application
+   * @param name option name
+   * @param short short option name
+   * @param desc description of the option
+   * @param mode required|optional
+   * @param _default 
+   */
   addGlobalOption(
     name: string,
     short?: string,
@@ -53,9 +62,30 @@ export declare class App {
     mode?: MODE,
     _default?: any
   ): this;
+
+  /**
+   * enable locale translation using i18n
+   * @param options 
+   */
   locale(options?: LocaleSettings);
-  register(cmd: any);
+
+  /**
+   * register command with Class/Object/path-string
+   * @param cmd 
+   */
+  register(cmd: any): this;
+
+  /**
+   * run CLI application
+   * @param options 
+   */
   start(options?: AppSettings): Promise<void>;
+
+  /**
+   * exec the specified command of the CLI application
+   * @param name 
+   * @param argvSlice 
+   */
   exec(name: string, argvSlice?: number[]): Promise<void>;
 }
 
@@ -156,17 +186,56 @@ export declare class Workflow<TContext extends Context> {
   operator: Record<string, (context: TContext) => Promise<void | string>>
   workflows: string[]
   constructor(operator: Record<string, (context: TContext) => Promise<void | string>>, workflows?: string[]);
+
+  /**
+   * start with the specified step
+   * @param context 
+   * @param curr 
+   */
   dispatch(context: TContext, curr: string): Promise<void>;
+
+  /**
+   * start with the first step
+   * @param context 
+   */
   start(context: TContext): Promise<TContext>;
 }
 
 export declare class Configuration {
   [key: string]: any
   constructor(config?: ObjectItem, sep?: string);
+
+  /**
+   * initialize configuration
+   * @param config 
+   * @param sep 
+   */
   init(config?: ObjectItem, sep?: string): this;
+
+  /**
+   * set configuration with key-value
+   * @param key 
+   * @param value 
+   */
   set(key: any, value: any): this;
+
+  /**
+   * assign to Configuration object
+   * @param config 
+   */
   assign(config: ObjectItem): this;
-  get(key?: string, _default?: any);
+
+  /**
+   * get some value by key
+   * @param key 
+   * @param _default 
+   */
+  get(key?: string, _default?: any): any;
+
+  /**
+   * check some configuration is valid
+   * @param keys 
+   */
   validate(keys?: string[] | string): string[];
 }
 
