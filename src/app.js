@@ -300,18 +300,20 @@ class App {
     if (name !== 'help') {
       if (argv.help) {
         command.usage();
-        return;
+        process.exit(0);
       }
       let res = _check_command(command, this.config.options, argv);
       args = res.args;
       opts = res.opts;
     }
-    command.exec(args, opts, argv._, this).catch((err) => {
+    command.exec(args, opts, argv._, this).then(()=>{
+      process.exit(0);
+    }).catch((err) => {
       if (err) {
         printer.println()
           .error('exec error :').println()
           .println(err.stack).println();
-        process.exit(-1);
+        process.exit(1);
       }
     });
   }
