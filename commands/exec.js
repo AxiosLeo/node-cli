@@ -8,7 +8,7 @@ class ExecCommand extends Command {
   constructor() {
     super({
       name: 'exec',
-      desc: ''
+      desc: 'Run command js script directly'
     });
     this.addArgument('filepath', 'Command js script file path', 'required', null);
   }
