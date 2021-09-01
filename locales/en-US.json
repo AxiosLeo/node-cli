@@ -33,5 +33,6 @@
 	"The mode name \"${mode}\" is invalid in \"${cmd}\" command. Valid mode names are \"required\" or \"optional\"": "The mode name \"${mode}\" is invalid in \"${cmd}\" command. Valid mode names are \"required\" or \"optional\"",
 	"The global option name cannot be empty.": "The global option name cannot be empty.",
 	"The global option name is duplicated as \"${name}\".": "The global option name is duplicated as \"${name}\".",
-	"Option Short Name Duplication : -${short} for ${name} option in \"${cmd}\" command.'": "Option Short Name Duplication : -${short} for ${name} option in \"${cmd}\" command.'"
+	"Option Short Name Duplication : -${short} for ${name} option in \"${cmd}\" command.'": "Option Short Name Duplication : -${short} for ${name} option in \"${cmd}\" command.'",
+	"Command js script file path": "Command js script file path"
 }

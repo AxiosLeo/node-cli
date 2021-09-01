@@ -31,5 +31,6 @@
 	"Option Short Name Duplication : -${short} for ${name} option": "配置项 ${name} 有重复的别名 : -${short}",
 	"The mode name \"${mode}\" is invalid in \"${cmd}\" command. Valid mode names are \"required\" or \"optional\"": "\"${cmd}\"命令中存在无效的mode名称\"${mode}\"。有效的mode名称为\"required\"或\"optional\"",
 	"The global option name cannot be empty.": "全局配置项不能为空",
-	"The global option name is duplicated as \"${name}\".": "重复的全局配置项名称 \"${name}\""
+	"The global option name is duplicated as \"${name}\".": "重复的全局配置项名称 \"${name}\"",
+	"Command js script file path": "命令行 JS 脚本的文件位置"
 }
