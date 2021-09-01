@@ -306,9 +306,7 @@ class App {
       args = res.args;
       opts = res.opts;
     }
-    command.exec(args, opts, argv._, this).then(()=>{
-      process.exit(0);
-    }).catch((err) => {
+    command.exec(args, opts, argv._, this).catch((err) => {
       if (err) {
         printer.println()
           .error('exec error :').println()
