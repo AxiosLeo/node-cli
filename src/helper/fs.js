@@ -156,11 +156,18 @@ async function _remove(filepath, recur = true) {
   }
 }
 
-async function _md5(filepath) {
-  const buffer = await _read(filepath);
+async function _md5(filepath, charset = 'utf8') {
   const hash = crypto.createHash('md5');
-  hash.update(buffer, 'utf8');
-  return hash.digest('hex');
+  return new Promise((resolve) => {
+    const stream = fs.createReadStream(filepath);
+    stream.on('data', (chunk) => {
+      hash.update(chunk, charset);
+    });
+    stream.on('end', () => {
+      const result = hash.digest('hex');
+      resolve(result);
+    });
+  });
 }
 
 module.exports = {
