@@ -33,7 +33,7 @@
     "no-implied-eval": 2,
     "no-labels": 2,
     "no-with": 2,
-    "no-loop-func": 1,
+    "no-loop-func": 2,
     "no-native-reassign": 2,
     "no-redeclare": [
       2,
@@ -51,7 +51,7 @@
         "args": "none"
       }
     ],
-    "no-undefined": 1,
+    "no-undefined": 2,
     "no-undef": 2,
     "global-require": 0,
     "no-console": 2,

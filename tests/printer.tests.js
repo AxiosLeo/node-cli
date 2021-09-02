@@ -22,12 +22,14 @@ describe('print test case', function () {
     // exec here is ok
     expect(true).to.be.true;
   });
+
   it('enable&disblae', function () {
     printer.disable();
     printer.debug('not have color');
     printer.enable();
     printer.debug('has color');
   });
+
   it('change themes', function () {
     printer.themes();
     printer.themes({
@@ -37,6 +39,7 @@ describe('print test case', function () {
     printer.input('echo input with red color').println();
     printer.println('echo str with red color and underline'.custom);
   });
+
   it('custom themes', function () {
     printer.themes({
       custome: 'blue'

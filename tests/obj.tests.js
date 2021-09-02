@@ -28,6 +28,7 @@ describe('obj test case', function () {
     config.assign({ a: 'A' });
     expect(config.get('a')).to.be.equal('A');
   });
+
   it('deep clone', function () {
     const obj = {
       a: 'b'

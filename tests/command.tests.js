@@ -16,6 +16,7 @@ describe('command test case', () => {
     });
     expect(command.config.name).to.be.equal('test');
   });
+
   it('add option&argument', () => {
     let command = new Command({
       name: 'test',
@@ -58,6 +59,7 @@ describe('command test case', () => {
     expect(command.config.args.length).to.be.equal(5);
     expect(command.config.options.length).to.be.equal(5);
   });
+
   it('not have options', () => {
     const command = new Command({
       name: 'test',
@@ -74,6 +76,7 @@ describe('command test case', () => {
     expect(command.config.args.length).to.be.equal(1);
     expect(command.config.options.length).to.be.equal(0);
   });
+
   it('cmd methods', () => {
     const command = new Command({
       name: 'test'

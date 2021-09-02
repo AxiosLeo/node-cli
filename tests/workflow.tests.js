@@ -30,6 +30,7 @@ describe('workflow test case', () => {
       expect(Object.keys(context.step_data).join(',')).to.be.equal('b,a');
     });
   });
+
   it('invalid operator or context', async () => {
     let workflow;
     try {
@@ -48,6 +49,7 @@ describe('workflow test case', () => {
       expect(e.message).to.be.equal('Invalid context.');
     }
   });
+
   it('invalid context.workflows', async () => {
     const context = {};
     try {
@@ -57,6 +59,7 @@ describe('workflow test case', () => {
       expect(e.message).to.be.equal('context.workflows cannot be empty.');
     }
   });
+
   it('throw error in reject', async () => {
     const operator = {
       a: async () => { },
@@ -71,6 +74,7 @@ describe('workflow test case', () => {
       expect(e.message).to.be.equal('throw error in reject');
     });
   });
+
   it('skip workflow step', async () => {
     const operator = {
       a: async () => {
@@ -89,6 +93,7 @@ describe('workflow test case', () => {
 
     workflow = new Workflow(operator);
   });
+
   it('reset workflows', async () => {
     const operator = {
       a: async () => { },

@@ -24,6 +24,7 @@ describe('fs test case', function () {
     expect(_ext(undefined)).to.be.equal('');
     expect(_ext('a.b.c.d')).to.be.equal('d');
   });
+
   it('search files', async function () {
     const ext = _ext(__filename);
     let files = await _search(__dirname, ext);
@@ -42,6 +43,7 @@ describe('fs test case', function () {
       expect(e.message).to.be.equal('Only support dir path');
     }
   });
+
   it('write&read file', async function () {
     let tmp_dir = path.join(__dirname, '../runtime/test-fs1/');
     await _mkdir(tmp_dir);
@@ -55,6 +57,7 @@ describe('fs test case', function () {
     expect(await _exists(tmp_file)).to.be.false;
     await _remove(tmp_dir);
   });
+
   it('read json file', async function () {
     let tmp_dir = path.join(__dirname, '../runtime/test-fs2/');
     const tmp_file = path.join(tmp_dir, 'tmp.json');
@@ -70,6 +73,7 @@ describe('fs test case', function () {
     }
     await _remove(tmp_file);
   });
+
   it('copy&move file', async function () {
     const tmp_dir = path.join(__dirname, '../runtime/test-fs3');
     const target = path.join(tmp_dir, 'fs.tests.js');
@@ -81,6 +85,7 @@ describe('fs test case', function () {
 
     await _move('not-exist', 'fs2.tests.js');
   });
+
   it('recur copy files', async function () {
     const source = path.join(__dirname, '../src/');
     const target = path.join(__dirname, '../runtime/test-fs4');
@@ -88,6 +93,7 @@ describe('fs test case', function () {
     await _copy('not-exist', target, true); // copy with not exist file
     expect(await _exists(path.join(target, 'helper/fs.js'))).to.be.true;
   });
+
   it('file list in dir', async function () {
     try {
       await _list(__filename);
@@ -108,6 +114,7 @@ describe('fs test case', function () {
     let files4 = await _list(__dirname, false, '.js');
     expect(files4.length).to.be.equal(10);
   });
+
   it('file md5', async () => {
     const filepath = path.join(__dirname, '../runtime/md5_test.txt');
     await _write(filepath, 'some content');

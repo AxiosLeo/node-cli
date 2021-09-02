@@ -17,6 +17,7 @@ describe('Configuration test case', () => {
     config.assign(null);
     expect(config.__sep).to.be.equal('.');
   });
+
   it('get', () => {
     let config = new Configuration({ name: 'abc' });
     let res = config.get('a.b.c', 'test');
@@ -24,6 +25,7 @@ describe('Configuration test case', () => {
     res = config.get();
     expect(res.name).to.be.equal('abc');
   });
+
   it('set', () => {
     const config = new Configuration({});
     expect(function () {
@@ -40,6 +42,7 @@ describe('Configuration test case', () => {
     config.set('a.0.0', 'A');
     expect(JSON.stringify(config.get('a'))).to.be.equal(JSON.stringify([['A']]));
   });
+
   it('validate', () => {
     let config = new Configuration({
       a: '',
