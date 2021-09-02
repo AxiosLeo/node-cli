@@ -6,6 +6,7 @@ const debug = require('../debug');
 const camelCase = require('camelcase');
 const fs = require('./fs');
 const is = require('./is');
+const crypto = require('crypto');
 
 function _str(s) {
   return is.invalid(s) || !is.string(s) ? '' : s;
@@ -104,6 +105,13 @@ function _equal_ignore_case(a, b) {
   return a === b;
 }
 
+function _md5(str, charset = 'utf8'){
+  str = `${str}`;
+  const hash = crypto.createHash('md5');
+  hash.update(str, charset);
+  return hash.digest('hex');
+}
+
 class Emitter {
   constructor(options = {}) {
     this.config = {
@@ -170,6 +178,7 @@ module.exports = {
   Emitter,
 
   _str,
+  _md5,
   _fixed,
   _render,
   _caml_case,

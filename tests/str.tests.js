@@ -3,8 +3,9 @@
 const path = require('path');
 const expect = require('chai').expect;
 const {
-  _render,
+  _md5,
   _fixed,
+  _render,
   _caml_case,
   _snake_case,
   _upper_first,
@@ -105,5 +106,14 @@ describe('str test case', function () {
     expect(_equal_ignore_case('a', 'A')).to.be.true;
     // eslint-disable-next-line no-undefined
     expect(_equal_ignore_case(null, undefined)).to.be.true;
+  });
+
+  it('md5 computed', function() {
+    expect(_md5(null)).to.be.equal('37a6259cc0c1dae299a7866489dff0bd');
+    expect(_md5('')).to.be.equal('d41d8cd98f00b204e9800998ecf8427e');
+    expect(_md5(0)).to.be.equal('cfcd208495d565ef66e7dff9f98764da');
+    expect(_md5(2.11111111111)).to.be.equal('b5d6746f1961db4b9a85fb0b60b2fdf8');
+    expect(_md5(true)).to.be.equal('b326b5062b2f0e69046810717534cb09');
+    expect(_md5('test')).to.be.equal('098f6bcd4621d373cade4e832627b4f6');
   });
 });
