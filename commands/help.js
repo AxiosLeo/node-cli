@@ -9,7 +9,7 @@ function resolveCommands(commands, sort, group) {
   if (!group) {
     group = {};
   }
-  if (is.empty(sort) || is.array(sort)) {
+  if (is.empty(sort) || !is.array(sort)) {
     sort = [];
   }
 
