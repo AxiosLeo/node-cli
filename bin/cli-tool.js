@@ -11,7 +11,7 @@ const app = new App({
   version: '1.3.10',
   desc: 'application_desc',
   commands_dir: path.join(__dirname, '../commands'),
-  commands_sort: ['init', 'make'],
+  commands_sort: ['help', 'init', 'make', 'exec'],
   locale: {
     dir: path.join(__dirname, '../locales'),
     sets: ['en-US', 'zh-CN']
