@@ -240,13 +240,55 @@ export declare class Configuration {
 }
 
 interface Debug {
+  /**
+   * Print current exec position in code
+   * @param label 
+   * @param color_code 
+   */
   pos(label: string, color_code: string): void;
+
+  /**
+   * Print anything on the console without exiting the process.
+   * @param data 
+   */
   dump(...data: any[]): void;
+
+  /**
+   * Print anything on the console and exiting the process.
+   * @param data 
+   */
   halt(...data: any[]): void;
+
+  /**
+   * Print anything on the console after the number of triggers is reached.
+   * @param jumpNumber 
+   * @param data 
+   */
   jump(jumpNumber?: number, ...data: any[]): void;
+
+  /**
+   * Print anything on the console and throw an error.
+   * @param data 
+   */
   stack(...data: any[]): void;
+
+  /**
+   * Print warning message and not exiting the process.
+   * @param data 
+   */
   warning(...data: any[]): void;
+
+  /**
+   * Print warning message and pause the process.
+   * only supported in use async/await
+   * @param data 
+   */
   pause(...data: any[]): Promise<void>;
+
+  /**
+   * Pause process and print something on the console. Only support async method.
+   * @param data 
+   */
   error(...data: any[]): void;
 }
 
