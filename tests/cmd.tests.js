@@ -27,4 +27,12 @@ describe('cmd test case', function () {
       expect(count).to.be.equal(item);
     });
   });
+
+  it('not throw error when sync empty array or object',async function () {
+    let data = { };
+    await _sync_foreach(data);
+
+    data = [];
+    await _sync_foreach(data);
+  });
 });

@@ -276,9 +276,12 @@ async function _sync_foreach(data, resolver) {
   } else {
     debug.stack('Unsupported data type : ' + typeof data);
   }
+  if (!Object.keys(operator).length) {
+    return;
+  }
   const workflow = new Workflow(operator);
   try {
-    return await workflow.start({ workflows });
+    await workflow.start({ workflows });
   } catch (e) {
     throw e.curr.error;
   }
