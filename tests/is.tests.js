@@ -32,6 +32,9 @@ describe('is test case', function () {
     expect(is.number(1.123)).to.be.true;
     expect(is.number(1111111111111111111111111)).to.be.true;
     expect(is.number('123')).to.be.false;
+
+    Number.isFinite = undefined;
+    expect(is.number('123')).to.be.false;
   });
 
   it('test case for integer', function () {
