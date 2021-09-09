@@ -2,10 +2,21 @@
 
 const expect = require('chai').expect;
 const { Configuration } = require('../main');
-const { _deep_clone } = require('../src/helper/obj');
+const { _deep_clone, _flatten, _unflatten } = require('../src/helper/obj');
 
 describe('obj test case', function () {
-  it('assign test case', async function () {
+  it('flatten', function () {
+    const res = _flatten([1, 2, 3, { a: 'A' }, { b: 'B' }]);
+    expect(JSON.stringify(res)).to.equal('{"0":1,"1":2,"2":3,"3.a":"A","4.b":"B"}');
+
+    const bak = _unflatten(res);
+    expect(JSON.stringify(bak)).to.equal('[1,2,3,{"a":"A"},{"b":"B"}]');
+
+    const obj = { '': 1, '1': 2, '3.a': 'A', '4.b': 'B' };
+    expect(JSON.stringify(_unflatten(obj))).to.equal('{"1":2,"3":{"a":"A"},"4":{"b":"B"},"":1}');
+  });
+
+  it('assign test case', function () {
     const config = new Configuration();
     config.assign({
       a: {

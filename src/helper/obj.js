@@ -1,5 +1,6 @@
 'use strict';
 
+const is = require('./is');
 const cloneDeep = require('clone-deep');
 
 function _flatten(obj, sep = '.') {
@@ -20,14 +21,23 @@ function _flatten(obj, sep = '.') {
     } else {
       res[prefix] = curr;
     }
+    return res;
   }
   let output = {};
-  recurse(obj, '', output);
+  output = recurse(obj, '', output);
   return output;
 }
 
 function _unflatten(obj, sep = '.') {
-  let output = {};
+  const keys = Object.keys(obj);
+  const allNumber = !keys.some(k => {
+    if (!k) {
+      return true;
+    }
+    const tmp = k.split('.');
+    return is.number(tmp[0]);
+  });
+  let output = allNumber ? [] : {};
   Object.keys(obj).forEach(key => {
     if (key.indexOf(sep) !== -1) {
       const keyArr = key.split('.').filter(item => item !== '');
