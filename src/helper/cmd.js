@@ -9,7 +9,6 @@ const { prompt, Select } = require('enquirer');
 const { _fixed } = require('./str');
 const is = require('./is');
 const { __ } = require('../locales');
-const Workflow = require('../workflow');
 
 async function _shell(cmd, cwd = null, print = true, throw_error = true) {
   if (null === cwd) {
@@ -254,36 +253,29 @@ function _check_argument(command_name, args, arg) {
  * @param {*} resolver async func
  */
 async function _sync_foreach(data, resolver) {
-  const operator = {};
-  const workflows = [];
   if (is.object(data)) {
-    Object.keys(data).forEach((key) => {
+    const keys = Object.keys(data);
+    while (keys.length) {
+      const key = keys.shift();
+      if (!key) {
+        break;
+      }
       const value = data[key];
-      const name = `task${key}`;
-      operator[name] = async function () {
-        await resolver(value, key);
-      };
-      workflows.push(name);
-    });
+      await resolver(value, key);
+    }
   } else if (is.array(data)) {
-    data.forEach((item, index) => {
-      const name = `task${index}`;
-      operator[name] = async function () {
-        await resolver(item, index);
-      };
-      workflows.push(name);
-    });
+    const values = data;
+    let i = 0;
+    while (values.length) {
+      const value = values.shift();
+      if (!value) {
+        break;
+      }
+      await resolver(value, i);
+      i++;
+    }
   } else {
-    debug.stack('Unsupported data type : ' + typeof data);
-  }
-  if (!Object.keys(operator).length) {
-    return;
-  }
-  const workflow = new Workflow(operator);
-  try {
-    await workflow.start({ workflows });
-  } catch (e) {
-    throw e.curr.error;
+    debug.stack(`Only supported Array or Object. Current data type : ${typeof data}`);
   }
 }
 
