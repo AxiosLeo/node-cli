@@ -3,7 +3,7 @@
 const path = require('path');
 const { Command, printer, helper: { fs, str } } = require('../main');
 const { _exists, _write, _mkdir } = fs;
-const { _upper_first } = str;
+const { _caml_case } = str;
 
 class MakeCommand extends Command {
   constructor() {
@@ -29,7 +29,7 @@ class MakeCommand extends Command {
       return;
     }
     let content = '';
-    let name_upper = _upper_first(name);
+    let name_upper = _caml_case(name, true);
     content += `'use strict';
 
 const { Command, printer } = require('@axiosleo/cli-tool');
