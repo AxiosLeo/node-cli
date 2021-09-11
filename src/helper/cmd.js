@@ -21,7 +21,7 @@ async function _shell(cmd, cwd = null, print = true, throw_error = true) {
         printer.error(result.stderr);
       }
       if (result.stdout) {
-        debug.dump(result.stdout);
+        printer.println(result.stdout);
       }
     }
     return result;
