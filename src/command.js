@@ -34,6 +34,9 @@ function printUsage(config) {
   } else {
     printer.println();
   }
+  if (config.alias && config.alias.length) {
+    config.alias.forEach(a => printer.green(`  ${a}`).println());
+  }
   printer.println();
 }
 
