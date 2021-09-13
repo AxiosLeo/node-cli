@@ -73,6 +73,11 @@ class Configuration {
     return recur(keyArr, this, _default);
   }
 
+  has(key) {
+    const value = this.get(key);
+    return !is.empty(value);
+  }
+
   validate(keys = []) {
     let failed = [];
     if (is.array(keys)) {
