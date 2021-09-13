@@ -94,6 +94,9 @@ async function _confirm(message = '', default_value = false) {
 }
 
 async function _select(message = '', choices = [], default_choice = null) {
+  if (!choices.length){
+    throw new Error('At least one choice must be selectable');
+  }
   try {
     const options = {
       name: 'value',
