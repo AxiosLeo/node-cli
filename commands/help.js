@@ -54,7 +54,7 @@ function printCommand(commands, command_name, max_len) {
     desc = is.empty(desc) ? '' : __(desc);
     printer.green(_fixed('  ' + name, max_len));
     if (cmd.config.alias && cmd.config.alias.length) {
-      printer.print(`[${cmd.config.alias.join('|')}]`);
+      printer.print(`[${cmd.config.alias.join('|')}] `.input);
     }
     printer.println(desc);
   }
@@ -82,7 +82,7 @@ class HelpCommand extends Command {
 
     // print usage
     printer.warning('Usage:');
-    printer.println(`  ${appconfig.name} <command> [options] [<args>]`).println();
+    printer.green(`  ${appconfig.name}`).println(' <command> [options] [<arguments>]').println();
 
     // print options
     printer.warning('Global Options:');

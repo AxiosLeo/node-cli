@@ -42,7 +42,6 @@ class InitCommand extends Command {
     };
     package_meta['bin'][name] = `./bin/${name}.js`;
     await _write(path.join(output, 'package.json'), JSON.stringify(package_meta, null, 2));
-    printer.success('generate package.json');
 
     // generate binary file
     let content = `#!/usr/bin/env node
@@ -62,7 +61,7 @@ const app = new App({
 
 app.start();
 `;
-    _write(path.join(output, `bin/${name}.js`), content);
+    await _write(path.join(output, `bin/${name}.js`), content);
 
     await _write(path.join(output, 'commands/README.md'), `you can write code of commands in here.
 or you can use \`cli-tool make <command-name> <command-dir-path>\` to make a command file in here.
@@ -77,8 +76,10 @@ runtime/
 package-lock.json`);
     await _write(path.join(output, '.eslintrc'), await _read(path.join(__dirname, '../', '.eslintrc')));
 
-    printer.success('done initialize.');
-    printer.print('please exec ').yellow('"npm install"').print(' and ').yellow('"npm link"').println(' before use.');
+    printer.print('-'.repeat(25).input).println();
+    printer.green('Complete initialisation').println();
+    printer.print('Please execute ').yellow('"npm install"').print(' and ').yellow('"npm link"').println(' in project root directory before using');
+    printer.print('-'.repeat(25).input).println();
   }
 }
 
