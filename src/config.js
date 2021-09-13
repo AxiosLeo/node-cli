@@ -80,19 +80,15 @@ class Configuration {
 
   validate(keys = []) {
     let failed = [];
+    if (is.string(keys)) {
+      keys = [keys];
+    }
     if (is.array(keys)) {
-      let i = 0;
-      while (i < keys.length) {
-        const value = this.get(keys[i]);
-        if (is.empty(value)) {
-          failed.push(keys[i]);
+      while (keys.length) {
+        const key = keys.shift();
+        if (!this.has(key)) {
+          failed.push(key);
         }
-        i++;
-      }
-    } else if (is.string(keys)) {
-      const value = this.get(keys);
-      if (is.empty(value)) {
-        failed.push(keys);
       }
     } else {
       debug.stack(`Unsupported keys data type: ${typeof keys}`);
