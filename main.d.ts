@@ -233,6 +233,12 @@ export declare class Configuration {
   get(key?: string, _default?: any): any;
 
   /**
+   * Check if some configurations exist
+   * @param keys 
+   */
+  has(keys: string[] | string): boolean;
+
+  /**
    * check some configuration is valid
    * @param keys 
    */
