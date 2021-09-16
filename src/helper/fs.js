@@ -170,9 +170,35 @@ async function _md5(filepath, charset = 'utf8') {
   });
 }
 
+async function _sync(source, target, ext = '*', reback = true) {
+  const sources = await _search(source, ext);
+  while (sources.length) {
+    const file = sources.shift();
+    const target_file = file.replace(source, target);
+    if (await _exists(target_file)) {
+      const md5_s = await _md5(file);
+      const md5_t = await _md5(target_file);
+      if (md5_s !== md5_t) {
+        const statS = await stat(file);
+        const statT = await stat(target_file);
+        if (statS.mtime >= statT.mtime) {
+          await _remove(target_file);
+          await _copy(file, target_file);
+        }
+      }
+    } else {
+      await _copy(file, target_file);
+    }
+    if (reback) {
+      await _sync(target, source, ext, false);
+    }
+  }
+}
+
 module.exports = {
   _ext,
   _md5,
+  _sync,
   _list,
   _read,
   _copy,

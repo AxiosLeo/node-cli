@@ -5,6 +5,7 @@ const expect = require('chai').expect;
 const {
   _ext,
   _md5,
+  _sync,
   _list,
   _read,
   _copy,
@@ -17,6 +18,7 @@ const {
   _append,
   _read_json,
 } = require('../src/helper/fs');
+const { _sleep } = require('../src/helper/cmd');
 
 describe('fs test case', function () {
   it('_ext', function () {
@@ -122,5 +124,39 @@ describe('fs test case', function () {
     expect(file_md5).to.be.equal('9893532233caff98cd083a116b013c0b');
     await _remove(filepath);
     expect(await _exists(filepath)).to.be.false;
+  });
+
+  it('sync files', async () => {
+    // prepare
+    const basepath = path.join(__dirname, '../runtime/sync_files');
+    if (await _exists(basepath)) {
+      await _remove(basepath);
+    }
+    await _mkdir(basepath);
+    const apath = path.join(__dirname, '../runtime/sync_files/a');
+    const bpath = path.join(__dirname, '../runtime/sync_files/b');
+    await _write(path.join(apath, 'test1.txt'), 'same content');
+    await _write(path.join(bpath, 'test1.txt'), 'same content');
+    // a file time < b file time
+    await _write(path.join(apath, 'test2.txt'), 'some content');
+    await _sleep(100);
+    await _write(path.join(bpath, 'test2.txt'), 'will remain b file content');
+    // a file time > b file time
+    await _write(path.join(bpath, 'test3.txt'), 'some content');
+    await _sleep(100);
+    await _write(path.join(apath, 'test3.txt'), 'will remain a file content');
+    // b file not exists
+    await _write(path.join(apath, 'test4.txt'), 'from a');
+    // a file not exists
+    await _write(path.join(apath, 'test5.txt'), 'from b');
+
+    await _sync(apath, bpath);
+
+    // expection
+    expect(await _read(path.join(apath, 'test1.txt'))).to.be.equal('same content');
+    expect(await _read(path.join(apath, 'test2.txt'))).to.be.equal('will remain b file content');
+    expect(await _read(path.join(apath, 'test3.txt'))).to.be.equal('will remain a file content');
+    expect(await _read(path.join(apath, 'test4.txt'))).to.be.equal('from a');
+    expect(await _read(path.join(apath, 'test5.txt'))).to.be.equal('from b');
   });
 });
