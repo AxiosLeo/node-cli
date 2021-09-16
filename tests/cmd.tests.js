@@ -18,6 +18,10 @@ describe('cmd test case', function () {
       count++;
       expect(count).to.be.equal(item);
     });
+
+    const obj = { data };
+    await _sync_foreach(obj.data, async () => { });
+    expect(obj.data.length).to.be.equal(5);
   });
 
   it('sync traverse proimse method for object', async function () {

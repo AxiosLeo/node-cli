@@ -9,6 +9,7 @@ const { prompt, Select } = require('enquirer');
 const { _fixed } = require('./str');
 const is = require('./is');
 const { __ } = require('../locales');
+const Workflow = require('../workflow');
 
 async function _shell(cmd, cwd = null, print = true, throw_error = true) {
   if (null === cwd) {
@@ -94,7 +95,7 @@ async function _confirm(message = '', default_value = false) {
 }
 
 async function _select(message = '', choices = [], default_choice = null) {
-  if (!choices.length){
+  if (!choices.length) {
     throw new Error('At least one choice must be selectable');
   }
   try {
@@ -256,29 +257,36 @@ function _check_argument(command_name, args, arg) {
  * @param {*} resolver async func
  */
 async function _sync_foreach(data, resolver) {
+  const operator = {};
+  const workflows = [];
   if (is.object(data)) {
-    const keys = Object.keys(data);
-    while (keys.length) {
-      const key = keys.shift();
-      if (!key) {
-        break;
-      }
+    Object.keys(data).forEach((key) => {
       const value = data[key];
-      await resolver(value, key);
-    }
+      const name = `task${key}`;
+      operator[name] = async function () {
+        await resolver(value, key);
+      };
+      workflows.push(name);
+    });
   } else if (is.array(data)) {
-    const values = data;
-    let i = 0;
-    while (values.length) {
-      const value = values.shift();
-      if (!value) {
-        break;
-      }
-      await resolver(value, i);
-      i++;
-    }
+    data.forEach((item, index) => {
+      const name = `task${index}`;
+      operator[name] = async function () {
+        await resolver(item, index);
+      };
+      workflows.push(name);
+    });
   } else {
-    debug.stack(`Only supported Array or Object. Current data type : ${typeof data}`);
+    debug.stack('Unsupported data type : ' + typeof data);
+  }
+  if (!Object.keys(operator).length) {
+    return;
+  }
+  const workflow = new Workflow(operator);
+  try {
+    await workflow.start({ workflows });
+  } catch (e) {
+    throw e.curr.error;
   }
 }
 
