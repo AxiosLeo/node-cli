@@ -2,14 +2,14 @@
 
 [![NPM version](https://img.shields.io/npm/v/@axiosleo/cli-tool.svg?style=flat-square)](https://npmjs.org/package/@axiosleo/cli-tool)
 [![npm download](https://img.shields.io/npm/dm/@axiosleo/cli-tool.svg?style=flat-square)](https://npmjs.org/package/@axiosleo/cli-tool)
-[![CI Build Status](https://github.com/AxiosCros/node-cli/actions/workflows/ci.yml/badge.svg)](https://github.com/AxiosCros/node-cli/actions/workflows/ci.yml)
-[![](https://codecov.io/gh/AxiosCros/node-cli/branch/master/graph/badge.svg)](https://codecov.io/gh/AxiosCros/node-cli)
-[![License](https://img.shields.io/github/license/AxiosCros/node-cli?color=%234bc524)](LICENSE)
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FAxiosCros%2Fnode-cli.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FAxiosCros%2Fnode-cli/refs/branch/master)
+[![CI Build Status](https://github.com/AxiosLeo/node-cli/actions/workflows/ci.yml/badge.svg)](https://github.com/AxiosLeo/node-cli/actions/workflows/ci.yml)
+[![](https://codecov.io/gh/AxiosLeo/node-cli/branch/master/graph/badge.svg)](https://codecov.io/gh/AxiosLeo/node-cli)
+[![License](https://img.shields.io/github/license/AxiosLeo/node-cli?color=%234bc524)](LICENSE)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FAxiosLeo%2Fnode-cli.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FAxiosLeo%2Fnode-cli/refs/branch/master)
 
 > Design for quickly developing CLI applications using Node.js
 >
-> See detail usage from [wiki](https://github.com/AxiosCros/node-cli/wiki)
+> See detail usage from [wiki](https://github.com/AxiosLeo/node-cli/wiki)
 
 ## Installation
 
@@ -88,7 +88,7 @@ app.exec("<command-name>");
 >
 > locales example json file : [locales](./locales)
 >
-> see detail from [locales wiki](https://github.com/AxiosCros/node-cli/wiki/locales)
+> see detail from [locales wiki](https://github.com/AxiosLeo/node-cli/wiki/locales)
 
 ```js
 const path = require('path');
@@ -170,4 +170,4 @@ module.exports = CommandExample;
 
 This project is open-sourced software licensed under the [MIT](LICENSE).
 
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FAxiosCros%2Fnode-cli.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FAxiosCros%2Fnode-cli/refs/branch/master)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FAxiosLeo%2Fnode-cli.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FAxiosLeo%2Fnode-cli/refs/branch/master/)
