@@ -118,7 +118,7 @@ describe('fs test case', function () {
     expect(files3.length).to.be.equal(0);
 
     let files4 = await _list(__dirname, false, '.js');
-    expect(files4.length).to.be.equal(11);
+    expect(files4.length).to.be.equal(10);
   });
 
   it('file md5', async () => {
