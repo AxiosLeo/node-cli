@@ -447,6 +447,14 @@ export namespace helper {
     function _is_file(filepath: string): Promise<boolean>;
 
     /**
+     * find the root path including the specified subdirectory
+     * @param sub 
+     * @param dir 
+     * @param msg 
+     */
+    function _find_root(sub, dir?: string | null | undefined, msg?: string);
+
+    /**
      * read content from single file and parse to JSON object
      * @param filepath 
      */

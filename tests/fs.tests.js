@@ -1,7 +1,10 @@
 'use strict';
 
 const path = require('path');
-const expect = require('chai').expect;
+const chai = require('chai');
+const expect = chai.expect;
+chai.use(require('chai-as-promised'));
+
 const {
   _ext,
   _md5,
@@ -16,6 +19,7 @@ const {
   _remove,
   _exists,
   _append,
+  _find_root,
   _read_json,
 } = require('../src/helper/fs');
 const { _sleep } = require('../src/helper/cmd');
@@ -158,5 +162,20 @@ describe('fs test case', function () {
     expect(await _read(path.join(apath, 'test3.txt'))).to.be.equal('will remain a file content');
     expect(await _read(path.join(apath, 'test4.txt'))).to.be.equal('from a');
     expect(await _read(path.join(apath, 'test5.txt'))).to.be.equal('from b');
+  });
+
+  it('file root path', async () => {
+    // throw error when subdirectory not find
+    expect(_find_root('.not_exist', process.cwd()))
+      .to.be.rejectedWith('Please execute the current command in the directory where ".not_exist" is located');
+    expect(_find_root('.not_exist', process.cwd(), 'subdirectory not find'))
+      .to.be.rejectedWith('subdirectory not find');
+
+    // success find git root
+    const gitpath = path.join(__dirname, '..');
+    expect(await _find_root('.git', path.join( __dirname, '../src/helper/fs.js'))).to.be.equal(gitpath);
+
+    // use null dir
+    expect(await _find_root('.git')).to.be.equal(gitpath);
   });
 });

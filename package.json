@@ -47,6 +47,7 @@
   "devDependencies": {
     "@types/node": "^15.12.1",
     "chai": "^4.2.0",
+    "chai-as-promised": "^7.1.1",
     "codecov": "^3",
     "eslint": "*",
     "expect.js": "^0.3.1",

@@ -2,7 +2,6 @@
 
 const fs = require('fs');
 const path = require('path');
-const debug = require('../debug');
 const crypto = require('crypto');
 const promisify = require('util').promisify;
 const exists = promisify(fs.exists);
@@ -139,7 +138,7 @@ async function _list(dir, full = false, ext = '*') {
 
 async function _remove(filepath, recur = true) {
   if (filepath === path.sep) {
-    debug.stack(`cannot delete root of system with : ${filepath}`);
+    throw new Error(`cannot delete root of system with : ${filepath}`);
   }
   if (await _exists(filepath)) {
     if (await _is_file(filepath)) {
@@ -195,6 +194,20 @@ async function _sync(source, target, ext = '*', reback = true) {
   }
 }
 
+async function _find_root(sub, dir = null, msg = '') {
+  if (null === dir) {
+    dir = process.cwd();
+  }
+  if (await _exists(path.join(dir, sub))) {
+    return dir;
+  }
+  const parent = path.dirname(dir);
+  if (!parent || parent === dir) {
+    throw new Error(msg ? msg : `Please execute the current command in the directory where "${sub}"" is located`);
+  }
+  return await _find_root(sub, path.dirname(dir), msg);
+}
+
 module.exports = {
   _ext,
   _md5,
@@ -211,5 +224,6 @@ module.exports = {
   _append,
   _is_dir,
   _is_file,
-  _read_json
+  _find_root,
+  _read_json,
 };
