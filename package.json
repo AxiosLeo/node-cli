@@ -25,7 +25,7 @@
   "scripts": {
     "lint": "tsc ./main.d.ts && eslint --fix src/ tests/",
     "test": "mocha --reporter spec --timeout 3000 tests/*.tests.js",
-    "test-cov": "nyc -r=lcov -r=html -r=text -r=json mocha -t 3000 -R spec tests/*.tests.js",
+    "test-cov": "nyc -r=lcov -r=html -r=text -r=json mocha -t 10000 -R spec tests/*.tests.js",
     "ci": "npm run lint && npm run test-cov && codecov",
     "clear": "rm -rf ./nyc_output ./coverage"
   },
