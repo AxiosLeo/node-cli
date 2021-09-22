@@ -180,7 +180,7 @@ async function _sync(source, target, ext = '*', reback = true) {
       if (md5_s !== md5_t) {
         const statS = await stat(file);
         const statT = await stat(target_file);
-        if (statS.mtime >= statT.mtime) {
+        if (statS.mtime > statT.mtime) {
           await _remove(target_file);
           await _copy(file, target_file);
         }
