@@ -34,13 +34,24 @@ describe('git test case', function () {
 
   describe('get current git branch name', function () {
     it('should be ok to get current branch name', async function () {
-      expect(!!(await git.branch.curr())).to.be.equal(true);
+      expect(!!(await git.branch.curr())).to.be.true;
       const first = await git.branch.curr(basepath);
-      expect(!!first.length).to.be.equal(true);
+      expect(!!first.length).to.be.true;
       await _shell('git checkout -b test-tmp-branch', basepath);
       expect(await git.branch.curr(basepath)).to.be.equal('test-tmp-branch');
       await _shell(`git checkout ${first}`, basepath);
       await _shell('git branch -D test-tmp-branch', basepath);
+    });
+  });
+
+  describe('has some branch', function () {
+    it('should be to find a branch', async function () {
+      expect(await git.branch.has(await git.branch.curr())).to.be.true;
+
+      const first = await git.branch.curr(basepath);
+      expect(await git.branch.has(first, basepath)).to.be.true;
+
+      expect(await git.branch.has('not-exist', basepath)).to.be.false;
     });
   });
 });
