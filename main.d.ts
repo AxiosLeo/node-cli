@@ -356,61 +356,27 @@ export namespace helper {
     function _md5(filename?: string): Promise<string>;
 
     /**
-     * write some content to single file
-     * @param filepath 
-     * @param content 
+     * sync files to target directory from source directory
+     * @param source 
+     * @param target 
+     * @param ext default value is = '*'
+     * @param reback default value if true
      */
-    function _write(filepath: string, content: string): Promise<void>;
+    function _sync(source: string, target: string, ext?: string, reback?: boolean): Promise<void>;
 
     /**
-     * append some content to single file
-     * @param filepath 
-     * @param content 
-     */
-    function _append(filepath: string, content: string): Promise<void>;
+    * list files in some directory
+    * @param dir 
+    * @param full 
+    * @param ext 
+    */
+    function _list(dir: string, full?: boolean, ext?: string): Promise<string[]>;
 
     /**
      * read content from single file
      * @param filepath 
      */
     function _read(filepath: string): Promise<string>;
-
-    /**
-     * read content from single file and parse to JSON object
-     * @param filepath 
-     */
-    function _read_json(filepath: string): Promise<string>;
-
-    /**
-     * make dir where it dose not exists
-     * @param dir 
-     */
-    function _mkdir(dir: string): Promise<void>;
-
-    /**
-     * check single file exists
-     * @param filepath 
-     */
-    function _exists(filepath: string): Promise<boolean>;
-
-    /**
-     * move files or dir to somewhere
-     * @param source 
-     * @param target 
-     */
-    function _move(source: string, target: string): Promise<void>;
-
-    /**
-     * check it is file
-     * @param filepath 
-     */
-    function _is_file(filepath: string): Promise<boolean>;
-
-    /**
-     * check it is dir
-     * @param dirpath 
-     */
-    function _is_dir(dirpath: string): Promise<boolean>;
 
     /**
      * copy file or dir
@@ -421,27 +387,70 @@ export namespace helper {
     function _copy(source: string, target: string, recur?: boolean): Promise<void>;
 
     /**
-     * search some files by extension
-     * @param dir 
-     * @param ext 
-     * @param recur 
+     * move files or dir to somewhere
+     * @param source 
+     * @param target 
      */
+    function _move(source: string, target: string): Promise<void>;
+
+    /**
+     * make dir where it dose not exists
+     * @param dir 
+     */
+    function _mkdir(dir: string): Promise<void>;
+
+    /**
+     * write some content to single file
+     * @param filepath 
+     * @param content 
+     */
+    function _write(filepath: string, content: string): Promise<void>;
+
+    /**
+    * remove some files
+    * @param filepath 
+    * @param recur 
+    */
+    function _remove(filepath: string, recur?: boolean): Promise<void>;
+
+    /**
+    * search some files by extension
+    * @param dir 
+    * @param ext 
+    * @param recur 
+    */
     function _search(dir: string, ext?: string, recur?: boolean): Promise<string[]>;
 
     /**
-     * list files in some directory
-     * @param dir 
-     * @param full 
-     * @param ext 
-     */
-    function _list(dir: string, full?: boolean, ext?: string): Promise<string[]>;
+    * check single file exists
+    * @param filepath 
+    */
+    function _exists(filepath: string): Promise<boolean>;
 
     /**
-     * remove some files
+     * append some content to single file
      * @param filepath 
-     * @param recur 
+     * @param content 
      */
-    function _remove(filepath: string, recur?: boolean): Promise<void>;
+    function _append(filepath: string, content: string): Promise<void>;
+
+    /**
+    * check it is dir
+    * @param dirpath 
+    */
+    function _is_dir(dirpath: string): Promise<boolean>;
+
+    /**
+    * check it is file
+    * @param filepath 
+    */
+    function _is_file(filepath: string): Promise<boolean>;
+
+    /**
+     * read content from single file and parse to JSON object
+     * @param filepath 
+     */
+    function _read_json(filepath: string): Promise<string>;
   }
 
   module cmd {
