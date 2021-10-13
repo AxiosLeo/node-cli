@@ -14,7 +14,7 @@ jobs:
     runs-on: ${{ matrix.operating-system }}
     strategy:
       matrix:
-        operating-system: [macos-11]
+        operating-system: [macos-latest,ubuntu-latest]
         node-version: [10, 12, 13, 14]
     name: Node.js ${{ matrix.node-version }} Test on ${{ matrix.operating-system }}
 
