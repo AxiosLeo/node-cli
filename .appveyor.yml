@@ -1,0 +1,18 @@
+environment:
+  nodejs_version: "6"
+branches:
+  only:
+    - master
+init:
+  - cmd: git config --global core.autocrlf true
+install:
+  - npm install
+test_script:
+  - node --version
+  - npm --version
+  - npm run ci
+on_finish:
+  - ps: |
+      $env:PATH = 'C:\msys64\usr\bin;' + $env:PATH
+# Don't actually build.
+build: off
