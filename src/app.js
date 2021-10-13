@@ -150,7 +150,7 @@ class App {
           name: 'help',
           short: 'h',
           mode: 'optional',
-          desc: 'Display this help message'
+          desc: 'Display help message'
         },
         {
           name: 'quiet',

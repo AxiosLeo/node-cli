@@ -1,6 +1,6 @@
 {
 	"Print help information": "打印帮助信息",
-	"Display this help message": "显示帮助信息",
+	"Display help message": "显示帮助信息",
 	"Do not output any message": "不输出任何终端信息",
 	"application_desc": "为快速开发CLI应用而设计",
 	"init_command_desc": "快速初始化一个应用",

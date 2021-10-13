@@ -1,6 +1,6 @@
 {
 	"Print help information": "Print help information",
-	"Display this help message": "Display this help message",
+	"Display help message": "Display help message",
 	"Do not output any message": "Do not output any message",
 	"application_desc": "For quickly initialize CLI application",
 	"init_command_desc": "Quickly initialize an application",
