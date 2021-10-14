@@ -301,19 +301,80 @@ interface Debug {
 export const debug: Debug;
 
 interface LocalesConfig {
+  /**
+   * The supported locales, expects an array of locale strings
+   */
   sets: string[]
+
+  /**
+   * The path to the language packs directory, *.json|*.js
+   */
   dir: string
+
+  /**
+   * Specified language set
+   */
   use?: string
+
+  /**
+   * locales file extension.
+   * support 'json' or 'js' file
+   * default value is 'json'
+   */
+  format?: string
 }
 
-interface Locales {
-  restore(): void;
-  init(config: LocalesConfig): void;
-  __(str: string, params?: Record<string, string>): string;
-  use(set: string): void;
-}
+export module locales {
+  class Translator {
+    constructor(options: LocalesConfig);
 
-export const locales: Locales;
+    /**
+     * load language dictionary
+     * @param use 
+     */
+    load(use?: string): void;
+
+    /**
+     * patch dictionaries
+     * @param lang_set 
+     * @param dict 
+     */
+    patch(lang_set: string, dict: Record<string, string>): void;
+
+    /**
+     * translate by specified language set
+     * @param str 
+     * @param params 
+     */
+    trans(str: string, params: Record<string, string>): string;
+  }
+
+  const translator : Translator;
+
+  /**
+   * reload dictionaries
+   */
+  function restore(): void;
+
+  /**
+   * initialize translator instance
+   * @param config 
+   */
+  function init(config: LocalesConfig): void;
+
+  /**
+   * translate
+   * @param str 
+   * @param params 
+   */
+  function __(str: string, params ?: Record<string, string>): string;
+
+  /**
+   * specified language set
+   * @param use
+   */
+  function use(set: string): void;
+}
 
 interface Printer {
   colors: Color
