@@ -9,17 +9,16 @@ describe('locales test case', function () {
   beforeEach(async function () {
     locales.init({
       dir: path.join(__dirname, '../locales'),
-      sets: ['en-US', 'zh-CN']
+      sets: ['en-US', 'zh-CN', 'not_exist']
     });
   });
 
   it('init with empty lang sets', function () {
-    expect(function () {
-      locales.init({
-        dir: path.join(__dirname, '../locales'),
-        sets: []
-      });
-    }).to.be.throw('locale.sets cannot be empty');
+    locales.disable();
+    locales.init({
+      dir: path.join(__dirname, '../locales'),
+      sets: []
+    });
   });
 
   it('use lang set which is not exist in sets', function () {
@@ -56,8 +55,14 @@ describe('locales test case', function () {
 
   it('translate with params', function () {
     locales.use('en-US');
-    const res = locales.__('Required option : ${name}', { name: 'name' });
+    let res = locales.__('Required option : ${name}', { name: 'name' });
     expect(res).to.be.equal('Required option : name');
+
+    res = locales.__('resolve by params: ${name}', { name: 'name' });
+    expect(res).to.be.equal('resolve by params: name');
+
+    res = locales.__('resolve by params: ${name}');
+    expect(res).to.be.equal('resolve by params: ${name}');
   });
 
   it('translate with invalid string', function () {
@@ -66,11 +71,66 @@ describe('locales test case', function () {
   });
 
   it('translate without init locales', function () {
-    locales.restore();
+    locales.disable();
     let res = locales.__('translate some word');
     expect(res).to.be.equal('translate some word');
 
     res = locales.__('translate with ${name} param', { name: 'name' });
     expect(res).to.be.equal('translate with name param');
+
+    expect(function () {
+      locales.disable();
+      locales.use('en-US');
+    }).to.be.throw('Translator is not initialized for "locale"');
+  });
+
+  it('translate by *.js locales files', function () {
+    locales.disable();
+    locales.init({
+      dir: path.join(__dirname, '../locales'),
+      sets: ['en-US', 'zh-CN', 'not_exist'],
+      format: 'js'
+    });
+    locales.disable();
+    locales.init({
+      dir: path.join(__dirname, '../locales'),
+      sets: ['en-US', 'zh-CN', 'not_exist'],
+      format: 'js',
+      use: 'not_exist'
+    });
+  });
+
+  it('translate by *.json locales files', function () {
+    locales.disable();
+    locales.init({
+      dir: path.join(__dirname, '../locales'),
+      sets: ['en-US', 'zh-CN', 'not_exist'],
+      format: 'json'
+    });
+    locales.disable();
+    locales.init({
+      dir: path.join(__dirname, '../locales'),
+      sets: ['en-US', 'zh-CN', 'not_exist'],
+      format: 'json',
+      use: 'not_exist'
+    });
+  });
+
+  it('patch dictionaries', function () {
+    const translator = locales.init({
+      dir: path.join(__dirname, '../locales'),
+      sets: ['en-US', 'zh-CN', 'not_exist'],
+      format: 'json'
+    });
+    expect(function () {
+      translator.patch();
+    }).to.be.throw('"dict" param cannot be empty');
+
+    translator.patch('', { 'a': 'A' });
+
+    translator.patch('en-US', { 'a': 'A' });
+    translator.load('en-US');
+    translator.options.use = 'en-US';
+    translator.patch('en-US', { 'b': 'B' });
   });
 });
