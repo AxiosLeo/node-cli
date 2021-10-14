@@ -14,7 +14,8 @@ const app = new App({
   commands_sort: ['help', 'init', 'make', 'exec'],
   locale: {
     dir: path.join(__dirname, '../locales'),
-    sets: ['en-US', 'zh-CN']
+    sets: ['en-US', 'zh-CN'],
+    format: 'js'
   }
 });
 
