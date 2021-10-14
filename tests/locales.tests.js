@@ -127,6 +127,7 @@ describe('locales test case', function () {
     }).to.be.throw('"dict" param cannot be empty');
 
     translator.patch('', { 'a': 'A' });
+    translator.patch('not-exist', { 'x': 'xxx' });
 
     translator.patch('en-US', { 'a': 'A' });
     translator.load('en-US');
