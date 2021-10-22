@@ -349,7 +349,7 @@ export module locales {
     trans(str: string, params: Record<string, string>): string;
   }
 
-  const translator : Translator;
+  const translator: Translator;
 
   /**
    * reload dictionaries
@@ -367,13 +367,18 @@ export module locales {
    * @param str 
    * @param params 
    */
-  function __(str: string, params ?: Record<string, string>): string;
+  function __(str: string, params?: Record<string, string>): string;
 
   /**
    * specified language set
    * @param use
    */
   function use(set: string): void;
+
+  /**
+   * disable translation
+   */
+  function disable(): void;
 }
 
 interface Printer {
