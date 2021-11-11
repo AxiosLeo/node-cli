@@ -3,6 +3,7 @@
 const path = require('path');
 const chai = require('chai');
 const expect = chai.expect;
+const fs = require('fs');
 chai.use(require('chai-as-promised'));
 
 const {
@@ -173,9 +174,28 @@ describe('fs test case', function () {
 
     // success find git root
     const gitpath = path.join(__dirname, '..');
-    expect(await _find_root('.git', path.join( __dirname, '../src/helper/fs.js'))).to.be.equal(gitpath);
+    expect(await _find_root('.git', path.join(__dirname, '../src/helper/fs.js'))).to.be.equal(gitpath);
 
     // use null dir
     expect(await _find_root('.git')).to.be.equal(gitpath);
+  });
+
+  it('remove files', async () => {
+    const basepath = path.join(__dirname, '../runtime/remove_files');
+    if (await _exists(basepath)) {
+      await _remove(basepath);
+    }
+    await _mkdir(basepath);
+
+    const filelink = path.join(basepath, 'test1.txt');
+    const dirlink = path.join(basepath, 'directory');
+    // const 
+    await _write(filelink, 'same content');
+    await _mkdir(path.join(basepath, 'directory'));
+
+    fs.symlinkSync(filelink, path.join(basepath, 'test1_clone.txt'), 'file');
+    fs.symlinkSync(dirlink, path.join(basepath, 'directory_clone'), 'dir');
+    fs.symlinkSync(path.join(basepath, 'test1_clone.txt'), path.join(basepath, 'test1_clone_clone'), 'junction');
+    await _remove(basepath);
   });
 });
