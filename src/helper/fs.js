@@ -100,13 +100,13 @@ async function _search(dir, ext = '*', recur = true) {
   const tmp = await readdir(dir);
   await Promise.all(tmp.map(async (filename) => {
     const full = path.join(dir, filename);
-    if (await _is_file(full)) {
+    if (await _is_dir(full)) {
+      (await _search(full, ext, recur)).forEach(item => files.push(item));
+    } else if (recur) {
       const file_ext = _ext(filename);
       if (!exts.length || exts.indexOf(file_ext) > -1) {
         files.push(full);
       }
-    } else if (recur) {
-      (await _search(full, ext, recur)).forEach(item => files.push(item));
     }
   }));
   return files;
@@ -141,16 +141,20 @@ async function _remove(filepath, recur = true) {
     throw new Error(`cannot delete root of system with : ${filepath}`);
   }
   if (await _exists(filepath)) {
-    if (await _is_file(filepath)) {
-      await unlink(filepath);
-    } else {
+    if (await _is_dir(filepath)) {
       const dir = filepath;
-      const files = await readdir(dir);
-      await Promise.all(files.map(async (filename) => {
-        const full = path.join(dir, filename);
-        await _remove(full, recur);
+      const files = await readdir(dir, { withFileTypes: true });
+      await Promise.all(files.map(async (dirent) => {
+        const full = path.join(dir, dirent.name);
+        if (dirent.isDirectory()) {
+          await _remove(full, recur);
+        } else {
+          await unlink(full);
+        }
       }));
       await rmdir(filepath);
+    } else {
+      await unlink(filepath);
     }
   }
 }
