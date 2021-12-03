@@ -36,6 +36,10 @@ module.exports = {
   Command,
   Workflow,
   Configuration,
+  MODE: {
+    OPTIONAL: 'optional',
+    REQUIRED: 'required',
+  },
 
   debug,
   printer,
