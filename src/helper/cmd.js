@@ -38,7 +38,7 @@ async function _shell(cmd, cwd = null, print = true, throw_error = true) {
  * 
  * @param {string} cmd 
  * @param {*} cwd 
- * @param {*} callback 
+ * @param {Object} options
  */
 async function _exec(cmd, cwd = null, options = {}) {
   if (null === cwd) {
@@ -254,7 +254,7 @@ function _check_argument(command_name, args, arg) {
 /**
  * Execute asynchronous tasks in a synchronous manner
  * @param {*} data     object or array
- * @param {*} resolver async func
+ * @param {Function} resolver async func
  */
 async function _sync_foreach(data, resolver) {
   const operator = {};
@@ -292,16 +292,36 @@ async function _sync_foreach(data, resolver) {
 
 /**
  * sleep by milliseconds
- * @param {*} ms milliseconds
+ * @param {number} ms milliseconds
  * @returns 
  */
 async function _sleep(ms) {
   return new Promise(resolve => setTimeout(() => resolve(), ms));
 }
 
+/**
+ * retry exec some logic
+ * @param {Function} handler 
+ * @param {number} retry_times
+ * @param {number} curr_times 
+ */
+async function _retry(handler, retry_times = 3, curr_times = 0) {
+  curr_times++;
+  try {
+    await handler();
+  } catch (e) {
+    if (curr_times < retry_times) {
+      await _retry(handler, retry_times, curr_times);
+    } else {
+      throw e;
+    }
+  }
+}
+
 module.exports = {
   _ask,
   _exec,
+  _retry,
   _sleep,
   _shell,
   _table,

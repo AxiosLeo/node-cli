@@ -1,9 +1,11 @@
 'use strict';
 
 const expect = require('chai').expect;
+const sinon = require('sinon');
 
 const {
   _sleep,
+  _retry,
   _sync_foreach,
 } = require('../src/helper/cmd');
 
@@ -41,5 +43,20 @@ describe('cmd test case', function () {
 
     data = [];
     await _sync_foreach(data);
+  });
+
+  it('retry should be ok', async function () {
+    const callback = sinon.fake();
+    callback.alwaysThrew(Error);
+
+    try {
+      await _retry(async () => {
+        callback();
+        throw Error('throw error');
+      }, 3);
+    } catch (e) {
+      expect(callback.callCount).to.be.equal(3);
+      expect(e.message).to.be.equal('throw error');
+    }
   });
 });

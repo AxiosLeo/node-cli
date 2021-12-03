@@ -535,6 +535,14 @@ export namespace helper {
     function _sleep(ms: number): Promise<void>;
 
     /**
+     * retry exec some logic
+     * @param {Function} handler
+     * @param {number} retry_times
+     * @param {number} curr_times
+     */
+    function _retry(handler: Function, retry_times: number, curr_times: number): Promise<void>;
+
+    /**
      * exec bash commands, printout when finished
      * @param cmd 
      * @param cwd 
