@@ -133,7 +133,7 @@ export declare abstract class Command {
    * @param argList 
    * @param app 
    */
-  abstract exec(args?: ObjectItem, options?: ObjectItem, argList?: string[], app?: App): Promise<void>;
+  abstract exec(args: ObjectItem, options: ObjectItem, argList: string[], app: App): Promise<void>;
 
   /**
    * ask input something
