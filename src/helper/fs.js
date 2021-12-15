@@ -207,7 +207,7 @@ async function _find_root(sub, dir = null, msg = '') {
   }
   const parent = path.dirname(dir);
   if (!parent || parent === dir) {
-    throw new Error(msg ? msg : `Please execute the current command in the directory where "${sub}"" is located`);
+    throw new Error(msg ? msg : `Please execute the current command in the directory where "${sub}" is located`);
   }
   return await _find_root(sub, path.dirname(dir), msg);
 }
