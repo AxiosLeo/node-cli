@@ -107,31 +107,31 @@ app.start(); // set locale before start app
 const { Command } = require('@axiosleo/cli-tool');
 
 class CommandExample extends Command {
-    constructor() {
+  constructor() {
     super({
       name: 'command-name',
       desc: 'command desc',
-      alias: ['command-alia1','command-alia2', ...],
-      args: [
-          {
-            name: 'name',     // argument name
-            mode: 'optional', // required | optional
-            desc: 'arg desc',
-            default: null     // only supported on optional mode
-          }
-      ],
-      options: [
-          {
-            name: 'name',     // option name
-            short: 'n',       // option short name like 'n'
-            mode: 'optional', // required | optional
-            desc: 'option desc',
-            default: null     // only supported on optional mode
-          }
-      ],
-      // this.addArgument('name', 'desc', 'required', null);
-      // this.addOption('name', 'n', 'desc', 'required', null);
+      alias: ['command-alia1', 'command-alia2'],
     });
+
+    /**
+     * add argument of current command
+     * @param name argument name
+     * @param desc argument description
+     * @param mode argument mode : required | optional
+     * @param default_value only supported on optional mode
+     */
+    this.addArgument('arg-name', 'desc', 'required', null);
+
+    /**
+     * add option of current command
+     * @param name option name
+     * @param short option short name
+     * @param desc option description
+     * @param mode option mode : required | optional
+     * @param default_value only supported on optional mode
+     */
+    this.addOption('test', 't', 'desc', 'required', null);
   }
 
   async exec(args, options, argList, app) {
@@ -154,7 +154,7 @@ class CommandExample extends Command {
       // select action
       const action = await this.select('Select an action', ['info', 'update']);
 
-      // printer table
+      // print table
       const rows = [
         ['Bob', 2]
       ];
