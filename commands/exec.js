@@ -12,7 +12,7 @@ class ExecCommand extends Command {
     });
     this.addArgument('filepath', 'Command js script file path', 'required', null);
   }
-  async exec(args, options, argList, app) {
+  async exec(args, _, __, app) {
     const filepath = path.resolve(args.filepath);
     if (!await _exists(filepath)) {
       printer.println().error(`"${args.filepath}" not exists in current directory`);
