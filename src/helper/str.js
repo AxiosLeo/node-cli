@@ -7,6 +7,7 @@ const camelCase = require('camelcase');
 const fs = require('./fs');
 const is = require('./is');
 const crypto = require('crypto');
+
 /**
  * Forced to string
  * @param str
@@ -151,6 +152,11 @@ function _equal_ignore_case(a, b) {
   return a === b;
 }
 
+/**
+ * count MD5
+ * @param str 
+ * @param charset default is utf8
+ */
 function _md5(str, charset = 'utf8') {
   str = `${str}`;
   const hash = crypto.createHash('md5');
