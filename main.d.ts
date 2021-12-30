@@ -383,22 +383,52 @@ export module locales {
 
 interface Printer {
   colors: Color
+  /**
+   * Pad a string to a certain length with another string
+   * @param content 
+   * @param length 
+   * @param fillPosition 
+   * @param fill 
+   */
   fixed(content: string, length?: number, fillPosition?: string, fill?: string): this;
+
+  /**
+   * set themes
+   * @param options 
+   */
   themes(options?: Record<string, string>): Record<string, string>;
+
+  /**
+   * Print some string on the console with EOL.
+   * @param str 
+   */
   println(str?: string): this;
+
+  /**
+   * Print some string on the console without EOL.
+   * @param str 
+   */
   print(str?: string): this;
+
+  /**
+   * enable print
+   */
   enable(): this;
+
+  /**
+   * disable print
+   */
   disable(): this;
 
-  input(str?: string): this;
-  verbose(str?: string): this;
-  info(str?: string): this;
-  data(str?: string): this;
-  debug(str?: string): this;
-
-  yellow(str?: string): this;
-  green(str?: string): this;
-  red(str?: string): this;
+  // print colorful
+  input(str: string): this;
+  verbose(str: string): this;
+  info(str: string): this;
+  data(str: string): this;
+  debug(str: string): this;
+  yellow(str: string): this;
+  green(str: string): this;
+  red(str: string): this;
 
   warning(...str: string[]): this;
   success(...str: string[]): this;
@@ -654,37 +684,105 @@ export namespace helper {
 
   module str {
     class Emitter {
-      config: ObjectItem
+      config: EmitterConfig
       constructor(options?: EmitterConfig)
+
       /**
-       * append string
+       * append string without EOL
        * @param str 
-       * @param level 
+       * @param level integer|null|false|string:(up|open|begin|start, down|close|end)
        */
       emit(str: string, level?: Level): this;
+
       /**
-       * append string with eol
+       * append string with EOL
        * @param str 
-       * @param level 
+       * @param level integer|null|false|string:(up|open|begin|start, down|close|end)
        */
       emitln(str: string, level?: Level): this;
+
       /**
        * emit indent string
+       * @param level integer|null|false|string:(up|open|begin|start, down|close|end)
        */
-      emitIndent(): string;
+      emitIndent(level?: Level): string;
+
       /**
        * curr output content
        */
       output(): string;
     }
-    function _str(s?: any): string;
+
+    /**
+     * Forced to string
+     * @param str
+     */
+    function _str(str?: any): string;
+
+    /**
+     * Converts the first character of a string to upper case
+     * @param str 
+     */
     function _upper_first(str: string): string;
+
+    /**
+     * Converts the first character of a string to lower case.
+     * @param str 
+     */
     function _lower_first(str: string): string;
+
+    /**
+     * Converts the name string to camel case
+     * @param name 
+     * @param pascalCase 
+     */
     function _caml_case(name: string, pascalCase?: boolean): string;
+
+    /**
+     * Converts the name string to snake case
+     * @param name 
+     */
     function _snake_case(name: string): string;
-    function _render(tmpl_string: string, params?: Record<string, string>, left?: string, right?: string): string;
-    function _render_with_file(tmpl_file: string, params?: Record<string, string>, left?: string, right?: string): string;
+
+    /**
+     * render string by params and template
+     * @param tmpl_string 
+     * @param params 
+     * @param left_tag 
+     * @param right_tag 
+     */
+    function _render(tmpl_string: string, params?: Record<string, string>, left_tag?: string, right_tag?: string): string;
+
+    /**
+     * render string by params and template file
+     * @param tmpl_file 
+     * @param params 
+     * @param left 
+     * @param right 
+     */
+    function _render_with_file(tmpl_file: string, params?: Record<string, string>, left_tag?: string, right_tag?: string): Promise<string>;
+
+    /**
+     * Pad a string to a certain length with another string
+     * @param content 
+     * @param length default is 10
+     * @param fillPosition right|left
+     * @param fill default is blank space " "
+     */
     function _fixed(content: string, length?: number, fillPosition?: string, fill?: string): string;
+
+    /**
+     * Compare two strings in a case-sensitive manner
+     * @param a 
+     * @param b 
+     */
     function _equal_ignore_case(a: string, b: string): boolean;
+
+    /**
+     * count MD5
+     * @param str 
+     * @param charset default is utf8
+     */
+    function _md5(str: string, charset?: string): string;
   }
 }
