@@ -7,11 +7,18 @@ const camelCase = require('camelcase');
 const fs = require('./fs');
 const is = require('./is');
 const crypto = require('crypto');
-
+/**
+ * Forced to string
+ * @param str
+ */
 function _str(s) {
   return is.invalid(s) || !is.string(s) ? '' : s;
 }
 
+/**
+ * Converts the first character of a string to upper case
+ * @param str 
+ */
 function _upper_first(str) {
   if (is.empty(str)) {
     return '';
@@ -22,6 +29,10 @@ function _upper_first(str) {
   return str[0].toUpperCase() + str.substring(1);
 }
 
+/**
+ * Converts the first character of a string to lower case.
+ * @param str 
+ */
 function _lower_first(str) {
   if (is.empty(str)) {
     return '';
@@ -32,6 +43,11 @@ function _lower_first(str) {
   return str[0].toLowerCase() + str.substring(1);
 }
 
+/**
+ * Converts the name string to camel case
+ * @param name 
+ * @param pascalCase 
+ */
 function _caml_case(name, pascalCase = true) {
   name = _str(name);
   return camelCase(name, {
@@ -39,6 +55,10 @@ function _caml_case(name, pascalCase = true) {
   });
 }
 
+/**
+ * Converts the name string to snake case
+ * @param name 
+ */
 function _snake_case(name) {
   name = _str(name);
   let res = '';
@@ -64,6 +84,13 @@ function _snake_case(name) {
   return res;
 }
 
+/**
+ * render string by params and template
+ * @param tmpl_string 
+ * @param params 
+ * @param left_tag 
+ * @param right_tag 
+ */
 function _render(tmpl_string, params = {}, left = '${', right = '}') {
   Object.keys(params).forEach((key) => {
     tmpl_string = tmpl_string.split(left + key + right).join(params[key]);
@@ -71,6 +98,13 @@ function _render(tmpl_string, params = {}, left = '${', right = '}') {
   return tmpl_string;
 }
 
+/**
+ * render string by params and template file
+ * @param tmpl_file 
+ * @param params 
+ * @param left 
+ * @param right 
+ */
 async function _render_with_file(tmpl_file, params = {}, left = '${', right = '}') {
   if (!await fs._exists(tmpl_file)) {
     throw new Error(`${tmpl_file} not exist.`);
@@ -79,6 +113,13 @@ async function _render_with_file(tmpl_file, params = {}, left = '${', right = '}
   return _render(tmpl_string, params, left, right);
 }
 
+/**
+ * Pad a string to a certain length with another string
+ * @param content 
+ * @param length default is 10
+ * @param fillPosition right|left
+ * @param fill default is blank space " "
+ */
 function _fixed(content, length = 10, fillPosition = 'r', fill = ' ') {
   content = `${_str(content)}`;
   if (content.length < length) {
@@ -99,13 +140,18 @@ function _fixed(content, length = 10, fillPosition = 'r', fill = ' ') {
   return content;
 }
 
+/**
+ * Compare two strings in a case-sensitive manner
+ * @param a 
+ * @param b 
+ */
 function _equal_ignore_case(a, b) {
   a = a && is.string(a) ? a.toLowerCase() : '';
   b = b && is.string(b) ? b.toLowerCase() : '';
   return a === b;
 }
 
-function _md5(str, charset = 'utf8'){
+function _md5(str, charset = 'utf8') {
   str = `${str}`;
   const hash = crypto.createHash('md5');
   hash.update(str, charset);
@@ -126,9 +172,9 @@ class Emitter {
   }
 
   /**
-   * 
-   * @param {*} str 
-   * @param {*} level integer|null|false|string
+   * append string without EOL
+   * @param str 
+   * @param level integer|null|false|string:(up|open|begin|start, down|close|end)
    */
   emit(str = '', level = null) {
     this.buffer += this.emitIndent.call(this, level);
@@ -136,11 +182,20 @@ class Emitter {
     return this;
   }
 
+  /**
+   * append string with EOL
+   * @param str 
+   * @param level integer|null|false|string:(up|open|begin|start, down|close|end)
+   */
   emitln(str = '', level = null) {
     this.emit(str + this.config.eol, level);
     return this;
   }
 
+  /**
+   * emit indent string
+   * @param level integer|null|false|string:(up|open|begin|start, down|close|end)
+   */
   emitIndent(level = null) {
     let l;
     switch (level) {
@@ -169,6 +224,9 @@ class Emitter {
     return this.config.indent.repeat(l);
   }
 
+  /**
+   * curr output content
+   */
   output() {
     return this.buffer;
   }
