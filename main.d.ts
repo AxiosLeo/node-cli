@@ -1,5 +1,5 @@
 import { Color } from 'colors';
-import { ChildProcess } from 'child_process';
+import { ChildProcess, SpawnOptionsWithoutStdio } from 'child_process';
 
 type Level = number | null | boolean | string;
 
@@ -39,6 +39,14 @@ type AppSettings = {
   commands_sort?: string[]
   locale?: LocaleSettings
   options?: OptionItem[]
+};
+
+type TableOptions = {
+  columns_width?: Array<number>,
+  columns_align?: Array<string>,
+  margin_left?: number,
+  spacing?: string,
+  padding?: string
 };
 
 export declare class App {
@@ -587,7 +595,7 @@ export namespace helper {
      * @param cwd 
      * @param options 
      */
-    function _exec(cmd: string, cwd?: string, options?: ObjectItem): Promise<ChildProcess>
+    function _exec(cmd: string, cwd?: string, options?: SpawnOptionsWithoutStdio): Promise<ChildProcess>
 
     /**
      * console conversations: confirm input
@@ -617,7 +625,7 @@ export namespace helper {
      * @param headers 
      * @param options 
      */
-    function _table(rows: string[][], headers?: string[], options?: ObjectItem): void
+    function _table(rows: string[][], headers?: string[], options?: TableOptions): void
 
     /**
      * resolve actions from args[]
@@ -670,16 +678,20 @@ export namespace helper {
 
   module obj {
     function _flatten(obj: ObjectItem, sep: string): ObjectItem;
+    function _flatten<T>(obj: T, sep: string): ObjectItem;
     function _unflatten(obj: ObjectItem, sep: string): ObjectItem;
+    function _unflatten<T>(obj: ObjectItem, sep: string): T;
     function _assign(targetObj: ObjectItem, ...objs: ObjectItem[]): ObjectItem;
+    function _assign<T>(targetObj: T, ...objs: ObjectItem[]): T;
     function _deep_clone(obj: ObjectItem): ObjectItem;
+    function _deep_clone<T>(obj: T): T;
   }
 
   export interface EmitterConfig {
-    indent: string
-    eol: string
-    level: number
-    encoding: string
+    indent?: string   // default is '  '
+    eol?: string      // default is os.EOL
+    level?: number    // default is 0
+    encoding?: string // default is 'utf8'
   }
 
   module str {
