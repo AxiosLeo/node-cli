@@ -656,7 +656,7 @@ export namespace helper {
      * @param data 
      * @param resolver 
      */
-    function _sync_foreach(data: any, resolver: (value?: any, key?: any) => void): Promise<Context>
+    function _sync_foreach(data: any, resolver: (value?: any, key?: any) => void | Promise<void>): Promise<Context>
   }
 
   module is {
