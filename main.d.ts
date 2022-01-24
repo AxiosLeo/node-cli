@@ -574,11 +574,11 @@ export namespace helper {
 
     /**
      * retry exec some logic
-     * @param {Function} handler
+     * @param {(curr_times: number, retry_times: number) => Promise<void>} handler
      * @param {number} retry_times
      * @param {number} curr_times
      */
-    function _retry(handler: Function, retry_times: number, curr_times: number): Promise<void>;
+    function _retry(handler: (curr_times: number, retry_times: number) => Promise<void>, retry_times: number, curr_times: number): Promise<void>;
 
     /**
      * exec bash commands, printout when finished

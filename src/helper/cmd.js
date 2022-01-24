@@ -308,7 +308,7 @@ async function _sleep(ms) {
 async function _retry(handler, retry_times = 3, curr_times = 0) {
   curr_times++;
   try {
-    await handler();
+    await handler(curr_times, retry_times);
   } catch (e) {
     if (curr_times < retry_times) {
       await _retry(handler, retry_times, curr_times);
