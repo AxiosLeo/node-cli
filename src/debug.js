@@ -25,6 +25,12 @@ function dump(...data) {
   emit(data);
 }
 
+function log(...data) {
+  pos('log', '38;5;243');
+  // eslint-disable-next-line no-console
+  console.log.apply(this, data);
+}
+
 function halt(...data) {
   pos('halt');
   emit(data);
@@ -94,12 +100,13 @@ function error(...data) {
 }
 
 module.exports = {
+  log,
   pos,
   dump,
   halt,
-  stack,
   jump,
-  warning,
+  stack,
   error,
-  pause
+  pause,
+  warning,
 };
