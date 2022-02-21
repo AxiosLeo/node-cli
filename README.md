@@ -43,8 +43,8 @@ cli-tool exec ./command/test.js
 const { App } = require('@axiosleo/cli-tool');
 const app = new App({
   name: 'cli-tool',      // cli app command name, required
+  version: '1.0.0',      // cli app version, required
   desc: 'cli app description',
-  version: '1.0.0', // cli app version, required
   commands_dir: '/path/to/commands/dir/', // will auto load command files
   commands_sort: ['help', ... ],
   commands_group: {
