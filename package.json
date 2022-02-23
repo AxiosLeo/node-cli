@@ -33,7 +33,7 @@
   "dependencies": {
     "camelcase": "^6.2.0",
     "clone-deep": "^4.0.1",
-    "colors": "^1.4.0",
+    "colors": "1.4.0",
     "enquirer": "^2.3.6",
     "minimist": "^1.2",
     "moment": "^2.29.1",
