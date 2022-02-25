@@ -31,7 +31,7 @@ cli-tool make <command-name> <commands-dir-path>
 # for example
 cli-tool make test ./commands/ # will generate command file on ./commands/test.js
 
-# run command js script directly
+# run command js script
 cli-tool exec ./command/test.js
 ```
 
