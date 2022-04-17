@@ -39,6 +39,9 @@ class Workflow {
     let res = await operator[curr].call(this, context);
     context.curr.success = true;
     context.curr.end = moment().valueOf();
+    if (!context.step_data) {
+      context.step_data = {};
+    }
     context.step_data[curr] = context.curr;
     if (typeof res === 'string' && this.workflows.indexOf(res) > -1) {
       await this.dispatch(context, res);
