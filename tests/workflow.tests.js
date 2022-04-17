@@ -108,4 +108,15 @@ describe('workflow test case', () => {
     expect(context.step_data).to.not.include.all.keys('a');
     expect(workflow.workflows[0]).to.be.equal('c');
   });
+
+  it('dispatch workflow should be ok', async () => {
+    const operator = {
+      a: async () => { },
+      b: async () => { },
+      c: async () => { },
+    };
+    let workflow = new Workflow(operator);
+    const context = {};
+    await workflow.dispatch(context, 'b');
+  });
 });
