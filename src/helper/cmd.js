@@ -200,7 +200,7 @@ function _table(rows = [], headers = [], options = {}) {
   });
 }
 
-async function _dispatch(opts = [], ways) {
+async function _dispatch(opts = [], ways = {}) {
   async function recur(curr_index, opts, ways) {
     if (is.empty(opts[curr_index])) {
       const chioce = Object.keys(ways);
