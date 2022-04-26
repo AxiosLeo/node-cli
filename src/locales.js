@@ -33,23 +33,23 @@ class Translator {
       return;
     }
     switch (this.options.format) {
-    case 'json': {
-      const jsonpath = path.join(this.options.dir, `${use}.json`);
-      if (fs.existsSync(jsonpath)) {
-        const json = fs.readFileSync(jsonpath);
-        this.dictionaries[use] = JSON.parse(json);
-        this.dict = this.dictionaries[use];
+      case 'json': {
+        const jsonpath = path.join(this.options.dir, `${use}.json`);
+        if (fs.existsSync(jsonpath)) {
+          const json = fs.readFileSync(jsonpath);
+          this.dictionaries[use] = JSON.parse(json);
+          this.dict = this.dictionaries[use];
+        }
+        break;
       }
-      break;
-    }
-    case 'js': {
-      const jspath = path.join(this.options.dir, `${use}.js`);
-      if (fs.existsSync(jspath)) {
-        this.dictionaries[use] = require(jspath);
-        this.dict = this.dictionaries[use];
+      case 'js': {
+        const jspath = path.join(this.options.dir, `${use}.js`);
+        if (fs.existsSync(jspath)) {
+          this.dictionaries[use] = require(jspath);
+          this.dict = this.dictionaries[use];
+        }
+        break;
       }
-      break;
-    }
     }
   }
 

@@ -205,27 +205,27 @@ class Emitter {
   emitIndent(level = null) {
     let l;
     switch (level) {
-    case 'up':
-    case 'open':
-    case 'begin':
-    case 'start':
-      l = this.level;
-      this.level++;
-      break;
-    case 'down':
-    case 'close':
-    case 'end':
-      this.level--;
-      l = this.level;
-      break;
-    case null:
-      l = 0;
-      break;
-    case true:
-      l = this.level;
-      break;
-    default:
-      l = level;
+      case 'up':
+      case 'open':
+      case 'begin':
+      case 'start':
+        l = this.level;
+        this.level++;
+        break;
+      case 'down':
+      case 'close':
+      case 'end':
+        this.level--;
+        l = this.level;
+        break;
+      case null:
+        l = 0;
+        break;
+      case true:
+        l = this.level;
+        break;
+      default:
+        l = level;
     }
     return this.config.indent.repeat(l);
   }
