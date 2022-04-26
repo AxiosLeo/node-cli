@@ -66,7 +66,7 @@ async function _exec(cmd, cwd = null, options = {}) {
     exec.on('exit', function (code) {
       if (code) {
         if (opts.exception) {
-          reject(new Error(`error executing with code ${code}`));
+          reject(new Error(__('The command "${cmd}" exited with code "${code}"', { cmd: cmd, code: code })));
         } else {
           resolve(code);
         }
