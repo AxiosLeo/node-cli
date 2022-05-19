@@ -91,6 +91,14 @@ async function _copy(source, target, recur = false) {
   }
 }
 
+/**
+ * search files in the directory
+ * @example js|ts ...
+ * @param {*} dir 
+ * @param {*} ext 
+ * @param {*} recur 
+ * @returns 
+ */
 async function _search(dir, ext = '*', recur = true) {
   if (!(await _is_dir(dir))) {
     throw new Error('Only support dir path');
@@ -112,6 +120,14 @@ async function _search(dir, ext = '*', recur = true) {
   return files;
 }
 
+/**
+ * find files in the directory with deep one level
+ * @example .js|.ts
+ * @param {*} dir 
+ * @param {*} full 
+ * @param {*} ext 
+ * @returns 
+ */
 async function _list(dir, full = false, ext = '*') {
   if (!await _is_dir(dir)) {
     throw new Error('Only support dir path');
@@ -173,6 +189,14 @@ async function _md5(filepath, charset = 'utf8') {
   });
 }
 
+/**
+ * file system sync
+ * @example js|ts ...
+ * @param {*} source 
+ * @param {*} target 
+ * @param {*} ext 
+ * @param {*} reback 
+ */
 async function _sync(source, target, ext = '*', reback = true) {
   const sources = await _search(source, ext);
   while (sources.length) {
