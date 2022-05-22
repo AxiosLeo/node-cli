@@ -26,10 +26,6 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: npm install
     - run: npm install -D nyc
-    - name: ESLint Suggestion
-      uses: CatChen/eslint-suggestion-action@v1.7.0
-      with:
-          github-workspace: ${{ github.workspace }}
     - run: npm run ci
     - uses: codecov/codecov-action@v2
       with:
