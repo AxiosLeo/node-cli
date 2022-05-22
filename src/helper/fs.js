@@ -93,9 +93,8 @@ async function _copy(source, target, recur = false) {
 
 /**
  * search files in the directory
- * @example js|ts ...
  * @param {*} dir 
- * @param {*} ext 
+ * @param {*} ext js|ts ...
  * @param {*} recur 
  * @returns 
  */
@@ -122,10 +121,9 @@ async function _search(dir, ext = '*', recur = true) {
 
 /**
  * find files in the directory with deep one level
- * @example .js|.ts
  * @param {*} dir 
  * @param {*} full 
- * @param {*} ext 
+ * @param {*} ext .js|.ts
  * @returns 
  */
 async function _list(dir, full = false, ext = '*') {
@@ -191,10 +189,9 @@ async function _md5(filepath, charset = 'utf8') {
 
 /**
  * file system sync
- * @example js|ts ...
  * @param {*} source 
  * @param {*} target 
- * @param {*} ext 
+ * @param {*} ext js|ts ...
  * @param {*} reback 
  */
 async function _sync(source, target, ext = '*', reback = true) {

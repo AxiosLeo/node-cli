@@ -463,7 +463,7 @@ export namespace helper {
      * sync files to target directory from source directory
      * @param source 
      * @param target 
-     * @param ext default value is = '*'
+     * @param ext default value is = '*', js|ts ...
      * @param reback default value if true
      */
     function _sync(source: string, target: string, ext?: string, reback?: boolean): Promise<void>;
@@ -472,7 +472,7 @@ export namespace helper {
     * list files in some directory
     * @param dir 
     * @param full 
-    * @param ext 
+    * @param ext .js|.ts
     */
     function _list(dir: string, full?: boolean, ext?: string): Promise<string[]>;
 
@@ -520,7 +520,7 @@ export namespace helper {
     /**
     * search some files by extension
     * @param dir 
-    * @param ext 
+    * @param ext js|ts
     * @param recur 
     */
     function _search(dir: string, ext?: string, recur?: boolean): Promise<string[]>;
