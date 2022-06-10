@@ -68,6 +68,13 @@
     "eol-last": [
       2,
       "always"
+    ],
+    "no-multiple-empty-lines": [
+      2,
+      {
+        "max": 1,
+        "maxBOF": 1
+      }
     ]
   },
   "env": {
