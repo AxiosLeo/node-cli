@@ -69,11 +69,27 @@
       2,
       "always"
     ],
+    "no-inner-declarations": [
+      1
+    ],
+    "no-case-declarations": [
+      1
+    ],
     "no-multiple-empty-lines": [
       2,
       {
         "max": 1,
         "maxBOF": 1
+      }
+    ],
+    "space-in-parens": [
+      2,
+      "never"
+    ],
+    "no-multi-spaces": [
+      2,
+      {
+        "ignoreEOLComments": true
       }
     ]
   },
