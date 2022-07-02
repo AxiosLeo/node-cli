@@ -75,7 +75,7 @@ export declare class App {
    * enable locale translation using i18n
    * @param options 
    */
-  locale(options?: LocaleSettings);
+  locale(options?: LocaleSettings): void;
 
   /**
    * register command with Class/Object/path-string
@@ -556,7 +556,7 @@ export namespace helper {
      * @param dir 
      * @param msg 
      */
-    function _find_root(sub, dir?: string | null | undefined, msg?: string);
+    function _find_root(sub: string, dir?: string | null | undefined, msg?: string): Promise<string>;
 
     /**
      * read content from single file and parse to JSON object
