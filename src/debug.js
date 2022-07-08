@@ -2,6 +2,7 @@
 
 const os = require('os');
 const { prompt } = require('enquirer');
+const moment = require('moment');
 
 var count = 0;
 
@@ -10,11 +11,11 @@ function emit(data) {
   data.forEach(d => console.log(d));
 }
 
-function pos(label, color = '33') {
+function pos(label, color = '33', prefix = '', suffix = '') {
   const stack = (new Error()).stack;
   let tmp = stack.split('\n');
   let local = tmp[3].indexOf('at Object.jump') > -1 ? tmp[4] : tmp[3];
-  process.stdout.write(`\x1b[${color}m${label} ${local.trim()}\x1b[0m${os.EOL}`);
+  process.stdout.write(`${prefix}\x1b[${color}m${label} ${local.trim()}\x1b[0m${suffix}${os.EOL}`);
 }
 
 function dump(...data) {
@@ -26,7 +27,7 @@ function dump(...data) {
 }
 
 function log(...data) {
-  pos('log', '38;5;243');
+  pos('log', '38;5;243', `\x1b[33m[${moment().format('YYYY-MM-DD HH:mm:ss')}]\x1b[0m `);
   // eslint-disable-next-line no-console
   console.log.apply(this, data);
 }
