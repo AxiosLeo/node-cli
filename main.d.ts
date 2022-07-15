@@ -254,6 +254,13 @@ export declare class Configuration {
 }
 
 interface Debug {
+
+  /**
+   * Print log message with datetime
+   * @param data 
+   */
+  log(...data: any[]): void;
+
   /**
    * Print current exec position in code
    * @param label 
