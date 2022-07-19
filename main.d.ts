@@ -803,5 +803,11 @@ export namespace helper {
      * @param charset default is utf8
      */
     function _md5(str: string, charset?: string): string;
+
+    /**
+     * get length of string
+     * @param str 
+     */
+    function _len(str: string): number;
   }
 }

@@ -16,6 +16,15 @@ function _str(s) {
   return is.invalid(s) || !is.string(s) ? '' : s;
 }
 
+function _len(str) {
+  if (str === null) { return 0; }
+  if (typeof str !== 'string') {
+    str += '';
+  }
+  // eslint-disable-next-line no-control-regex
+  return str.replace(/[^\x00-\xff]/g, '01').length;
+}
+
 /**
  * Converts the first character of a string to upper case
  * @param str 
@@ -123,19 +132,20 @@ async function _render_with_file(tmpl_file, params = {}, left = '${', right = '}
  */
 function _fixed(content, length = 10, fillPosition = 'r', fill = ' ') {
   content = `${_str(content)}`;
-  if (content.length < length) {
+  let len = _len(content);
+  if (len < length) {
     var leftFill = '';
     var rightFill = '';
     if (fillPosition.indexOf('l') === 0) {
-      leftFill = fill.repeat(length - content.length);
+      leftFill = fill.repeat(length - len);
     } else if (fillPosition.indexOf('c') === 0) {
-      var left = Math.floor((length - content.length) / 2);
+      var left = Math.floor((length - len) / 2);
       leftFill = fill.repeat(left);
-      rightFill = fill.repeat(length - content.length - left);
+      rightFill = fill.repeat(length - len - left);
     } else {
-      rightFill = fill.repeat(length - content.length);
+      rightFill = fill.repeat(length - len);
     }
-    fill = fill.repeat(length - content.length);
+    fill = fill.repeat(length - len);
     content = leftFill + content + rightFill;
   }
   return content;
@@ -241,6 +251,7 @@ class Emitter {
 module.exports = {
   Emitter,
 
+  _len,
   _str,
   _md5,
   _fixed,
