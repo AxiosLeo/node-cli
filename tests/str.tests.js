@@ -12,7 +12,8 @@ const {
   _lower_first,
   _render_with_file,
   _equal_ignore_case,
-  Emitter
+  Emitter,
+  _len
 } = require('../src/helper/str');
 const { _write, _remove } = require('../src/helper/fs');
 
@@ -122,5 +123,17 @@ describe('str test case', function () {
     expect(_md5(2.11111111111)).to.be.equal('b5d6746f1961db4b9a85fb0b60b2fdf8');
     expect(_md5(true)).to.be.equal('b326b5062b2f0e69046810717534cb09');
     expect(_md5('test')).to.be.equal('098f6bcd4621d373cade4e832627b4f6');
+  });
+
+  it('string len', function () {
+    expect(_len([])).to.be.equal(0);
+    expect(_len(1)).to.be.equal(1);
+    expect(_len({})).to.be.equal(15);
+    expect(_len(null)).to.be.equal(0);
+    expect(_len('123')).to.be.equal(3);
+
+    let a = null;
+    expect(_len(a)).to.be.equal(0);
+    expect(_len('中文')).to.be.equal(4);
   });
 });

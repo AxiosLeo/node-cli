@@ -17,7 +17,9 @@ function _str(s) {
 }
 
 function _len(str) {
-  if (str === null) { return 0; }
+  if (str === null) {
+    return 0;
+  }
   if (typeof str !== 'string') {
     str += '';
   }
