@@ -660,10 +660,18 @@ export namespace helper {
 
     /**
      * exec async tasks one by one in sync
+     * @deprecated use _foreach instead
      * @param data 
      * @param resolver 
      */
     function _sync_foreach(data: any, resolver: (value?: any, key?: any) => void | Promise<void>): Promise<Context>
+
+    /**
+    * execute asynchronous tasks in a synchronous manner
+    * @param data 
+    * @param resolver 
+    */
+    function _foreach(data: any, resolver: (value?: any, key?: any) => void | Promise<void>): Promise<Context>
   }
 
   module is {

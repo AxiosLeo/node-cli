@@ -254,7 +254,7 @@ function _check_argument(command_name, args, arg) {
 
 /**
  * Execute asynchronous tasks in a synchronous manner
- * @deprecated
+ * @deprecated use _foreach instead
  * @param {*} data     object or array
  * @param {Function} resolver async func
  */
@@ -298,7 +298,7 @@ async function _sync_foreach(data, resolver) {
  * @param {*} resolver 
  * @returns {void}
  */
-async function _sync(data, resolver) {
+async function _foreach(data, resolver) {
   const event = new EventEmitter();
   let datas = data;
   if (is.object(data)) {
@@ -359,7 +359,6 @@ async function _retry(handler, retry_times = 3, curr_times = 0) {
 
 module.exports = {
   _ask,
-  _sync,
   _exec,
   _retry,
   _sleep,
@@ -367,6 +366,7 @@ module.exports = {
   _table,
   _select,
   _confirm,
+  _foreach,
   _dispatch,
   _check_option,
   _sync_foreach,
