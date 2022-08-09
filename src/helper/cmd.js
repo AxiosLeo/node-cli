@@ -10,6 +10,7 @@ const { _fixed } = require('./str');
 const is = require('./is');
 const { __ } = require('../locales');
 const Workflow = require('../workflow');
+const EventEmitter = require('events');
 
 async function _shell(cmd, cwd = null, print = true, throw_error = true) {
   if (null === cwd) {
@@ -253,6 +254,7 @@ function _check_argument(command_name, args, arg) {
 
 /**
  * Execute asynchronous tasks in a synchronous manner
+ * @deprecated
  * @param {*} data     object or array
  * @param {Function} resolver async func
  */
@@ -291,6 +293,43 @@ async function _sync_foreach(data, resolver) {
 }
 
 /**
+ * Execute asynchronous tasks in a synchronous manner
+ * @param {*} data 
+ * @param {*} resolver 
+ * @returns {void}
+ */
+async function _sync(data, resolver) {
+  const event = new EventEmitter();
+  let datas = data;
+  if (is.object(data)) {
+    datas = Object.keys(data).map((d) => data[d]);
+  } else if (!is.array(data)) {
+    throw new Error('Unsupported data type : ' + typeof data);
+  }
+  let index = 0;
+  event.on('step', (rows, resolver, index) => {
+    const row = rows.shift();
+    if (!row) {
+      event.emit('done');
+      return;
+    }
+    resolver(row, index).then(() => {
+      index++;
+      event.emit('step', rows, resolver, index);
+    }).catch((err) => event.emit('error', err));
+  });
+  event.emit('step', datas, resolver, index);
+  return new Promise((resolve, reject) => {
+    event.on('error', (err) => {
+      reject(err);
+    });
+    event.on('done', () => {
+      resolve();
+    });
+  });
+}
+
+/**
  * sleep by milliseconds
  * @param {number} ms milliseconds
  * @returns 
@@ -320,6 +359,7 @@ async function _retry(handler, retry_times = 3, curr_times = 0) {
 
 module.exports = {
   _ask,
+  _sync,
   _exec,
   _retry,
   _sleep,
