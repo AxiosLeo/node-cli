@@ -299,6 +299,9 @@ async function _sync_foreach(data, resolver) {
  * @returns {void}
  */
 async function _foreach(data, resolver) {
+  if (is.empty(data)) {
+    return;
+  }
   const event = new EventEmitter();
   let datas = data;
   if (is.object(data)) {
