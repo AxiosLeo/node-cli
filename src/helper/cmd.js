@@ -11,6 +11,7 @@ const is = require('./is');
 const { __ } = require('../locales');
 const Workflow = require('../workflow');
 const EventEmitter = require('events');
+const { _deep_clone } = require('./obj');
 
 async function _shell(cmd, cwd = null, print = true, throw_error = true) {
   if (null === cwd) {
@@ -303,7 +304,7 @@ async function _foreach(data, resolver) {
     return;
   }
   const event = new EventEmitter();
-  let datas = data;
+  let datas = _deep_clone(data);
   if (is.object(data)) {
     datas = Object.keys(data).map((d) => data[d]);
   } else if (!is.array(data)) {
