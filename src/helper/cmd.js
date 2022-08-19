@@ -313,7 +313,7 @@ async function _foreach(data, resolver) {
   let index = 0;
   event.on('step', (rows, resolver, index) => {
     const row = rows.shift();
-    if (!row) {
+    if (typeof row === 'undefined') {
       event.emit('done');
       return;
     }
