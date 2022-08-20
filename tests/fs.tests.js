@@ -44,6 +44,10 @@ describe('fs test case', function () {
 
     files = await _search(path.join(__dirname, '../node_modules/'));
     expect(files.length).not.to.be.equal(0);
+
+    files = await _search(path.join(__dirname, '../not-exist/dir/'));
+    expect(files.length).to.be.equal(0);
+
     try {
       await _search(__filename);
     } catch (e) {
@@ -120,6 +124,9 @@ describe('fs test case', function () {
 
     let files4 = await _list(__dirname, false, '.js');
     expect(files4.length).to.be.equal(10);
+
+    let files5 = await _list(__dirname + '/not-exist/dir/');
+    expect(files5.length).to.be.equal(0);
   });
 
   it('file md5', async () => {

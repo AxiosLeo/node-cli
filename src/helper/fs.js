@@ -99,6 +99,9 @@ async function _copy(source, target, recur = false) {
  * @returns 
  */
 async function _search(dir, ext = '*', recur = true) {
+  if (!await _exists(dir)) {
+    return [];
+  }
   if (!(await _is_dir(dir))) {
     throw new Error('Only support dir path');
   }
@@ -127,6 +130,9 @@ async function _search(dir, ext = '*', recur = true) {
  * @returns 
  */
 async function _list(dir, full = false, ext = '*') {
+  if (!await _exists(dir)) {
+    return [];
+  }
   if (!await _is_dir(dir)) {
     throw new Error('Only support dir path');
   }
