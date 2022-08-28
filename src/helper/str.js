@@ -133,7 +133,7 @@ async function _render_with_file(tmpl_file, params = {}, left = '${', right = '}
  * @param fill default is blank space " "
  */
 function _fixed(content, length = 10, fillPosition = 'r', fill = ' ') {
-  content = `${_str(content)}`;
+  content = is.invalid(content) ? '' : `${content}`;
   let len = _len(content);
   if (len < length) {
     var leftFill = '';
