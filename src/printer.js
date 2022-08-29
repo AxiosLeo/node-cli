@@ -4,7 +4,7 @@
  * @require https://github.com/Marak/colors.js
  */
 
-const { _str, _fixed } = require('./helper/str');
+const { _fixed } = require('./helper/str');
 const is = require('./helper/is');
 const os = require('os');
 const colors = require('colors');
@@ -35,7 +35,7 @@ function disable() {
 }
 
 function print(str = '') {
-  str = `${buffer}${_str(str)}`;
+  str = is.invalid(str) ? `${buffer}` : `${buffer}${str}`;
   buffer = '';
   if (!quiet) {
     process.stdout.write(str);
@@ -44,7 +44,8 @@ function print(str = '') {
 }
 
 function println(str = '') {
-  str = _str(str);
+  str = is.invalid(str) ? `${buffer}` : `${buffer}${str}`;
+  buffer = '';
   print(str + os.EOL);
   return this;
 }
