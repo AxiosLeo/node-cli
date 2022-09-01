@@ -189,13 +189,16 @@ class App {
     init(locale);
   }
 
-  register(cmd) {
+  register(cmd, command_name) {
     let command;
     if (is.object(cmd)) {
       command = cmd;
     } else if (is.string(cmd)) {
       const Command = require(cmd);
       command = new Command();
+      if (command.config.name !== command_name) {
+        return;
+      }
     } else {
       command = new cmd();
     }
@@ -236,7 +239,7 @@ class App {
     }
     const command_path = path.join(this.config.commands_dir, `${command_name}.js`);
     if (await _exists(command_path)) {
-      this.register(command_path);
+      this.register(command_path, command_name);
       this.exec(command_name, 3);
       return;
     }
