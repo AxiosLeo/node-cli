@@ -33,12 +33,12 @@ async function _append(filepath, content) {
   await writeFile(filepath, content, { flag: 'a' });
 }
 
-async function _read(filepath) {
-  return await readFile(filepath, 'utf-8');
+async function _read(filepath, charset = 'utf8') {
+  return await readFile(filepath, charset);
 }
 
-async function _read_json(filepath) {
-  const content = await readFile(path.resolve(filepath), 'utf-8');
+async function _read_json(filepath, charset = 'utf8') {
+  const content = await readFile(path.resolve(filepath), charset);
   return JSON.parse(content);
 }
 
