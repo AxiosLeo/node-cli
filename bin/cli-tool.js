@@ -8,7 +8,7 @@ const { App } = require('../main');
 // init app
 const app = new App({
   name: 'cli-tool',
-  version: '1.4.19',
+  version: '1.4.20',
   desc: 'application_desc',
   commands_dir: path.join(__dirname, '../commands'),
   commands_sort: ['help', 'init', 'make', 'exec'],
