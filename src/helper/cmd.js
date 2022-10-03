@@ -6,7 +6,7 @@ const promisify = require('util').promisify;
 const cp = require('child_process');
 const exec = promisify(cp.exec);
 const { prompt, Select } = require('enquirer');
-const { _fixed } = require('./str');
+const { _fixed, _len } = require('./str');
 const is = require('./is');
 const { __ } = require('../locales');
 const Workflow = require('../workflow');
@@ -155,8 +155,9 @@ function _table(rows = [], headers = [], options = {}) {
         if (!cols_lens[index]) {
           cols_lens[index] = 0;
         }
-        if (cols_lens[index] < header.length) {
-          cols_lens[index] = header.length;
+        let header_len = _len(header);
+        if (cols_lens[index] < header_len) {
+          cols_lens[index] = header_len;
         }
       });
     }
@@ -166,8 +167,9 @@ function _table(rows = [], headers = [], options = {}) {
         if (!cols_lens[index]) {
           cols_lens[index] = 0;
         }
-        if (cols_lens[index] < col.length) {
-          cols_lens[index] = col.length;
+        let col_len = _len(col);
+        if (cols_lens[index] < col_len) {
+          cols_lens[index] = col_len;
         }
         return col;
       });
@@ -180,8 +182,9 @@ function _table(rows = [], headers = [], options = {}) {
       if (!cols_lens[index]) {
         cols_lens[index] = 0;
       }
-      if (cols_lens[index] < col.length) {
-        cols_lens[index] = col.length;
+      let col_len = _len(col);
+      if (cols_lens[index] < col_len) {
+        cols_lens[index] = col_len;
       }
     });
   });
