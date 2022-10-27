@@ -166,7 +166,7 @@ async function _remove(filepath, recur = true) {
       const files = await readdir(dir, { withFileTypes: true });
       await Promise.all(files.map(async (dirent) => {
         const full = path.join(dir, dirent.name);
-        if (dirent.isDirectory()) {
+        if (dirent.isDirectory() && recur) {
           await _remove(full, recur);
         } else {
           await unlink(full);
