@@ -46,4 +46,8 @@ describe('print test case', function () {
     });
     printer.custome('should print blue color string and not throw any exception').println();
   });
+
+  it('print with null', function () {
+    printer.print(null).println(null);
+  });
 });
