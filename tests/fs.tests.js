@@ -103,6 +103,12 @@ describe('fs test case', function () {
     await _copy(source, target, true);
     await _copy('not-exist', target, true); // copy with not exist file
     expect(await _exists(path.join(target, 'helper/fs.js'))).to.be.true;
+
+    try {
+      await _copy(source, target);
+    } catch (e) {
+      expect(e.message).to.be.equal('Only support copy file with recur=false');
+    }
   });
 
   it('file list in dir', async function () {

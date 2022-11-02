@@ -74,12 +74,11 @@ async function _copy(source, target, recur = false) {
   if (!await _exists(source)) {
     return;
   }
-  if (!recur) {
-    await _mkdir(path.dirname(target));
-    await copyFile(source, target);
-    return;
-  }
   if (await _is_dir(source)) {
+    if (!recur) {
+      await _mkdir(path.dirname(target));
+      throw new Error('Only support copy file with recur=false');
+    }
     const files = await readdir(source);
     await Promise.all(files.map(async (filename) => {
       const full = path.join(source, filename);
@@ -87,7 +86,7 @@ async function _copy(source, target, recur = false) {
     }));
   } else {
     await _mkdir(path.dirname(target));
-    await _copy(source, target);
+    await copyFile(source, target);
   }
 }
 
