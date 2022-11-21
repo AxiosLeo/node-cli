@@ -20,16 +20,16 @@ class Translator {
     if (this.options.sets.indexOf(this.options.use) < 0) {
       this.options.use = this.options.sets[0];
     }
-    this.dict = {};
     this.dictionaries = {};
   }
 
   load(use = null) {
     if (!use) {
       use = this.options.use;
+    } else {
+      this.options.use = use;
     }
     if (this.dictionaries[use]) {
-      this.dict = this.dictionaries[use];
       return;
     }
     switch (this.options.format) {
@@ -38,7 +38,6 @@ class Translator {
         if (fs.existsSync(jsonpath)) {
           const json = fs.readFileSync(jsonpath);
           this.dictionaries[use] = JSON.parse(json);
-          this.dict = this.dictionaries[use];
         }
         break;
       }
@@ -46,7 +45,6 @@ class Translator {
         const jspath = path.join(this.options.dir, `${use}.js`);
         if (fs.existsSync(jspath)) {
           this.dictionaries[use] = require(jspath);
-          this.dict = this.dictionaries[use];
         }
         break;
       }
@@ -57,23 +55,22 @@ class Translator {
     if (is.empty(dict)) {
       debug.stack('"dict" param cannot be empty');
     }
-    if(!lang_set){
+    if (!lang_set) {
       return;
     }
     if (!this.dictionaries[lang_set]) {
       this.dictionaries[lang_set] = {};
     }
     _assign(this.dictionaries[lang_set], dict);
-    if (this.options.use === lang_set) {
-      this.dict = this.dictionaries[lang_set];
-    }
   }
 
-  trans(str, params) {
-    if (!str) {
+  trans(str, params = {}, lang_set = null) {
+    if (str === null || typeof str === 'undefined') {
       return '';
     }
-    str = this.dict[str] ? this.dict[str] : str;
+    lang_set = lang_set || this.options.use;
+    const dict = this.dictionaries[lang_set] || {};
+    str = dict[str] ? dict[str] : str;
     if (params) {
       str = _render(str, params);
     }
@@ -81,6 +78,9 @@ class Translator {
   }
 }
 
+/**
+ * @type {Translator|null} translator
+ */
 let translator = null;
 
 /**
@@ -113,9 +113,9 @@ function disable() {
   translator = null;
 }
 
-function __(str, params = null) {
+function __(str, params = null, lang_set = null) {
   if (translator) {
-    return translator.trans(str, params);
+    return translator.trans(str, params, lang_set);
   }
   if (params) {
     str = _render(str, params);
