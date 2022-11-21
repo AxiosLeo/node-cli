@@ -7,11 +7,10 @@ init:
   - cmd: git config --global core.autocrlf true
 install:
   - npm install
-  - npm install -D nyc
 test_script:
   - node --version
   - npm --version
-  - npm run ci
+  - npm run test-cov
 on_finish:
   - ps: |
       $env:PATH = 'C:\msys64\usr\bin;' + $env:PATH

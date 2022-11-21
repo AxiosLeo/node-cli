@@ -134,4 +134,17 @@ describe('locales test case', function () {
     translator.options.use = 'en-US';
     translator.patch('en-US', { 'b': 'B' });
   });
+
+  it('use Translator class directly', function () {
+    const { Translator } = require('../src/locales');
+    const translator = new Translator({
+      dir: path.join(__dirname, '../locales'),
+      sets: ['en-US', 'zh-CN', 'not_exist'],
+      format: 'json'
+    });
+    translator.load('en-US');
+    expect(translator.trans(null)).to.be.equal('');
+    expect(translator.trans('"${name}" is name', { name: 'name' })).to.be.equal('"name" is name');
+    expect(translator.trans('"${name}" is name', { name: 'name' }, 'not_exist')).to.be.equal('"name" is name');
+  });
 });

@@ -361,7 +361,7 @@ export module locales {
      * @param str 
      * @param params 
      */
-    trans(str: string, params: Record<string, string>): string;
+    trans(str: string, params: Record<string, string>, lang_set?: string | null): string;
   }
 
   const translator: Translator;
@@ -382,7 +382,7 @@ export module locales {
    * @param str 
    * @param params 
    */
-  function __(str: string, params?: Record<string, string>): string;
+  function __(str: string, params?: Record<string, string>, lang_set?: string | null): string;
 
   /**
    * specified language set
