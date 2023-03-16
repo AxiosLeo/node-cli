@@ -1,5 +1,12 @@
 'use strict';
 
+/**
+ * ******************************************************
+ * @author https://github.com/sindresorhus/os-locale    *
+ * @description reference source code for compatibility *
+ * ******************************************************
+ */
+
 const lcid = require('lcid');
 const { exec, execSync } = require('./exec.js');
 
