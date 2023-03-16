@@ -9,6 +9,7 @@ module.exports = {
     'src/app.js',
     'src/debug.js',
     'src/helper/cmd.js',
+    'src/lib/*'
   ],
   'watermarks': {
     'lines': [80, 95],

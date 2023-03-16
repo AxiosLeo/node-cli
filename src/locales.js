@@ -1,19 +1,20 @@
 'use strict';
 
 const debug = require('./debug');
-const osLocale = require('os-locale');
 const { _render } = require('./helper/str');
 const fs = require('fs');
 const path = require('path');
 const is = require('./helper/is');
 const { _assign } = require('./helper/obj');
+const { osLocaleSync } = require('./lib/os-locale');
 
 class Translator {
   constructor(options) {
+    const language = osLocaleSync();
     this.options = {
       format: 'json',
-      sets: [osLocale.sync()], // The supported locales, expects an array of locale strings
-      use: osLocale.sync(),    // The path to the language packs directory, *.json|*.js
+      sets: [language], // The supported locales, expects an array of locale strings
+      use: language,    // The path to the language packs directory, *.json|*.js
       dir: null
     };
     _assign(this.options, options);

@@ -3,7 +3,7 @@
 
 const expect = require('chai').expect;
 const is = require('../src/helper/is');
-const { Configuration } = require('../main');
+const { Configuration } = require('..');
 
 describe('is test case', function () {
   it('test case for undefined', async function () {

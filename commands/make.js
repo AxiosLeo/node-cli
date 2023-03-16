@@ -1,7 +1,7 @@
 'use strict';
 
 const path = require('path');
-const { Command, printer, helper: { fs, str } } = require('../main');
+const { Command, printer, helper: { fs, str } } = require('..');
 const { _exists, _write, _mkdir } = fs;
 const { _caml_case } = str;
 

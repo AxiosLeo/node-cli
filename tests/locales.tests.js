@@ -2,7 +2,7 @@
 
 const path = require('path');
 const expect = require('chai').expect;
-const { locales } = require('../main');
+const { locales } = require('..');
 const { _read_json } = require('../src/helper/fs');
 
 describe('locales test case', function () {
