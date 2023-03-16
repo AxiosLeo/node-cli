@@ -1,5 +1,12 @@
 'use strict';
 
+/**
+ * ******************************************************
+ * @author https://github.com/sindresorhus/os-locale    *
+ * @description reference source code for compatibility *
+ * ******************************************************
+ */
+
 // Mini wrapper around `child_process` to make it behave a little like `execa`.
 
 const promisify = require('util').promisify;

@@ -1,8 +1,10 @@
 'use strict';
 
 /**
- * @author https://github.com/sindresorhus/camelcase
- * @description reference source code for compatibility
+ * ******************************************************
+ * @author https://github.com/sindresorhus/camelcase    *
+ * @description reference source code for compatibility *
+ * ******************************************************
  */
 
 const UPPERCASE = /[\p{Lu}]/u;
