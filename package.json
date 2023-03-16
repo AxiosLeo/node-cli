@@ -13,8 +13,6 @@
     "locales",
     "debug"
   ],
-  "main": "./main.js",
-  "types": "./main.d.ts",
   "author": "AxiosLeo",
   "directories": {
     "lib": "src"
@@ -23,7 +21,7 @@
     "cli-tool": "./bin/cli-tool.js"
   },
   "scripts": {
-    "lint": "tsc ./main.d.ts && eslint --fix src/ tests/",
+    "lint": "tsc ./index.d.ts && eslint --fix src/ tests/",
     "test": "mocha --reporter spec --timeout 3000 tests/*.tests.js",
     "test-cov": "nyc -r=lcov -r=html -r=text -r=json mocha -t 10000 -R spec tests/*.tests.js",
     "ci": "npm run lint && npm run test-cov",
@@ -31,13 +29,12 @@
   },
   "license": "MIT",
   "dependencies": {
-    "camelcase": "^7.0.1",
     "clone-deep": "^4.0.1",
     "colors": "1.4.0",
     "enquirer": "^2.3.6",
+    "lcid": "^4.0.1",
     "minimist": "^1.2",
-    "moment": "^2.29.4",
-    "os-locale": "^6.0.2"
+    "moment": "^2.29.4"
   },
   "repository": {
     "type": "git",
