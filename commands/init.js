@@ -2,7 +2,7 @@
 
 const path = require('path');
 
-const { Command, printer, debug, helper: { fs } } = require('../main');
+const { Command, printer, debug, helper: { fs } } = require('..');
 const { _write, _exists, _read } = fs;
 
 class InitCommand extends Command {

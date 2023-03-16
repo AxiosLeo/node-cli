@@ -1,7 +1,7 @@
 'use strict';
 
 const path = require('path');
-const { Command, printer } = require('../main');
+const { Command, printer } = require('..');
 const { _exists } = require('../src/helper/fs');
 
 class ExecCommand extends Command {
