@@ -45,7 +45,7 @@ const app = new App({
   name: 'cli-tool',      // 命令行应用的名称, 必须
   desc: 'cli app description',
   version: '1.0.0',      // 命令行应用的版本, 必须
-  commands_dir: '/path/to/commands/dir/', // 讲会自动加载目录内的命令行脚本文件
+  commands_dir: '/path/to/commands/dir/', // 将会自动加载目录内的命令行脚本文件
   commands_sort: ['help', ... ],
   commands_group: {
     'group description': ['command_name', ...],
