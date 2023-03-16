@@ -3,7 +3,7 @@
 
 const os = require('os');
 const debug = require('../debug');
-const camelCase = require('camelcase');
+const camelCase = require('../lib/camelcase');
 const fs = require('./fs');
 const is = require('./is');
 const crypto = require('crypto');

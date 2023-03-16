@@ -6,6 +6,7 @@ const sinon = require('sinon');
 const {
   _sleep,
   _retry,
+  _foreach,
   _sync_foreach,
 } = require('../src/helper/cmd');
 
@@ -14,7 +15,7 @@ describe('cmd test case', function () {
     let data = [1, 2, 3, 4, 5];
     let count = 0;
 
-    await _sync_foreach(data, async function (item, index) {
+    await _foreach(data, async function (item, index) {
       await _sleep(Math.floor(Math.random() * 300));
       // to prove that the async functions are executed sequentially
       count++;
@@ -22,7 +23,7 @@ describe('cmd test case', function () {
     });
 
     const obj = { data };
-    await _sync_foreach(obj.data, async () => { });
+    await _foreach(obj.data, async () => { });
     expect(obj.data.length).to.be.equal(5);
   });
 

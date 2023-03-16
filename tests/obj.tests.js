@@ -1,7 +1,7 @@
 'use strict';
 
 const expect = require('chai').expect;
-const { Configuration } = require('../main');
+const { Configuration } = require('..');
 const { _deep_clone, _flatten, _unflatten } = require('../src/helper/obj');
 
 describe('obj test case', function () {

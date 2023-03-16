@@ -1,6 +1,6 @@
 'use strict';
 
-const { Command, printer, debug } = require('../main');
+const { Command, printer, debug } = require('..');
 const { __ } = require('../src/locales');
 const { _fixed } = require('../src/helper/str');
 const is = require('../src/helper/is');

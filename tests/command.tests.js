@@ -2,7 +2,7 @@
 
 const expect = require('chai').expect;
 
-const { Command } = require('../main');
+const { Command } = require('..');
 
 describe('command test case', () => {
   it('init', () => {
