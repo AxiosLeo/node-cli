@@ -6,7 +6,7 @@ const printer = require('../src/printer');
 describe('print test case', function () {
   it('print some content', function () {
     printer.print().println();
-    printer.input('input').input('intput2');
+    printer.input('input').input('input');
     printer.verbose('verbose').verbose('verbose');
     printer.info('info').info('info');
     printer.data('data').data('data');
