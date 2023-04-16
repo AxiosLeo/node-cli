@@ -70,7 +70,16 @@
         "ignoreEOLComments": true
       }
     ],
-    "no-loss-of-precision": [0]
+    "no-loss-of-precision": [0],
+    "block-spacing": [2, "always"],
+    "object-curly-spacing": [2, "always"],
+    "comma-spacing": [
+      2,
+      {
+        "before": false,
+        "after": true
+      }
+    ]
   },
   "env": {
     "es6": true,
