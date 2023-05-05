@@ -308,8 +308,10 @@ async function _foreach(data, resolver) {
   }
   const event = new EventEmitter();
   let datas = _deep_clone(data);
+  let keys = [];
   if (is.object(data)) {
-    datas = Object.keys(data).map((d) => data[d]);
+    keys = Object.keys(data);
+    datas = keys.map((d) => data[d]);
   } else if (!is.array(data)) {
     throw new Error('Unsupported data type : ' + typeof data);
   }
@@ -320,8 +322,9 @@ async function _foreach(data, resolver) {
       event.emit('done');
       return;
     }
-    resolver(row, index).then(() => {
-      index++;
+    const i = typeof keys[index] !== 'undefined' ? keys[index] : index;
+    index++;
+    resolver(row, i).then(() => {
       event.emit('step', rows, resolver, index);
     }).catch((err) => event.emit('error', err));
   });
