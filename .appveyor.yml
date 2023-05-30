@@ -17,7 +17,7 @@ install:
 test_script:
   - node --version
   - npm --version
-  - npm run test-cov
+  - npm run ci
 on_finish:
   - ps: |
       $env:PATH = 'C:\msys64\usr\bin;' + $env:PATH
