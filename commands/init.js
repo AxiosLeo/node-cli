@@ -80,6 +80,9 @@ package-lock.json`);
     printer.green('Complete initialisation').println();
     printer.print('Please execute ').yellow('"npm install"').print(' and ').yellow('"npm link"').println(' in project root directory before using');
     printer.print('-'.repeat(25).input).println();
+
+    // generate README
+    await _write(path.join(output, 'README.md'), `# ${name}`);
   }
 }
 
