@@ -311,7 +311,7 @@ async function _foreach(data, resolver) {
   let keys = [];
   if (is.object(data)) {
     keys = Object.keys(data);
-    datas = keys.map((d) => data[d]);
+    datas = Object.values(data);
   } else if (!is.array(data)) {
     throw new Error('Unsupported data type : ' + typeof data);
   }
