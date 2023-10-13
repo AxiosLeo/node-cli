@@ -105,6 +105,16 @@ type CommandSettings = {
   options?: OptionItem[],
 };
 
+type Align = 'left' | 'right' | 'center' | 'l' | 'r' | 'c';
+
+type PrintTableOptions = {
+  columns_width: number[],
+  columns_align?: Align[],
+  margin_left?: number,
+  spacing?: string,
+  padding?: string
+};
+
 export declare abstract class Command {
   config: CommandSettings
   args?: ArgumentItem[]
@@ -170,7 +180,7 @@ export declare abstract class Command {
    * @param rows 
    * @param headers 
    */
-  table(rows: string[][], headers?: string[]): Promise<void>;
+  table(rows: string[][], headers?: string[], options?: PrintTableOptions): void;
 }
 
 type Step = {

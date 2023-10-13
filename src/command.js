@@ -158,12 +158,13 @@ class Command {
     return await _select(message, choices, default_choice);
   }
 
-  async table(rows = [], headers = []) {
+  table(rows = [], headers = [], options = {}) {
     printer.println();
     _table(rows, headers, {
       margin_left: 4,
       spacing: '-',
-      padding: ' '
+      padding: ' ',
+      ...options
     });
     printer.println();
   }
