@@ -7,7 +7,6 @@ const {
   _sleep,
   _retry,
   _foreach,
-  _sync_foreach,
 } = require('../src/helper/cmd');
 
 describe('cmd test case', function () {
@@ -30,7 +29,7 @@ describe('cmd test case', function () {
   it('sync traverse proimse method for object', async function () {
     let count = 0;
     let data = { a: 0, b: 1, c: 2, d: 3, e: 4 };
-    await _sync_foreach(data, async function (value, key) {
+    await _foreach(data, async function (value, key) {
       await _sleep(Math.floor(Math.random() * 300));
       // to prove that the async functions are executed sequentially
       expect(count).to.be.equal(value);
@@ -40,10 +39,10 @@ describe('cmd test case', function () {
 
   it('not throw error when sync empty array or object', async function () {
     let data = {};
-    await _sync_foreach(data);
+    await _foreach(data);
 
     data = [];
-    await _sync_foreach(data);
+    await _foreach(data);
   });
 
   it('retry should be ok', async function () {
