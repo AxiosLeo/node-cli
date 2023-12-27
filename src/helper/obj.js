@@ -34,13 +34,13 @@ function _unflatten(obj, sep = '.') {
     if (!k) {
       return true;
     }
-    const tmp = k.split('.');
+    const tmp = k.split(sep);
     return is.number(tmp[0]);
   });
   let output = allNumber ? [] : {};
   Object.keys(obj).forEach(key => {
     if (key.indexOf(sep) !== -1) {
-      const keyArr = key.split('.').filter(item => item !== '');
+      const keyArr = key.split(sep).filter(item => item !== '');
       let currObj = output;
       keyArr.forEach((k, i) => {
         if (typeof currObj[k] === 'undefined') {
@@ -60,11 +60,12 @@ function _unflatten(obj, sep = '.') {
 }
 
 function _assign(targetObj, ...objs) {
-  const res = _flatten(targetObj);
+  let sep = '$%#$';
+  const res = _flatten(targetObj, sep);
   objs.forEach(obj => {
-    Object.assign(res, _flatten(obj));
+    Object.assign(res, _flatten(obj, sep));
   });
-  Object.assign(targetObj, _unflatten(res));
+  Object.assign(targetObj, _unflatten(res, sep));
   return targetObj;
 }
 
