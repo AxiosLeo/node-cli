@@ -99,6 +99,7 @@ export declare class App {
 
 type CommandSettings = {
   name: string,
+  bin?: string,
   alias?: string[],
   desc?: string,
   args?: ArgumentItem[],
