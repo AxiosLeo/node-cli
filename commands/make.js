@@ -54,7 +54,7 @@ class ${name_upper}Command extends Command {
 
   /**
    * @param {*} args 
-   * @param {*]} options 
+   * @param {*} options 
    * @param {string[]} argList 
    * @param {import('@axiosleo/cli-tool').App} app 
    */
