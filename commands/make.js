@@ -51,6 +51,13 @@ class ${name_upper}Command extends Command {
     // this.addArgument('name', 'desc', 'required', null);
     // this.addOption('name', 'n', 'desc', 'required', null);
   }
+
+  /**
+   * @param {*} args 
+   * @param {*]} options 
+   * @param {string[]} argList 
+   * @param {import('@axiosleo/cli-tool').App} app 
+   */
   async exec(args, options, argList, app) {
     printer.println('this is ${name} command');
   }
