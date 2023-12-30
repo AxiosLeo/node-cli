@@ -110,7 +110,7 @@ function _check_command(command, global_options, argv) {
   return { opts, args };
 }
 
-async function load() {
+async function load(internal = false) {
   // init commands
   const appconfig = this.config;
   if (appconfig.commands_dir && appconfig.commands_dir.length) {
@@ -119,7 +119,8 @@ async function load() {
     if (exist) {
       const commands = await _search(dir, 'js');
       commands.forEach(file => {
-        this.register(require(file));
+        // eslint-disable-next-line no-undefined
+        this.register(require(file), undefined, internal);
       });
     } else {
       printer.warning(__('commands dir not exist on ${dir}', { dir: appconfig.commands_dir }));
@@ -189,7 +190,7 @@ class App {
     init(locale);
   }
 
-  register(cmd, command_name) {
+  register(cmd, command_name, internal = false) {
     let command;
     if (is.object(cmd)) {
       command = cmd;
@@ -203,7 +204,7 @@ class App {
       command = new cmd();
     }
     const name = command.config.name;
-    if (this.commands[name]) {
+    if (this.commands[name] && !internal) {
       debug.error(__('${name} command already exist!', { name: name }));
     }
     this.commands[name] = command;
@@ -287,7 +288,7 @@ class App {
 
   async exec(name, argvSlice = 2) {
     if (is.invalid(this.commands[name])) {
-      await load.call(this);
+      await load.call(this, true);
       if (is.invalid(this.commands[name])) {
         await this.exec('help');
         debug.error(__('${name} command dose not exist.', { name }));
