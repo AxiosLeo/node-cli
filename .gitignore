@@ -1,7 +1,13 @@
+package-lock.json
 node_modules/
 runtime/
-.nyc_output/
+
 .idea/
 .vscode/
+
+.appveyor.yml
+.github/
+
+.nyc_output/
+nyc.config.js
 coverage/
-package-lock.json
