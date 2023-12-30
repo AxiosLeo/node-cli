@@ -73,6 +73,7 @@ class Command {
   constructor(config = {}) {
     this.config = {
       name: '',
+      bin: '',
       alias: [],
       desc: '',
       args: [],

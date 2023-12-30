@@ -72,7 +72,7 @@ class HelpCommand extends Command {
     // print header
     printer.println();
     printer.yellow(appconfig.name);
-    printer.green(` ${appconfig.version} `);
+    printer.green(` ${appconfig.version ? 'v' + appconfig.version : ''} `);
     if (appconfig.desc) {
       printer.println(__(appconfig.desc));
     } else {
@@ -82,7 +82,7 @@ class HelpCommand extends Command {
 
     // print usage
     printer.warning('Usage:');
-    printer.green(`  ${appconfig.name}`).println(' <command> [options] [<arguments>]').println();
+    printer.green(`  ${appconfig.bin || appconfig.name}`).println(' <command> [options] [<arguments>]').println();
 
     // print options
     printer.warning('Global Options:');
