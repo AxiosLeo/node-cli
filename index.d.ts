@@ -99,6 +99,7 @@ export declare class App {
 
 type CommandSettings = {
   name: string,
+  show?: boolean, // show command in help, default is true
   bin?: string,
   alias?: string[],
   desc?: string,

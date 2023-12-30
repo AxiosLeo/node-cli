@@ -33,6 +33,9 @@ function resolveCommands(commands, sort, group) {
       debug.stack(__('load ${name} command error', { name: key }), cmd);
     }
     let name = cmd.config.name;
+    if (cmd.config.show === false) {
+      return;
+    }
     if (sort.indexOf(name) < 0 && group_commands.indexOf(name) < 0) {
       sort.push(name);
     }
