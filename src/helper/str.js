@@ -245,8 +245,6 @@ class Emitter {
       case false:
         l = 0;
         break;
-      // eslint-disable-next-line no-undefined
-      case undefined:
       case true:
         l = this.level;
         break;

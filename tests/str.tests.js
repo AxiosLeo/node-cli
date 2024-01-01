@@ -110,6 +110,33 @@ describe('str test case', function () {
     expect(emitter.emitIndent()).to.be.equal('');
   });
 
+  it('emitter rows', function () {
+    let emitter = new Emitter();
+    emitter = new Emitter({
+      indent: '  ',
+      eol: '\n',
+      level: 0,
+    });
+    emitter.emitln('function test(){', 'up');
+    emitter.emitRows(
+
+      'let a = 0;',
+      'let b = a + 10;',
+      'console.log(b);',
+      'if (a !== b) {',
+      emitter.emitIndent(true) + 'console.log(a, b);',
+      '}'
+    );
+    emitter.emitln('}', 'down');
+    // eslint-disable-next-line no-undefined
+    emitter.emitIndent('', undefined);
+    emitter.emitIndent('', false);
+    emitter.emit().emitln('', false);
+    expect(emitter.output()).to.be.equal('function test(){\n  let a = 0;\n  let b = a + 10;\n  console.log(b);\n  if (a !== b) {\n    console.log(a, b);\n  }\n}\n\n');
+
+    expect(emitter.emitIndent()).to.be.equal('');
+  });
+
   it('equal ignore case', function () {
     expect(_equal_ignore_case('a', 'A')).to.be.true;
     // eslint-disable-next-line no-undefined
