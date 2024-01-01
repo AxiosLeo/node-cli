@@ -194,7 +194,7 @@ class Emitter {
    * @param str 
    * @param level integer|null|false|string:(up|open|begin|start, down|close|end)
    */
-  emit(str = '', level = null) {
+  emit(str = '', level) {
     this.buffer += this.emitIndent.call(this, level);
     this.buffer += str;
     return this;
@@ -207,6 +207,17 @@ class Emitter {
    */
   emitln(str = '', level = null) {
     this.emit(str + this.config.eol, level);
+    return this;
+  }
+
+  /**
+   * append rows
+   * @param  {string[]} rows 
+   */
+  emitRows(...rows) {
+    rows.forEach(row => {
+      this.emitln(row, true);
+    });
     return this;
   }
 
@@ -231,8 +242,11 @@ class Emitter {
         l = this.level;
         break;
       case null:
+      case false:
         l = 0;
         break;
+      // eslint-disable-next-line no-undefined
+      case undefined:
       case true:
         l = this.level;
         break;

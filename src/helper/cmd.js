@@ -5,11 +5,10 @@ const debug = require('../debug');
 const promisify = require('util').promisify;
 const cp = require('child_process');
 const exec = promisify(cp.exec);
-const { prompt, Select } = require('enquirer');
+const { prompt, Select, MultiSelect } = require('enquirer');
 const { _fixed, _len } = require('./str');
 const is = require('./is');
 const { __ } = require('../locales');
-const Workflow = require('../workflow');
 const EventEmitter = require('events');
 const { _deep_clone } = require('./obj');
 
@@ -115,6 +114,17 @@ async function _select(message = '', choices = [], default_choice = null) {
     // cancel with ctrl+c
     process.exit(-1);
   }
+}
+
+async function _select_multi(message, choices, default_choice = null, limit = -1) {
+  let prompt = new MultiSelect({
+    name: 'value',
+    message,
+    limit: limit < 0 ? choices.length : limit,
+    choices,
+    initial: default_choice
+  });
+  return await prompt.run();
 }
 
 async function _ask(message = '', default_value = null) {
@@ -256,45 +266,45 @@ function _check_argument(command_name, args, arg) {
   }
 }
 
-/**
- * Execute asynchronous tasks in a synchronous manner
- * @deprecated use _foreach instead
- * @param {*} data     object or array
- * @param {Function} resolver async func
- */
-async function _sync_foreach(data, resolver) {
-  const operator = {};
-  const workflows = [];
-  if (is.object(data)) {
-    Object.keys(data).forEach((key) => {
-      const value = data[key];
-      const name = `task${key}`;
-      operator[name] = async function () {
-        await resolver(value, key);
-      };
-      workflows.push(name);
-    });
-  } else if (is.array(data)) {
-    data.forEach((item, index) => {
-      const name = `task${index}`;
-      operator[name] = async function () {
-        await resolver(item, index);
-      };
-      workflows.push(name);
-    });
-  } else {
-    debug.stack('Unsupported data type : ' + typeof data);
-  }
-  if (!Object.keys(operator).length) {
-    return;
-  }
-  const workflow = new Workflow(operator);
-  try {
-    await workflow.start({ workflows });
-  } catch (e) {
-    throw e.curr.error;
-  }
-}
+// /**
+//  * Execute asynchronous tasks in a synchronous manner
+//  * @deprecated use _foreach instead
+//  * @param {*} data     object or array
+//  * @param {Function} resolver async func
+//  */
+// async function _sync_foreach(data, resolver) {
+//   const operator = {};
+//   const workflows = [];
+//   if (is.object(data)) {
+//     Object.keys(data).forEach((key) => {
+//       const value = data[key];
+//       const name = `task${key}`;
+//       operator[name] = async function () {
+//         await resolver(value, key);
+//       };
+//       workflows.push(name);
+//     });
+//   } else if (is.array(data)) {
+//     data.forEach((item, index) => {
+//       const name = `task${index}`;
+//       operator[name] = async function () {
+//         await resolver(item, index);
+//       };
+//       workflows.push(name);
+//     });
+//   } else {
+//     debug.stack('Unsupported data type : ' + typeof data);
+//   }
+//   if (!Object.keys(operator).length) {
+//     return;
+//   }
+//   const workflow = new Workflow(operator);
+//   try {
+//     await workflow.start({ workflows });
+//   } catch (e) {
+//     throw e.curr.error;
+//   }
+// }
 
 /**
  * Execute asynchronous tasks in a synchronous manner
@@ -379,6 +389,6 @@ module.exports = {
   _foreach,
   _dispatch,
   _check_option,
-  _sync_foreach,
+  _select_multi,
   _check_argument,
 };

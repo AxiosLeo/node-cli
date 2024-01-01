@@ -632,6 +632,14 @@ export namespace helper {
     function _select(message: string, choices: string[], default_choice?: any): Promise<string>
 
     /**
+     * console conversations: select multi actions
+     * @param message 
+     * @param choices 
+     * @param default_choice 
+     */
+    function _select_multi(message: string, choices: string[], default_choice?: any): Promise<string>
+
+    /**
      * console conversations: ask input
      * @param message 
      * @param default_value 
@@ -745,6 +753,12 @@ export namespace helper {
        * @param level integer|null|false|string:(up|open|begin|start, down|close|end)
        */
       emitIndent(level?: Level): string;
+
+      /**
+       * emit rows
+       * @param rows 
+       */
+      emitRows(...rows: string[]): this;
 
       /**
        * curr output content
