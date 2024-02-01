@@ -289,6 +289,19 @@ class App {
   async exec(name, argvSlice = 2) {
     if (is.invalid(this.commands[name])) {
       await load.call(this, true);
+      Object.values(this.commands).find((c) => {
+        if (c.config.alias) {
+          if (is.string(c.config.alias) && name === c.config.alias) {
+            name = c.config.name;
+            return true;
+          }
+          if (is.array(c.config.alias) && is.contain(c.config.alias, name)) {
+            name = c.config.name;
+            return true;
+          }
+        }
+        return false;
+      });
       if (is.invalid(this.commands[name])) {
         await this.exec('help');
         debug.error(__('${name} command dose not exist.', { name }));
