@@ -10,7 +10,8 @@ interface ObjectItem {
 type LocaleSettings = {
   sets: string[],
   dir: string,
-  use?: string
+  use?: string,
+  format?: 'js' | 'json'
 };
 
 declare enum MODE {
@@ -37,7 +38,6 @@ type AppSettings = {
   desc?: string
   commands_dir?: string
   commands_sort?: string[]
-  locale?: LocaleSettings
   options?: OptionItem[]
 };
 
