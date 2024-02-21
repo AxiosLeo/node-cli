@@ -711,6 +711,31 @@ export namespace helper {
     function empty(a: any): boolean
   }
 
+  export interface Tree2ArrayOptions {
+    /**
+     * The name of the parent node index
+     * @default 'parent_id'
+     */
+    parent_index?: string;
+
+    /**
+     * The name of the data index
+     * @default 'id'
+     */
+    data_index?: string;
+
+    /**
+     * The name of the child node index
+     * @default 'child'
+     */
+    child_name?: string;
+  }
+
+  interface BaseObject {
+    id: string,
+    name: string,
+  }
+
   module obj {
     function _flatten(obj: ObjectItem, sep: string): ObjectItem;
     function _flatten<T>(obj: T, sep: string): ObjectItem;
@@ -720,6 +745,8 @@ export namespace helper {
     function _assign<T>(targetObj: T, ...objs: ObjectItem[]): T;
     function _deep_clone(obj: ObjectItem): ObjectItem;
     function _deep_clone<T>(obj: T): T;
+    function _tree2array(tree: any[] | any, options?: Tree2ArrayOptions);
+    function _array2tree(array: any[], options?: Tree2ArrayOptions);
   }
 
   export interface EmitterConfig {
