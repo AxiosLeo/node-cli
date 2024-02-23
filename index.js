@@ -23,12 +23,14 @@ const fs = require('./src/helper/fs');
 const obj = require('./src/helper/obj');
 const cmd = require('./src/helper/cmd');
 const is = require('./src/helper/is');
+const convert = require('./src/helper/convert');
 const helper = {
   str,
   fs,
   obj,
   cmd,
-  is
+  is,
+  convert
 };
 
 module.exports = {
