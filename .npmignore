@@ -8,3 +8,6 @@ nyc.config.js
 .idea/*
 node_modules/*
 .appveyor.yml
+.vscode/*
+README-CN.md
+README.md
