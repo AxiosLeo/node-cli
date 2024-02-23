@@ -30,6 +30,7 @@
   },
   "license": "MIT",
   "dependencies": {
+    "big.js": "^6.2.1",
     "clone-deep": "^4.0.1",
     "colors": "1.4.0",
     "enquirer": "^2.3.6",
