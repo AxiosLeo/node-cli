@@ -74,71 +74,9 @@ function _deep_clone(obj) {
   return copy;
 }
 
-function _array2tree(data, options = {}) {
-  if (!is.array(data)) {
-    throw new Error('data must be an array');
-  }
-  const c = _assign({
-    parent_index: 'parent_id',
-    data_index: 'id',
-    child_name: 'child'
-  }, options);
-
-  const items = [];
-  data.forEach(d => {
-    if (typeof d[c.child_name] === 'undefined') {
-      d[c.child_name] = [];
-    } else {
-      throw new Error('child name "' + c.child_name + '" is reserved for child data, please use another name');
-    }
-    items[d[c.data_index]] = d;
-    if (typeof d[c.parent_index] === 'undefined' || typeof d[c.data_index] === 'undefined') {
-      throw new Error('data must have "' + c.parent_index + '" and "' + c.data_index + '"');
-    }
-  });
-
-  const tree = [];
-  let n = 0;
-  data.forEach(item => {
-    if (items[item[c.parent_index]]) {
-      items[item[c.parent_index]][c.child_name].push(items[item[c.data_index]]);
-    } else {
-      tree[n++] = items[item[c.data_index]];
-    }
-  });
-  return tree;
-}
-
-function _tree2array(tree, options = {}) {
-  if (!is.array(tree)) {
-    tree = [tree];
-  }
-  const c = _assign({
-    parent_index: 'parent_id',
-    data_index: 'id',
-    child_name: 'child'
-  }, options);
-  const res = [];
-  function recurse(data, parent_id) {
-    data.forEach(d => {
-      const child = d[c.child_name].map(i => i);
-      delete d[c.child_name];
-      d[c.parent_index] = parent_id || 0;
-      res.push(d);
-      if (child.length) {
-        recurse(child, d[c.data_index]);
-      }
-    });
-  }
-  recurse(tree, 0);
-  return res;
-}
-
 module.exports = {
   _assign,
   _flatten,
   _unflatten,
-  _array2tree,
-  _tree2array,
   _deep_clone
 };

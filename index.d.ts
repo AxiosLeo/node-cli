@@ -1,5 +1,6 @@
 import { Color } from 'colors';
 import { ChildProcess, SpawnOptionsWithoutStdio } from 'child_process';
+import Big from 'big.js';
 
 type Level = number | null | boolean | string;
 
@@ -745,8 +746,6 @@ export namespace helper {
     function _assign<T>(targetObj: T, ...objs: ObjectItem[]): T;
     function _deep_clone(obj: ObjectItem): ObjectItem;
     function _deep_clone<T>(obj: T): T;
-    function _tree2array(tree: any[] | any, options?: Tree2ArrayOptions);
-    function _array2tree(array: any[], options?: Tree2ArrayOptions);
   }
 
   export interface EmitterConfig {
@@ -870,5 +869,42 @@ export namespace helper {
      * @param str 
      */
     function _len(str: string): number;
+  }
+
+  type ConvertNumberOptions = {
+    digits?: string,
+    length?: number
+  }
+
+  type ConvertNumberResult = {
+    str: string,
+    num: Big,
+    digits: string,
+    length?: number
+  }
+
+  module convert {
+    /**
+     * convert tree to array
+     * @param tree 
+     * @param options 
+     */
+    function _tree2array(tree: any[] | any, options?: Tree2ArrayOptions): any[];
+
+    /**
+     * convert array to tree
+     * @param array 
+     * @param options 
+     */
+    function _array2tree(array: any[], options?: Tree2ArrayOptions): any[];
+
+    /**
+     * convert number to string with specified digits
+     * @param number 
+     * @param from 
+     * @param to 
+     * @param options default digits is '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
+     */
+    function _number(number: number | string | Big, from: number, to: number, options?: ConvertNumberOptions): ConvertNumberResult;
   }
 }

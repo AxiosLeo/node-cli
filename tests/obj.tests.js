@@ -2,7 +2,8 @@
 
 const expect = require('chai').expect;
 const { Configuration } = require('..');
-const { _deep_clone, _flatten, _unflatten, _array2tree, _tree2array } = require('../src/helper/obj');
+const { _deep_clone, _flatten, _unflatten } = require('../src/helper/obj');
+const { _array2tree, _tree2array } = require('../src/helper/convert');
 
 describe('obj test case', function () {
   it('flatten', function () {
