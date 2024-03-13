@@ -262,6 +262,14 @@ class Emitter {
   }
 }
 
+function _random(dict = '0123456789abcdf', len = 8) {
+  let res = '';
+  for (let i = 0; i < len; i++) {
+    res += dict[Math.floor(Math.random() * dict.length)];
+  }
+  return res;
+}
+
 module.exports = {
   Emitter,
 
@@ -270,6 +278,7 @@ module.exports = {
   _md5,
   _fixed,
   _render,
+  _random,
   _caml_case,
   _snake_case,
   _upper_first,
