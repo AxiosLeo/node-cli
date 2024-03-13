@@ -738,7 +738,7 @@ export namespace helper {
   }
 
   module obj {
-    function _flatten(obj: ObjectItem, sep: string): ObjectItem;
+    function _flatten(obj: ObjectItem, sep?: string): ObjectItem;
     function _flatten<T>(obj: T, sep: string): ObjectItem;
     function _unflatten(obj: ObjectItem, sep: string): ObjectItem;
     function _unflatten<T>(obj: ObjectItem, sep: string): T;
