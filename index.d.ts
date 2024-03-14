@@ -865,6 +865,13 @@ export namespace helper {
     function _md5(str: string, charset?: string): string;
 
     /**
+     * random string
+     * @param dict 0123456789abcdf
+     * @param len 8
+     */
+    function _random(dict?: string, len?: number)
+
+    /**
      * get length of string
      * @param str 
      */
@@ -897,6 +904,7 @@ export namespace helper {
      * @param options 
      */
     function _array2tree(array: any[], options?: Tree2ArrayOptions): any[];
+    function _array2tree<T>(array: T[], options?: Tree2ArrayOptions): T[];
 
     /**
      * convert number to string with specified digits
