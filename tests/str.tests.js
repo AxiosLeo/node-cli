@@ -6,6 +6,7 @@ const {
   _md5,
   _fixed,
   _render,
+  _random,
   _caml_case,
   _snake_case,
   _upper_first,
@@ -162,5 +163,11 @@ describe('str test case', function () {
     let a = null;
     expect(_len(a)).to.be.equal(0);
     expect(_len('中文')).to.be.equal(4);
+  });
+
+  it('random string', function () {
+    expect(_random('abcd', 0)).to.be.equal('');
+    expect(_random()).to.be.a('string');
+    expect(_random().length).to.be.equal(8);
   });
 });
