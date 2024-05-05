@@ -680,19 +680,18 @@ export namespace helper {
     function _check_argument(command_name: string, args: string[], arg: ArgumentItem): void
 
     /**
-     * exec async tasks one by one in sync
-     * @deprecated use _foreach instead
-     * @param data 
-     * @param resolver 
-     */
-    function _sync_foreach(data: any, resolver: (value?: any, key?: any) => void | Promise<void>): Promise<Context>
-
-    /**
     * execute asynchronous tasks in a synchronous manner
     * @param data 
     * @param resolver 
     */
     function _foreach(data: any, resolver: (value?: any, key?: any) => void | Promise<void>): Promise<Context>
+
+    /**
+     * execute asynchronous functions in parallel
+     * @param functions 
+     * @param options 
+     */
+    function _parallel(functions: Function, options?: { parallelCount?: number, waitAll?: boolean }): Promise<void>
   }
 
   module is {

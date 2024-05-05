@@ -1,5 +1,6 @@
 'use strict';
 
+const os = require('os');
 const printer = require('../printer');
 const debug = require('../debug');
 const promisify = require('util').promisify;
@@ -266,46 +267,6 @@ function _check_argument(command_name, args, arg) {
   }
 }
 
-// /**
-//  * Execute asynchronous tasks in a synchronous manner
-//  * @deprecated use _foreach instead
-//  * @param {*} data     object or array
-//  * @param {Function} resolver async func
-//  */
-// async function _sync_foreach(data, resolver) {
-//   const operator = {};
-//   const workflows = [];
-//   if (is.object(data)) {
-//     Object.keys(data).forEach((key) => {
-//       const value = data[key];
-//       const name = `task${key}`;
-//       operator[name] = async function () {
-//         await resolver(value, key);
-//       };
-//       workflows.push(name);
-//     });
-//   } else if (is.array(data)) {
-//     data.forEach((item, index) => {
-//       const name = `task${index}`;
-//       operator[name] = async function () {
-//         await resolver(item, index);
-//       };
-//       workflows.push(name);
-//     });
-//   } else {
-//     debug.stack('Unsupported data type : ' + typeof data);
-//   }
-//   if (!Object.keys(operator).length) {
-//     return;
-//   }
-//   const workflow = new Workflow(operator);
-//   try {
-//     await workflow.start({ workflows });
-//   } catch (e) {
-//     throw e.curr.error;
-//   }
-// }
-
 /**
  * Execute asynchronous tasks in a synchronous manner
  * @param {*} data 
@@ -349,6 +310,72 @@ async function _foreach(data, resolver) {
   });
 }
 
+class ParallelTask {
+  constructor(options = {}) {
+    const cpuNumber = os.cpus().length;
+    let parallelCount = options.parallelCount || cpuNumber;
+    if (parallelCount <= 1) {
+      parallelCount = 1;
+    } else if (parallelCount > cpuNumber) {
+      parallelCount = cpuNumber;
+    }
+    this.parallelCount = parallelCount;
+    this.tasks = [];
+    this.runningCount = 0;
+    this.options = options;
+    this.index = 0;
+  }
+
+  add(task) {
+    return new Promise((resolve, reject) => {
+      this.tasks.push({
+        index: this.index++,
+        task,
+        resolve,
+        reject
+      });
+      this._run();
+    });
+  }
+
+  waitAll() {
+    return new Promise((resolve, reject) => {
+      const timer = setInterval(() => {
+        if (this.runningCount === 0 && this.tasks.length === 0) {
+          clearInterval(timer);
+          resolve();
+        }
+      }, 100);
+    });
+  }
+
+  _run() {
+    while (this.runningCount < this.parallelCount && this.tasks.length > 0) {
+      const { task, resolve, reject } = this.tasks.shift();
+      this.runningCount++;
+      task().then(resolve, reject).finally(() => {
+        this.runningCount--;
+        this._run();
+      });
+    }
+  }
+}
+
+/**
+ * @param {function[]} functions 
+ * @param {*} options 
+ */
+async function _parallel(functions, options = {}) {
+  const task = new ParallelTask(options);
+  functions.forEach((func) => {
+    task.add(func);
+  });
+  if (typeof options.waitAll === 'undefined' || options.waitAll === true) {
+    await task.waitAll();
+  }
+  return;
+}
+
 /**
  * sleep by milliseconds
  * @param {number} ms milliseconds
@@ -387,6 +414,7 @@ module.exports = {
   _select,
   _confirm,
   _foreach,
+  _parallel,
   _dispatch,
   _check_option,
   _select_multi,
