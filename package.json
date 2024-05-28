@@ -26,7 +26,7 @@
     "test-cov": "nyc -r=lcov -r=html -r=text -r=json mocha -t 10000 -R spec tests/*.tests.js",
     "test-one": "mocha --reporter spec --timeout 3000",
     "ci": "npm run lint && npm run test-cov",
-    "clear": "rm -rf ./nyc_output ./coverage"
+    "clear": "rm -rf ./nyc_output ./coverage ./node_modules/ ./package-lock.json ./pnpm-lock.yaml"
   },
   "license": "MIT",
   "dependencies": {
@@ -54,7 +54,7 @@
     "mocha-sinon": "^2.1.2",
     "nyc": "^15.1.0",
     "pre-commit": "^1.2.2",
-    "sinon": "^15.0.1",
+    "sinon": "^16.1.2",
     "typescript": "^4.9.5"
   },
   "pre-commit": {
