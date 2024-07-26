@@ -4,6 +4,7 @@ English | [简体中文](/README-CN.md)
 
 [![NPM version](https://img.shields.io/npm/v/@axiosleo/cli-tool.svg?style=flat-square)](https://npmjs.org/package/@axiosleo/cli-tool)
 [![npm download](https://img.shields.io/npm/dm/@axiosleo/cli-tool.svg?style=flat-square)](https://npmjs.org/package/@axiosleo/cli-tool)
+[![node version](https://img.shields.io/badge/node.js-%3E=_14.0-green.svg?style=flat-square)](http://nodejs.org/download/)
 [![CI Build Status](https://github.com/AxiosLeo/node-cli/actions/workflows/ci.yml/badge.svg)](https://github.com/AxiosLeo/node-cli/actions/workflows/ci.yml)
 [![](https://codecov.io/gh/AxiosLeo/node-cli/branch/master/graph/badge.svg)](https://codecov.io/gh/AxiosLeo/node-cli)
 [![License](https://img.shields.io/github/license/AxiosLeo/node-cli?color=%234bc524)](LICENSE)
