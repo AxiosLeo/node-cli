@@ -65,7 +65,15 @@ function _assign(targetObj, ...objs) {
   objs.forEach(obj => {
     Object.assign(res, _flatten(obj, sep));
   });
-  Object.assign(targetObj, _unflatten(res, sep));
+  const r = _unflatten(res, sep);
+  for (const key in r) {
+    if (Object.prototype.hasOwnProperty.call(r, key)) {
+      if (key === '__proto__' || key === 'constructor' || key === 'prototype') {
+        continue; // Skip prototype pollution keys
+      }
+      targetObj[key] = r[key];
+    }
+  }
   return targetObj;
 }
 
