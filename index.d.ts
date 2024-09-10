@@ -1,6 +1,6 @@
-import { Color } from 'colors';
-import { ChildProcess, SpawnOptionsWithoutStdio } from 'child_process';
 import Big from 'big.js';
+import { ChildProcess, SpawnOptionsWithoutStdio } from 'child_process';
+import { Color } from 'colors';
 
 type Level = number | null | boolean | string;
 
@@ -691,7 +691,7 @@ export namespace helper {
      * @param functions 
      * @param options 
      */
-    function _parallel(functions: Function, options?: { parallelCount?: number, waitAll?: boolean }): Promise<void>
+    function _parallel(functions: Function[], options?: { parallelCount?: number, waitAll?: boolean }): Promise<void>
   }
 
   module is {
