@@ -7,6 +7,7 @@ const {
   _sleep,
   _retry,
   _foreach,
+  _parallel,
 } = require('../src/helper/cmd');
 
 describe('cmd test case', function () {
@@ -58,5 +59,12 @@ describe('cmd test case', function () {
       expect(callback.callCount).to.be.equal(3);
       expect(e.message).to.be.equal('throw error');
     }
+  });
+
+  it('_parallel should be ok', async function () {
+    const data = [1, 2, 3];
+    await _parallel(data.map((i) => async () => {
+      expect(data.indexOf(i) > -1).to.be.true;
+    }));
   });
 });
