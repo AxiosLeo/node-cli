@@ -116,13 +116,15 @@ function _tree2array(tree, options = {}) {
   const res = [];
   function recurse(data, parent_id) {
     data.forEach(d => {
-      const child = d[c.child_name].map(i => i);
-      delete d[c.child_name];
+      if (is.array(d[c.child_name])) {
+        const child = d[c.child_name].map(i => i);
+        delete d[c.child_name];
+        if (child.length) {
+          recurse(child, d[c.data_index]);
+        }
+      }
       d[c.parent_index] = parent_id || 0;
       res.push(d);
-      if (child.length) {
-        recurse(child, d[c.data_index]);
-      }
     });
   }
   recurse(tree, 0);
