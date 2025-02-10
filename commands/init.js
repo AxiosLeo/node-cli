@@ -71,9 +71,21 @@ cli-tool make test ./commands/
 `);
 
     // generate other files
-    await _write(path.join(output, '.gitignore'), `node_modules/
+    await _write(path.join(output, '.gitignore'), `package-lock.json
+pnpm-lock.yaml
+node_modules/
 runtime/
-package-lock.json`);
+
+.idea/
+.vscode/
+
+.appveyor.yml
+.github/
+
+.nyc_output/
+nyc.config.js
+coverage/
+`);
     await _write(path.join(output, '.eslintrc'), await _read(path.join(__dirname, '../', '.eslintrc')));
 
     printer.print('-'.repeat(25).input).println();
