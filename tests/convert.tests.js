@@ -50,7 +50,6 @@ describe('convert test case', function () {
     // throw error when data is not array
     expect(() => _array2tree(null)).to.throw('data must be an array');
     expect(() => _array2tree([{ id: 1 }])).to.throw('data must have "parent_id" and "id"');
-    expect(() => _array2tree([{ id: 1, parent_id: 0, child: [] }])).to.throw('child name "child" is reserved for child data, please use another name');
   });
 
   it('tree2array', function () {
@@ -70,7 +69,7 @@ describe('convert test case', function () {
                   {
                     'id': 4,
                     'parent_id': 2,
-                    'child': []
+                    'child': ''
                   }
                 ]
               }

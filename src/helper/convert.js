@@ -81,11 +81,7 @@ function _array2tree(data, options = {}) {
 
   const items = [];
   data.forEach(d => {
-    if (typeof d[c.child_name] === 'undefined') {
-      d[c.child_name] = [];
-    } else {
-      throw new Error('child name "' + c.child_name + '" is reserved for child data, please use another name');
-    }
+    d[c.child_name] = [];
     items[d[c.data_index]] = d;
     if (typeof d[c.parent_index] === 'undefined' || typeof d[c.data_index] === 'undefined') {
       throw new Error('data must have "' + c.parent_index + '" and "' + c.data_index + '"');
