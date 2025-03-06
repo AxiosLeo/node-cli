@@ -12,8 +12,9 @@ function emit(data) {
 }
 
 function pos(label, color = '33', prefix = '', suffix = '') {
-  const stack = (new Error()).stack;
-  let tmp = stack.split('\n');
+  let err = {};
+  Error.captureStackTrace(err);
+  let tmp = err.stack.split('\n');
   let local = tmp[3].indexOf('at Object.jump') > -1 ? tmp[4] : tmp[3];
   process.stdout.write(`${prefix}\x1b[${color}m${label} ${local.trim()}\x1b[0m${suffix}${os.EOL}`);
 }
