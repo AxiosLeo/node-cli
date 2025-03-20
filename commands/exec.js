@@ -21,7 +21,9 @@ class ExecCommand extends Command {
     const Command = require(filepath);
     const command = new Command();
     const name = command.config.name;
-    app.register(filepath);
+    const App = require('../src/app');
+    const newApp = new App();
+    newApp.register(command);
 
     const argv = [];
     process.argv.forEach((item, i) => {
@@ -32,7 +34,7 @@ class ExecCommand extends Command {
       }
     });
     process.argv = argv;
-    await app.exec(name);
+    await newApp.exec(name);
   }
 }
 
