@@ -137,8 +137,14 @@ function red(str) {
   return this;
 }
 
+function blue(str) {
+  print(str.blue);
+  return this;
+}
+
 module.exports = {
   colors,
+
   fixed,
   print,
   themes,
@@ -153,7 +159,9 @@ module.exports = {
   warning,
   success,
   error,
+
   yellow,
   green,
+  blue,
   red
 };

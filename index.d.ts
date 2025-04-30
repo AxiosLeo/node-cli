@@ -457,6 +457,7 @@ interface Printer {
   yellow(str: string): this;
   green(str: string): this;
   red(str: string): this;
+  blue(str: string): this;
 
   warning(...str: string[]): this;
   success(...str: string[]): this;
@@ -466,7 +467,7 @@ interface Printer {
 export const printer: Printer
 
 export namespace helper {
-  module fs {
+  namespace fs {
     /**
      * get extension of file without dot
      * @param filename 
@@ -585,7 +586,7 @@ export namespace helper {
     function _read_json(filepath: string): Promise<string>;
   }
 
-  module cmd {
+  namespace cmd {
     /**
      * sleep by milliseconds
      * @param ms 
@@ -694,7 +695,7 @@ export namespace helper {
     function _parallel(functions: Function[], options?: { parallelCount?: number, waitAll?: boolean }): Promise<void>
   }
 
-  module is {
+  namespace is {
     function undefined(a: any): boolean
     function array(a: any): boolean
     function string(a: any): boolean

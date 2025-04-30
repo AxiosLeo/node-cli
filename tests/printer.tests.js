@@ -17,6 +17,7 @@ describe('print test case', function () {
     printer.yellow('yellow').green('yellow');
     printer.green('green').red('red');
     printer.red('red').yellow('yellow');
+    printer.blue('blue').green('green');
     printer.fixed('fixed str', 20, 'center').println('eol');
     printer.fixed('fixed').println('eol');
     // exec here is ok
