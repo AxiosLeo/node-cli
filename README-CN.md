@@ -6,7 +6,7 @@
 [![npm download](https://img.shields.io/npm/dm/@axiosleo/cli-tool.svg?style=flat-square)](https://npmjs.org/package/@axiosleo/cli-tool)
 [![node version](https://img.shields.io/badge/node.js-%3E=_14.0-green.svg?style=flat-square)](http://nodejs.org/download/)
 [![CI Build Status](https://github.com/AxiosLeo/node-cli/actions/workflows/ci.yml/badge.svg)](https://github.com/AxiosLeo/node-cli/actions/workflows/ci.yml)
-[![](https://codecov.io/gh/AxiosLeo/node-cli/branch/master/graph/badge.svg)](https://codecov.io/gh/AxiosLeo/node-cli)
+[![Codecov](https://codecov.io/gh/AxiosLeo/node-cli/branch/master/graph/badge.svg)](https://codecov.io/gh/AxiosLeo/node-cli)
 [![License](https://img.shields.io/github/license/AxiosLeo/node-cli?color=%234bc524)](LICENSE)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FAxiosLeo%2Fnode-cli.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FAxiosLeo%2Fnode-cli/refs/branch/master)
 
@@ -60,7 +60,7 @@ app.start();
 - 通过 Command 类注册命令
 
 ```js
-const CommandExample = require('/path/to/your/command/file');
+const CommandExample = require("/path/to/your/command/file");
 app.register(CommandExample);
 
 app.exec("<command-name>");
@@ -69,7 +69,7 @@ app.exec("<command-name>");
 - 通过 Command 对象注册命令
 
 ```js
-const CommandExample = require('/path/to/your/command/file');
+const CommandExample = require("/path/to/your/command/file");
 const command = new CommandExample();
 app.register(command);
 
@@ -79,7 +79,7 @@ app.exec("<command-name>");
 - 通过 Command 文件地址注册命令
 
 ```js
-app.register('/path/to/your/command/file');
+app.register("/path/to/your/command/file");
 
 app.exec("<command-name>");
 ```
@@ -93,10 +93,10 @@ app.exec("<command-name>");
 > 详见 [locales wiki](https://github.com/AxiosLeo/node-cli/wiki/locales)
 
 ```js
-const path = require('path');
+const path = require("path");
 app.locale({
-  dir: path.join(__dirname, '../locales'), // /path/to/app/locales/dir
-  sets: ['en-US', 'zh-CN'],                // 不能为空, 且第一个元素为默认值
+  dir: path.join(__dirname, "../locales"), // /path/to/app/locales/dir
+  sets: ["en-US", "zh-CN"], // 不能为空, 且第一个元素为默认值
 });
 app.start(); // 需要在调用 app.start() 方法前配置 locale
 ```
@@ -104,16 +104,16 @@ app.start(); // 需要在调用 app.start() 方法前配置 locale
 ### 命令类示例
 
 ```js
-'use strict';
+"use strict";
 
-const { Command } = require('@axiosleo/cli-tool');
+const { Command } = require("@axiosleo/cli-tool");
 
 class CommandExample extends Command {
   constructor() {
     super({
-      name: 'command-name',
-      desc: 'command desc',
-      alias: ['command-alia1', 'command-alia2'],
+      name: "command-name",
+      desc: "command desc",
+      alias: ["command-alia1", "command-alia2"],
     });
 
     /**
@@ -123,7 +123,7 @@ class CommandExample extends Command {
      * @param mode argument mode : required | optional
      * @param default_value only supported on optional mode
      */
-    this.addArgument('arg-name', 'desc', 'required', null);
+    this.addArgument("arg-name", "desc", "required", null);
 
     /**
      * add option of current command
@@ -133,35 +133,33 @@ class CommandExample extends Command {
      * @param mode option mode : required | optional
      * @param default_value only supported on optional mode
      */
-    this.addOption('test', 't', 'desc', 'required', null);
+    this.addOption("test", "t", "desc", "required", null);
   }
 
   async exec(args, options, argList, app) {
-      // do something in here
+    // do something in here
 
-      // get arg&option by name
-      const arg1 = args.argName;
-      const option1 = options.optionName;
+    // get arg&option by name
+    const arg1 = args.argName;
+    const option1 = options.optionName;
 
-      // get arg by index
-      const index = 0;
-      const arg2 = argList[index];
+    // get arg by index
+    const index = 0;
+    const arg2 = argList[index];
 
-      // ask for answer
-      const answer = await this.ask('Please input your answer');
+    // ask for answer
+    const answer = await this.ask("Please input your answer");
 
-      // ask for confirm, default value is 'false'
-      const confirm = await this.confirm('Confirm do this now?', false);
+    // ask for confirm, default value is 'false'
+    const confirm = await this.confirm("Confirm do this now?", false);
 
-      // select action
-      const action = await this.select('Select an action', ['info', 'update']);
+    // select action
+    const action = await this.select("Select an action", ["info", "update"]);
 
-      // print table
-      const rows = [
-        ['Bob', 2]
-      ];
-      const head = ['Name', 'Score'];
-      this.table(rows, head);
+    // print table
+    const rows = [["Bob", 2]];
+    const head = ["Name", "Score"];
+    this.table(rows, head);
   }
 }
 
