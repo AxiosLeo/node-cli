@@ -98,7 +98,6 @@ function error(...data) {
   if (msg.length) {
     process.stdout.write(`\x1b[31m${os.EOL}[ERROR] ${msg}\x1b[0m${os.EOL}${os.EOL}`);
   }
-  process.exit(-1);
 }
 
 module.exports = {
