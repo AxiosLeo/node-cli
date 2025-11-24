@@ -86,7 +86,7 @@ runtime/
 nyc.config.js
 coverage/
 `);
-    await _write(path.join(output, '.eslintrc'), await _read(path.join(__dirname, '../', '.eslintrc')));
+    await _write(path.join(output, 'eslint.config.mjs'), await _read(path.join(__dirname, '../', 'eslint.config.mjs')));
 
     printer.print('-'.repeat(25).input).println();
     printer.green('Complete initialisation').println();
