@@ -80,7 +80,7 @@
     "*.ejs": "html",
     "*.art": "html",
     "**/tsconfig.json": "jsonc",
-    "*.json": "jsonc",
+    "**/.vscode/*.json": "jsonc",
     "package.json": "json"
   },
 

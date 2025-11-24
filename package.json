@@ -44,10 +44,12 @@
     "url": "https://github.com/AxiosLeo/node-cli"
   },
   "devDependencies": {
+    "@eslint/eslintrc": "^3.2.0",
+    "@eslint/js": "^9.17.0",
     "@types/node": "18.14.2",
     "chai": "4.3.7",
     "chai-as-promised": "7.1.1",
-    "eslint": "8.35.0",
+    "eslint": "^9.17.0",
     "expect.js": "0.3.1",
     "has-flag": "5.0.1",
     "mm": "3.2.1",
