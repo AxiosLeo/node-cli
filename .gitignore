@@ -105,7 +105,6 @@ temp/
 *.sw?
 
 # CI/CD
-.github/
 .appveyor.yml
 .travis.yml
 .circleci/
