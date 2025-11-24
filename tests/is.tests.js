@@ -30,6 +30,7 @@ describe('is test case', function () {
 
   it('test case for number', function () {
     expect(is.number(1.123)).to.be.true;
+    // eslint-disable-next-line no-loss-of-precision
     expect(is.number(1111111111111111111111111)).to.be.true;
     expect(is.number('123')).to.be.false;
 
@@ -39,6 +40,7 @@ describe('is test case', function () {
 
   it('test case for integer', function () {
     expect(is.integer(1.123)).to.be.false;
+    // eslint-disable-next-line no-loss-of-precision
     expect(is.integer(1111111111111111111111111)).to.be.true;
     expect(is.integer('123')).to.be.false;
   });

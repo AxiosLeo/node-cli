@@ -1,4 +1,4 @@
-/* eslint-disable no-extend-native */
+ 
 'use strict';
 
 const os = require('os');

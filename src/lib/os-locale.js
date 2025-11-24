@@ -114,6 +114,7 @@ async function osLocale(options = defaultOptions) {
     } else {
       locale = await getUnixLocale();
     }
+    // eslint-disable-next-line no-unused-vars
   } catch (e) {
     // ignore
   }
@@ -141,6 +142,7 @@ function osLocaleSync(options = defaultOptions) {
     } else {
       locale = getUnixLocaleSync();
     }
+    // eslint-disable-next-line no-unused-vars
   } catch (e) {
     // ignore
   }
