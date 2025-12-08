@@ -50,6 +50,15 @@ function println(str = '') {
   return this;
 }
 
+function flush(str = null) {
+  str = is.invalid(str) ? `${buffer}` : `${buffer}${str}`;
+  buffer = '';
+  if (!quiet) {
+    process.stdout.write('\r' + str);
+  }
+  return this;
+}
+
 function themes(options = {}) {
   if (!is.empty(options)) {
     Object.assign(themesConfig, options);
@@ -149,6 +158,7 @@ module.exports = {
   print,
   themes,
   println,
+  flush,
   enable,
   disable,
   input,

@@ -436,6 +436,12 @@ interface Printer {
    * Print some string on the console without EOL.
    * @param str 
    */
+  flush(str?: string): this;
+
+  /**
+   * Print some string on the console without EOL.
+   * @param str 
+   */
   print(str?: string): this;
 
   /**

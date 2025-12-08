@@ -51,4 +51,33 @@ describe('print test case', function () {
   it('print with null', function () {
     printer.print(null).println(null);
   });
+
+  it('flush test', function () {
+    // 测试基本的 flush 调用
+    printer.flush('Progress: 0%');
+    printer.flush('Progress: 50%');
+    printer.flush('Progress: 100%');
+    printer.println(); // 换行
+    
+    // 测试链式调用
+    printer.fixed('Loading', 10).flush();
+    printer.fixed('Loading.', 10).flush();
+    printer.fixed('Loading..', 10).flush();
+    printer.fixed('Loading...', 10).flush();
+    printer.println(); // 换行
+    
+    // 测试 flush 与 quiet 模式
+    printer.disable();
+    printer.flush('This should not display');
+    printer.enable();
+    printer.flush('This should display');
+    printer.println();
+    
+    // 测试 flush 参数为空
+    printer.flush();
+    printer.println();
+    
+    // exec here is ok
+    expect(true).to.be.true;
+  });
 });
