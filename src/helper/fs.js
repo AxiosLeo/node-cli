@@ -218,13 +218,13 @@ async function _sync(source, target, ext = '*', reback = true) {
     } else {
       await _copy(file, target_file);
     }
-    if (reback) {
-      const sleep = async (ms) => {
-        return new Promise((resolve) => setTimeout(resolve, ms));
-      };
-      await sleep(100);
-      await _sync(target, source, ext, false);
-    }
+  }
+  if (reback) {
+    const sleep = async (ms) => {
+      return new Promise((resolve) => setTimeout(resolve, ms));
+    };
+    await sleep(100);
+    await _sync(target, source, ext, false);
   }
 }
 
