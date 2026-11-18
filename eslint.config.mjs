@@ -1,22 +1,11 @@
 import globals from "globals";
-import path from "node:path";
-import { fileURLToPath } from "node:url";
 import js from "@eslint/js";
-import { FlatCompat } from "@eslint/eslintrc";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-  recommendedConfig: js.configs.recommended,
-  allConfig: js.configs.all
-});
 
 export default [
   {
     ignores: ['eslint.config.mjs']
   },
-  ...compat.extends("eslint:recommended"),
+  js.configs.recommended,
   {
     languageOptions: {
       globals: {
@@ -59,7 +48,7 @@ export default [
       "no-labels": 2,
       "no-with": 2,
       "no-loop-func": 2,
-      "no-native-reassign": 2,
+      "no-global-assign": 2,
 
       "no-redeclare": [2, {
         builtinGlobals: true,
