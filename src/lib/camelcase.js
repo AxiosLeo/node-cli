@@ -21,11 +21,10 @@ const preserveCamelCase = (string, toLowerCase, toUpperCase, preserveConsecutive
   let isLastCharLower = false;
   let isLastCharUpper = false;
   let isLastLastCharUpper = false;
-  let isLastLastCharPreserved = false;
 
   for (let index = 0; index < string.length; index++) {
     const character = string[index];
-    isLastLastCharPreserved = index > 2 ? string[index - 3] === '-' : true;
+    const isLastLastCharPreserved = index > 2 ? string[index - 3] === '-' : true;
 
     if (isLastCharLower && UPPERCASE.test(character)) {
       string = string.slice(0, index) + '-' + string.slice(index);

@@ -147,7 +147,6 @@ function _fixed(content, length = 10, fillPosition = 'r', fill = ' ') {
     } else {
       rightFill = fill.repeat(length - len);
     }
-    fill = fill.repeat(length - len);
     content = leftFill + content + rightFill;
   }
   return content;
