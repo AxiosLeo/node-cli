@@ -2,9 +2,19 @@
 
 const os = require('os');
 const { prompt } = require('enquirer');
-const moment = require('moment');
 
 var count = 0;
+
+/**
+ * current local time as "YYYY-MM-DD HH:mm:ss"
+ */
+function datetime() {
+  const now = new Date();
+  const pad = (n) => `${n}`.padStart(2, '0');
+  const date = [now.getFullYear(), pad(now.getMonth() + 1), pad(now.getDate())].join('-');
+  const time = [pad(now.getHours()), pad(now.getMinutes()), pad(now.getSeconds())].join(':');
+  return `${date} ${time}`;
+}
 
 function emit(data) {
   // eslint-disable-next-line no-console
@@ -28,7 +38,7 @@ function dump(...data) {
 }
 
 function log(...data) {
-  pos('log', '38;5;243', `\x1b[33m[${moment().format('YYYY-MM-DD HH:mm:ss')}]\x1b[0m `);
+  pos('log', '38;5;243', `\x1b[33m[${datetime()}]\x1b[0m `);
   // eslint-disable-next-line no-console
   console.log.apply(this, data);
 }
