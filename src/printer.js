@@ -1,13 +1,9 @@
 'use strict';
 
-/**
- * @require https://github.com/Marak/colors.js
- */
-
 const { _fixed } = require('./helper/str');
 const is = require('./helper/is');
 const os = require('os');
-const colors = require('colors');
+const colors = require('./lib/colors');
 let quiet = false;
 let buffer = '';
 
