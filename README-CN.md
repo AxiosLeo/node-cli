@@ -4,7 +4,7 @@
 
 [![NPM version](https://img.shields.io/npm/v/@axiosleo/cli-tool.svg?style=flat-square)](https://npmjs.org/package/@axiosleo/cli-tool)
 [![npm download](https://img.shields.io/npm/dm/@axiosleo/cli-tool.svg?style=flat-square)](https://npmjs.org/package/@axiosleo/cli-tool)
-[![node version](https://img.shields.io/badge/node.js-%3E=_14.0-green.svg?style=flat-square)](http://nodejs.org/download/)
+[![node version](https://img.shields.io/badge/node.js-%3E=_16.0-green.svg?style=flat-square)](http://nodejs.org/download/)
 [![CI Build Status](https://github.com/AxiosLeo/node-cli/actions/workflows/ci.yml/badge.svg)](https://github.com/AxiosLeo/node-cli/actions/workflows/ci.yml)
 [![Codecov](https://codecov.io/gh/AxiosLeo/node-cli/branch/master/graph/badge.svg)](https://codecov.io/gh/AxiosLeo/node-cli)
 [![License](https://img.shields.io/github/license/AxiosLeo/node-cli?color=%234bc524)](LICENSE)
@@ -33,7 +33,7 @@ cli-tool make <command-name> <commands-dir-path>
 cli-tool make test ./commands/ # 将会生成 ./commands/test.js 文件
 
 # 直接执行生成的命令行脚本文件
-cli-tool exec ./command/test.js
+cli-tool exec ./commands/test.js
 ```
 
 ## 使用
@@ -88,6 +88,8 @@ app.exec("<command-name>");
 
 > 开启多语言模式后，应用和命令的“描述”将会根据配置的 locales json 文件，自动翻译成对应语言
 >
+> 检测到的系统语言在 `sets` 中时使用它，否则使用第一项。Windows 上只读取 `LC_ALL`、`LC_MESSAGES`、`LANG`、`LANGUAGE` 这几个环境变量，都没有时按 `en-US` 处理。
+>
 > locales 示例 json 文件 : [locales](./locales)
 >
 > 详见 [locales wiki](https://github.com/AxiosLeo/node-cli/wiki/locales)
@@ -96,7 +98,7 @@ app.exec("<command-name>");
 const path = require("path");
 app.locale({
   dir: path.join(__dirname, "../locales"), // /path/to/app/locales/dir
-  sets: ["en-US", "zh-CN"], // 不能为空, 且第一个元素为默认值
+  sets: ["en-US", "zh-CN"], // 不能为空。检测到的系统语言在列表中时使用它，否则使用第一项。
 });
 app.start(); // 需要在调用 app.start() 方法前配置 locale
 ```
