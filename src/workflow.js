@@ -1,6 +1,5 @@
 'use strict';
 
-const moment = require('moment');
 const debug = require('./debug');
 
 function next(workflows, curr) {
@@ -31,14 +30,14 @@ class Workflow {
     const operator = this.operator;
     context.curr = {
       workflow: curr,
-      start: moment().valueOf(),
+      start: Date.now(),
       end: null,
       success: null,
       error: null
     };
     let res = await operator[curr].call(this, context);
     context.curr.success = true;
-    context.curr.end = moment().valueOf();
+    context.curr.end = Date.now();
     if (!context.step_data) {
       context.step_data = {};
     }
@@ -68,7 +67,7 @@ class Workflow {
         context.success = false;
         context.curr.success = false;
         context.curr.error = e;
-        context.curr.end = moment().valueOf();
+        context.curr.end = Date.now();
         context.step_data[context.curr.workflow] = context.curr;
         reject(context);
       });
