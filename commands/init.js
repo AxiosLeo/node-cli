@@ -34,7 +34,7 @@ class InitCommand extends Command {
       },
       'license': 'MIT',
       'dependencies': {
-        '@axiosleo/cli-tool': '^1.6.12'
+        '@axiosleo/cli-tool': '^2.0.0'
       },
       'devDependencies': {
         'eslint': '*'
