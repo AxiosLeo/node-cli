@@ -1,6 +1,5 @@
 import Big from 'big.js';
 import { ChildProcess, SpawnOptionsWithoutStdio } from 'child_process';
-import { Color } from 'colors';
 
 type Level = number | null | boolean | string;
 
@@ -352,7 +351,7 @@ interface LocalesConfig {
   format?: string
 }
 
-export module locales {
+export namespace locales {
   class Translator {
     constructor(options: LocalesConfig);
 
@@ -407,6 +406,96 @@ export module locales {
    * disable translation
    */
   function disable(): void;
+}
+
+/**
+ * The same typings as colors@1.4.0, the implementation is src/lib/colors.js
+ */
+interface Color {
+  (text: string): string;
+
+  strip: Color;
+  stripColors: Color;
+
+  black: Color;
+  red: Color;
+  green: Color;
+  yellow: Color;
+  blue: Color;
+  magenta: Color;
+  cyan: Color;
+  white: Color;
+  gray: Color;
+  grey: Color;
+
+  bgBlack: Color;
+  bgRed: Color;
+  bgGreen: Color;
+  bgYellow: Color;
+  bgBlue: Color;
+  bgMagenta: Color;
+  bgCyan: Color;
+  bgWhite: Color;
+
+  reset: Color;
+  bold: Color;
+  dim: Color;
+  italic: Color;
+  underline: Color;
+  inverse: Color;
+  hidden: Color;
+  strikethrough: Color;
+
+  rainbow: Color;
+  zebra: Color;
+  america: Color;
+  trap: Color;
+  random: Color;
+  zalgo: Color;
+}
+
+declare global {
+  interface String {
+    strip: string;
+    stripColors: string;
+
+    black: string;
+    red: string;
+    green: string;
+    yellow: string;
+    blue: string;
+    magenta: string;
+    cyan: string;
+    white: string;
+    gray: string;
+    grey: string;
+
+    bgBlack: string;
+    bgRed: string;
+    bgGreen: string;
+    bgYellow: string;
+    bgBlue: string;
+    bgMagenta: string;
+    bgCyan: string;
+    bgWhite: string;
+
+    reset: string;
+    // @ts-ignore
+    bold: string;
+    dim: string;
+    italic: string;
+    underline: string;
+    inverse: string;
+    hidden: string;
+    strikethrough: string;
+
+    rainbow: string;
+    zebra: string;
+    america: string;
+    trap: string;
+    random: string;
+    zalgo: string;
+  }
 }
 
 interface Printer {
@@ -743,7 +832,7 @@ export namespace helper {
     name: string,
   }
 
-  module obj {
+  namespace obj {
     function _flatten(obj: ObjectItem, sep?: string): ObjectItem;
     function _flatten<T>(obj: T, sep: string): ObjectItem;
     function _unflatten(obj: ObjectItem, sep: string): ObjectItem;
@@ -761,7 +850,7 @@ export namespace helper {
     encoding?: string // default is 'utf8'
   }
 
-  module str {
+  namespace str {
     class Emitter {
       config: EmitterConfig
       constructor(options?: EmitterConfig)
@@ -875,7 +964,7 @@ export namespace helper {
      * @param dict 0123456789abcdf
      * @param len 8
      */
-    function _random(dict?: string, len?: number)
+    function _random(dict?: string, len?: number): string;
 
     /**
      * get length of string
@@ -896,7 +985,7 @@ export namespace helper {
     length?: number
   }
 
-  module convert {
+  namespace convert {
     /**
      * convert tree to array
      * @param tree 
