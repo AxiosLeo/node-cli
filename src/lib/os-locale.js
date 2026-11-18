@@ -7,7 +7,6 @@
  * ******************************************************
  */
 
-const lcid = require('lcid');
 const { exec, execSync } = require('./exec.js');
 
 const defaultOptions = { spawn: true };
@@ -75,20 +74,6 @@ function getUnixLocaleSync() {
   return getLocale(parseLocale(getStdOutSync('locale')));
 }
 
-async function getWinLocale() {
-  const stdout = await getStdOut('wmic', ['os', 'get', 'locale']);
-  const lcidCode = Number.parseInt(stdout.replace('Locale', ''), 16);
-
-  return lcid.from(lcidCode);
-}
-
-function getWinLocaleSync() {
-  const stdout = getStdOutSync('wmic', ['os', 'get', 'locale']);
-  const lcidCode = Number.parseInt(stdout.replace('Locale', ''), 16);
-
-  return lcid.from(lcidCode);
-}
-
 function normalise(input) {
   return input.replace(/_/, '-');
 }
@@ -105,10 +90,9 @@ async function osLocale(options = defaultOptions) {
   try {
     const envLocale = getEnvLocale();
 
-    if (envLocale || options.spawn === false) {
+    // the system locale is not detected on Windows, only the environment variables are used
+    if (envLocale || options.spawn === false || process.platform === 'win32') {
       locale = getLocale(envLocale);
-    } else if (process.platform === 'win32') {
-      locale = await getWinLocale();
     } else if (process.platform === 'darwin') {
       locale = await getAppleLocale();
     } else {
@@ -133,10 +117,9 @@ function osLocaleSync(options = defaultOptions) {
   try {
     const envLocale = getEnvLocale();
 
-    if (envLocale || options.spawn === false) {
+    // the system locale is not detected on Windows, only the environment variables are used
+    if (envLocale || options.spawn === false || process.platform === 'win32') {
       locale = getLocale(envLocale);
-    } else if (process.platform === 'win32') {
-      locale = getWinLocaleSync();
     } else if (process.platform === 'darwin') {
       locale = getAppleLocaleSync();
     } else {
