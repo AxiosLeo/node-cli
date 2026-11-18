@@ -91,8 +91,9 @@ describe('str test case', function () {
   });
 
   it('emitter', function () {
-    let emitter = new Emitter();
-    emitter = new Emitter({
+    // the constructor also works without options
+    expect(new Emitter().output()).to.be.equal('');
+    const emitter = new Emitter({
       indent: '  ',
       eol: '\n',
       level: 0,
@@ -112,8 +113,7 @@ describe('str test case', function () {
   });
 
   it('emitter rows', function () {
-    let emitter = new Emitter();
-    emitter = new Emitter({
+    const emitter = new Emitter({
       indent: '  ',
       eol: '\n',
       level: 0,

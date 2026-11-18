@@ -4,7 +4,7 @@ const path = require('path');
 const chai = require('chai');
 const expect = chai.expect;
 const fs = require('fs');
-chai.use(require('chai-as-promised'));
+chai.use(require('chai-as-promised').default);
 
 const {
   _ext,

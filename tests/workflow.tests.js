@@ -84,14 +84,12 @@ describe('workflow test case', () => {
       b: async () => { },
       c: async () => { },
     };
-    let workflow = new Workflow(operator);
+    const workflow = new Workflow(operator);
     const context = {};
     await workflow.start(context);
     expect(context.success).to.be.true;
     expect(context.step_data).to.include.all.keys('a', 'c');
     expect(context.step_data).to.not.include.all.keys('b');
-
-    workflow = new Workflow(operator);
   });
 
   it('reset workflows', async () => {
