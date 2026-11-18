@@ -14,8 +14,8 @@ jobs:
     runs-on: ${{ matrix.operating-system }}
     strategy:
       matrix:
-        operating-system: [ubuntu-latest, windows-latest]
-        node-version: [18, 20, 22, 24, 25]
+        operating-system: [ubuntu-latest, macos-latest, windows-latest]
+        node-version: [20, 22, 24, 26]
     name: Node.js ${{ matrix.node-version }} Test on ${{ matrix.operating-system }}
 
     steps:
